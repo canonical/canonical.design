@@ -2000,10 +2000,10 @@ util-deprecate@^1.0.2:
   resolved "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz"
   integrity sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==
 
-vanilla-framework@4.20.3:
-  version "4.20.3"
-  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-4.20.3.tgz#a306e80f32f5c6b6f107c02e64cc642c6eb32148"
-  integrity sha512-8nE8BxHRckdjo8VYW0jVLK9JMz1XAoTZcKGweg0jM8cV+/D313pPyomEeODAD1qq66yf/W0RfHTXv/wp0AaYfQ==
+vanilla-framework@4.37.2:
+  version "4.37.2"
+  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-4.37.2.tgz#f9150eba8227722e4558100aaf205e6941a94ec4"
+  integrity sha512-H0hK/lGURma0b9cqEzU3fGjY4QrVeV/ymu3f81wrzdNCqSzR0/uDec7IeAaRl26J11LzHBg2+XhiNySx8JZP2w==
 
 verbalize@^0.1.2:
   version "0.1.2"

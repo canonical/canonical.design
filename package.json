@@ -34,7 +34,7 @@
     "postcss": "8.4.49",
     "postcss-cli": "11.0.0",
     "sass": "1.81.0",
-    "vanilla-framework": "4.20.3",
+    "vanilla-framework": "4.37.2",
     "webpack": "^5.97.1"
   },
   "devDependencies": {
