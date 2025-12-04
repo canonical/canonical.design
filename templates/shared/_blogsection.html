@@ -32,7 +32,7 @@
         </div>
       {% endif %}
       {% if show_image %}
-            <div class="article-image p-image-container--16-9 p-equal-height-row__item"></div>
+            <div class="article-image p-image-container--16-9 is-cover p-equal-height-row__item"></div>
       {% endif %}
       <div class="p-equal-height-row__item">
         <h3 class="p-heading--5">
@@ -51,6 +51,7 @@
   <script>
     canonicalLatestNews.fetchLatestNews(
       {
+        imageClasses: ["p-image-container__image"],
         articlesContainerSelector: "#horizontal-latest-articles",
         articleTemplateSelector: "#horizontal-articles-template",
         {% if tag_id %}tagId: "{{ tag_id }}",{% endif %}

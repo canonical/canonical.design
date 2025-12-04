@@ -28,10 +28,10 @@
   resolved "https://registry.npmjs.org/@canonical/cookie-policy/-/cookie-policy-3.6.5.tgz"
   integrity sha512-CQJKSkuLXhSumkIIw4YPSjR7k9561hZ3EEdMPQTkAVTxXURhm3WzJm/uyrvcAuU/a//jzWa8ScltCaHFBdACew==
 
-"@canonical/latest-news@1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@canonical/latest-news/-/latest-news-1.5.0.tgz#22b0c211114ef8d0b9a10d495d035411b21e1a86"
-  integrity sha512-pNCNhBn/LFnCe9Fp3Dm4WJwVkGrJMlL6lZft1SnLqufE5k6+ihZVr03revNxyMwnSu5EPpDcEduqYrTuQQGM4A==
+"@canonical/latest-news@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@canonical/latest-news/-/latest-news-2.1.0.tgz#1dbe80117044380f750b9fbf52f2194a14aeeb83"
+  integrity sha512-L8YDIVsgZlm6j24lnMmRsLfzUAgK+GRy83TblCXI6D8wntrfhAz0F6no58uW3E5vjvq0XEOUXYryqjvR+JTzTg==
 
 "@csstools/css-parser-algorithms@^3.0.4":
   version "3.0.4"
@@ -2000,10 +2000,10 @@ util-deprecate@^1.0.2:
   resolved "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz"
   integrity sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==
 
-vanilla-framework@4.20.3:
-  version "4.20.3"
-  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-4.20.3.tgz#a306e80f32f5c6b6f107c02e64cc642c6eb32148"
-  integrity sha512-8nE8BxHRckdjo8VYW0jVLK9JMz1XAoTZcKGweg0jM8cV+/D313pPyomEeODAD1qq66yf/W0RfHTXv/wp0AaYfQ==
+vanilla-framework@4.37.2:
+  version "4.37.2"
+  resolved "https://registry.yarnpkg.com/vanilla-framework/-/vanilla-framework-4.37.2.tgz#f9150eba8227722e4558100aaf205e6941a94ec4"
+  integrity sha512-H0hK/lGURma0b9cqEzU3fGjY4QrVeV/ymu3f81wrzdNCqSzR0/uDec7IeAaRl26J11LzHBg2+XhiNySx8JZP2w==
 
 verbalize@^0.1.2:
   version "0.1.2"

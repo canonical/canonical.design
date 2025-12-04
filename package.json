@@ -28,13 +28,13 @@
   "license": "ISC",
   "dependencies": {
     "@canonical/cookie-policy": "3.6.5",
-    "@canonical/latest-news": "1.5.0",
+    "@canonical/latest-news": "2.1.0",
     "autoprefixer": "10.4.13",
     "global": "^4.4.0",
     "postcss": "8.4.49",
     "postcss-cli": "11.0.0",
     "sass": "1.81.0",
-    "vanilla-framework": "4.20.3",
+    "vanilla-framework": "4.37.2",
     "webpack": "^5.97.1"
   },
   "devDependencies": {
