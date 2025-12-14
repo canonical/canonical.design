@@ -29,7 +29,7 @@
   "dependencies": {
     "@canonical/cookie-policy": "3.6.5",
     "@canonical/latest-news": "2.1.0",
-    "autoprefixer": "10.4.13",
+    "autoprefixer": "10.4.23",
     "global": "^4.4.0",
     "postcss": "8.4.49",
     "postcss-cli": "11.0.0",
