@@ -17,22 +17,19 @@
 {% endblock body_class %}
 
 {% block content %}
-
-  <div class="p-suru--50-50">
-    <div class="row--50-50">
-      <div class="col">
-        <h1>Accessibility</h1>
-      </div>
-      <div class="col">
-        <p>
-          We aim for Level AA conformance with the
-          <br />
-          <a href="https://www.w3.org/TR/WCAG22/">Web Content
-          Accessibility Guidelines (WCAG) 2.2</a>
-        </p>
+  <section class="p-suru--25-75">
+    <div class="p-section">
+      <div class="row--50-50">
+        <div class="col">
+          <h1>Accessibility at Canonical</h1>
+        </div>
+        <div class="col">
+          <p>We build our products with accessibility in mind, delivering on <a href="https://ubuntu.com/community/docs/ethos/mission">Ubuntu's mission</a> to enable every computer user to use all software regardless of disability.</p>
+          <p>We aim for Level AA conformance with the <a href="https://www.w3.org/TR/WCAG22/">Web Content Accessibility Guidelines (WCAG) 2.2</a>.</p>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 
   <div class="p-section">
     <div class="row--50-50">
@@ -41,18 +38,24 @@
         <h2>In-depth guides</h2>
       </div>
       <div class="col">
-        <p class="p-heading--5 u-no-margin--bottom">
-          <a href="https://vanillaframework.io/docs/accessibility">Web interface accessibility guide</a>
-        </p>
-        <p>
-          Learn to make your web applications and content websites accessible, whether you are using <a href="https://vanillaframework.io">Vanilla</a> or not. Includes guidance for assistive technologies in major desktop platforms.
-        </p>
-        <p class="p-heading--5 u-no-margin--bottom">
-          <a href="https://documentation.ubuntu.com/project/contributors/check-accessibility/">Ubuntu Desktop accessibility guide</a>
-        </p>
-        <p>
-          Address common accessibility pitfalls in apps and interfaces on Ubuntu, so we can deliver on our mission to enable every computer user to use all software regardless of disability.
-        </p>
+        <ul class="p-list--divided u-no-margin--bottom">
+          <li class="p-list__item">
+            <h3 class="p-heading--5 u-no-margin--bottom">
+              <a href="https://vanillaframework.io/docs/accessibility">Web interface accessibility guide</a>
+            </h3>
+            <p>
+              Learn to make your web applications and content websites accessible, whether you are using <a href="https://vanillaframework.io">Vanilla</a> or not. It includes guidance for assistive technologies in major desktop platforms.
+            </p>
+          </li>
+          <li class="p-list__item">
+            <h3 class="p-heading--5 u-no-margin--bottom">
+              <a href="https://documentation.ubuntu.com/project/contributors/check-accessibility/">Ubuntu Desktop accessibility guide</a>
+            </h3>
+            <p>
+              Address common accessibility pitfalls in apps and interfaces on Ubuntu. It includes guidance for Ubuntu-specific assistive technologies, such as the Orca screen reader.
+            </p>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -117,25 +120,33 @@
           </p>
         </div>
 
-        <div class="col-6">        
-          <p class="p-heading--5 u-no-margin--bottom">
-            <a href="https://www.w3.org/TR/WCAG22/">WCAG 2.2</a>
-          </p>
-          <p>The W3C standard, includes principles, guidelines and success criteria</p>
-
-          <p class="p-heading--5 u-no-margin--bottom">
-            <a href="https://www.w3.org/WAI/WCAG22/Understanding/">Understanding WCAG 2.2</a>
-          </p>
-          <p>Detailed reference, includes intent, benefits to people with disabilities, examples, resources and techniques</p>
-
-          <p class="p-heading--5 u-no-margin--bottom">
-            <a href="https://www.w3.org/WAI/WCAG22/quickref/">How to Meet WCAG 2.2</a>
-          </p>
-          <p>A customisable quick reference, includes guidelines, success criteria and techniques</p>
-
-          <p class="p-heading--5 u-no-margin--bottom">
-            <a href="https://www.w3.org/WAI/WCAG22/Techniques/">Techniques for WCAG 2.2</a></p>
-          <p>Instructions for developers, includes browser and assistive technology support notes, examples, code, resources and test procedures</p>
+        <div class="col-6">
+          <ul class="p-list--divided u-no-margin--bottom">
+            <li class="p-list__item">
+              <h3 class="p-heading--5 u-no-margin--bottom">
+                <a href="https://www.w3.org/TR/WCAG22/">WCAG 2.2</a>
+              </h3>
+              <p>The W3C standard, includes principles, guidelines and success criteria</p>
+            </li>
+            <li class="p-list__item">
+              <h3 class="p-heading--5 u-no-margin--bottom">
+                <a href="https://www.w3.org/WAI/WCAG22/Understanding/">Understanding WCAG 2.2</a>
+              </h3>
+              <p>Detailed reference, includes intent, benefits to people with disabilities, examples, resources and techniques</p>
+            </li>
+            <li class="p-list__item">
+              <h3 class="p-heading--5 u-no-margin--bottom">
+                <a href="https://www.w3.org/WAI/WCAG22/quickref/">How to Meet WCAG 2.2</a>
+              </h3>
+              <p>A customisable quick reference, includes guidelines, success criteria and techniques</p>
+            </li>
+            <li class="p-list__item">
+              <h3 class="p-heading--5 u-no-margin--bottom">
+                <a href="https://www.w3.org/WAI/WCAG22/Techniques/">Techniques for WCAG 2.2</a>
+              </h3>
+              <p>Instructions for developers, includes browser and assistive technology support notes, examples, code, resources and test procedures</p>
+            </li>
+          </ul>
       </div>
       </div>
     </div>
