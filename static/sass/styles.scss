@@ -3,6 +3,7 @@
 
 // Include all of Vanilla Framework
 @include vanilla;
+@import "fonts"; // included after vanilla
 
 // import cookie policy
 @import "@canonical/cookie-policy/build/css/cookie-policy";
