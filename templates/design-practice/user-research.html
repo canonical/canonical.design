@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% from "_macros/vf_hero.jinja" import vf_hero %}
+{% from "_macros/vf_tiered-list.jinja" import vf_tiered_list %}
 
 {% block meta_title %}
   User research
@@ -46,12 +47,12 @@
 
   <section class="p-section">
     <div class="p-section--shallow">
-      <div class="row--50-50">
+      <div class="grid-row--50-50">
         <hr class="p-rule" />
-        <div class="col">
+        <div class="grid-col">
           <h2>Our research practice</h2>
         </div>
-        <div class="col">
+        <div class="grid-col">
           <p>
             User research gives us access to our users' thoughts, feelings, and actions. We use quantitative methods to address the "how much" and "when" type of questions, while qualitative approaches explore the "how" and "why" of our products. Below are some of the techniques we frequently use.
           </p>
@@ -142,59 +143,44 @@
     </div>
   </section>
 
-  <section class="p-section">
-    <div class="p-section--shallow">
-      <div class="u-fixed-width">
-        <hr class="p-rule" />
-        <h2>Our commitment to ethical research</h2>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-9 col-start-large-4">
-        <hr class="p-rule--muted" />
-        <div class="row">
-          <div class="col-3 col-medium-3">
-            <h3 class="p-heading--5">What is ethical research?</h3>
-          </div>
-          <div class="col-6 col-medium-3">
-            <p>
-              Ethical research respects participants' rights, ensuring their consent, privacy, and well-being. It involves transparent practices and avoids harm, prioritizing honesty and integrity in all interactions.
-            </p>
-          </div>
-        </div>
-        <hr class="p-rule--muted" />
-        <div class="row">
-          <div class="col-3 col-medium-3">
-            <h3 class="p-heading--5">Why ethical research is important</h3>
-          </div>
-          <div class="col-6 col-medium-3">
-            <p>
-              Sticking to ethical standards builds trust, ensures data accuracy, and protects participants from harm. It preserves credibility and reliability, creating a positive impact on both the research and its outcomes.
-            </p>
-          </div>
-        </div>
-        <hr class="p-rule--muted" />
-        <div class="row">
-          <div class="col-3 col-medium-3">
-            <h3 class="p-heading--5">Embedding ethics into processes</h3>
-          </div>
-          <div class="col-6 col-medium-3">
-            <p>
-              We follow strict guidelines to respect privacy, avoid unnecessary data collection, and adhere to GDPR and international laws requirements. Our practices include obtaining clear consent, safeguarding data, and prioritizing transparency throughout the research process.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  {%- call(slot) vf_tiered_list(is_list_full_width_on_tablet=false) -%}
+  {%- if slot == 'title' -%}
+  <h2>Our commitment to ethical research</h2>
+  {%- endif -%}
+
+  {%- if slot == 'list_item_title_1' -%}
+  <h3 class="p-heading--5">What is ethical research?</h3>
+  {%- endif -%}
+
+  {%- if slot == 'list_item_description_1' -%}
+  <p>Ethical research respects participants' rights, ensuring their consent, privacy, and well-being. It involves transparent practices and avoids harm, prioritizing honesty and integrity in all interactions.</p>
+  {%- endif -%}
+
+  {%- if slot == 'list_item_title_2' -%}
+  <h3 class="p-heading--5">Why ethical research is important</h3>
+  {%- endif -%}
+
+  {%- if slot == 'list_item_description_2' -%}
+  <p>Sticking to ethical standards builds trust, ensures data accuracy, and protects participants from harm. It preserves credibility and reliability, creating a positive impact on both the research and its outcomes.</p>
+  {%- endif -%}
+
+  {%- if slot == 'list_item_title_3' -%}
+  <h3 class="p-heading--5">Embedding ethics into processes</h3>
+  {%- endif -%}
+
+  {%- if slot == 'list_item_description_3' -%}
+  <p>We follow strict guidelines to respect privacy, avoid unnecessary data collection, and adhere to GDPR and international laws requirements. Our practices include obtaining clear consent, safeguarding data, and prioritizing transparency throughout the research process.</p>
+  {%- endif -%}
+
+  {%- endcall -%}
 
   <section class="p-section">
-    <div class="row--50-50">
+    <div class="grid-row--50-50">
       <hr class="p-rule" />
-      <div class="col">
+      <div class="grid-col">
         <h2>Diverse perspectives to build the right products the right way</h2>
       </div>
-      <div class="col">
+      <div class="grid-col">
         <p>
           Our dedicated team of user researchers focuses on conducting strategic and discovery studies for our key products, ensuring a deep understanding of user needs within the tech landscape. UX designers are encouraged to lead evaluative studies, such as usability tests and card sorting exercises. Researchers guide them through the entire process, from planning to data analysis.
         </p>
@@ -207,12 +193,12 @@
 
   <section class="p-section">
     <div class="p-section--shallow">
-      <div class="row--50-50">
+      <div class="grid-row--50-50">
         <hr class="p-rule" />
-        <div class="col">
+        <div class="grid-col">
           <h2>Things we do</h2>
         </div>
-        <div class="col">
+        <div class="grid-col">
           <p>
             Our product portfolio is constantly evolving, and we are determined to keep our vision centered around our users’ needs. We conduct discovery research to guide the direction of product development, and iterative research to fine-tune design and engineering progress.
           </p>
@@ -220,8 +206,8 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-9 col-start-large-4">
+    <div class="grid-row">
+      <div class="grid-col-6 grid-col-start-large-3">
         <div class="p-equal-height-row">
           <div class="p-equal-height-row__col">
             <div class="p-equal-height-row__item u-hide--medium u-hide--small">
@@ -283,12 +269,12 @@
   </section>
 
   <section class="p-section">
-    <div class="row--50-50">
+    <div class="grid-row--50-50">
       <hr class="p-rule" />
-      <div class="col">
+      <div class="grid-col">
         <h2>Take part in our research studies</h2>
       </div>
-      <div class="col">
+      <div class="grid-col">
         <div class="p-section--shallow">
           <p>
             Join us in shaping the future of open source. By participating in our user research studies, you'll get an exclusive preview at what Canonical’s engineers and designers are developing. Your feedback will play a crucial role in guiding how we design features, improving the user experience for everyone.

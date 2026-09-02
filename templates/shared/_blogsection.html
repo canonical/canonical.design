@@ -1,21 +1,21 @@
 {# djlint: off #}
 <noscript>
   <section class="{% if section_classes %}{{ section_classes }}{% else %}p-section{% endif %}">
-    <div class="row">
+    <div class="u-fixed-width">
       <h3><a href="/blog{% if tag_name %}/tag/{{ tag_name }}{% endif %}">Read the latest news on our blog&nbsp;&rsaquo;</a></h3>
     </div>
   </section>
 </noscript>
 
 <section class="u-hide {% if section_classes %}{{ section_classes }}{% else %}p-section{% endif %}" data-js="latest-news">
-  <div class="row">
+  <div class="grid-row">
       <hr class="p-rule" />
-      <div class="col-3 col-medium-6">
+      <div class="grid-col-2 grid-col-medium-4">
           <div class="p-section--shallow">
             <h2>Explore what we're up to</h2>
           </div>
     </div>
-    <div class="col-9 col-medium-6">
+    <div class="grid-col-6 grid-col-medium-4">
       <div id="horizontal-latest-articles" class="p-equal-height-row">
         <div style="min-height: 9.1rem"><i class="p-icon--spinner u-animation--spin">Loading...</i></div>
       </div>

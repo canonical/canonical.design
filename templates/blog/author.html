@@ -24,8 +24,8 @@
 
   <section class="p-strip">
     <div class="p-section">
-      <div class="row">
-        <div class="col-3 col-medium-2 u-hide--small">
+      <div class="grid-row">
+        <div class="grid-col-2 grid-col-medium-1 u-hide--small">
           <div class="p-image-container">
             {% if author.id != 217 %}
               <img class="p-image-container__image"
@@ -34,7 +34,7 @@
             {% endif %}
           </div>
         </div>
-        <div class="col-6 col-start-large-4 col-medium-4 col-start-medium-3 col-small-4">
+        <div class="grid-col-4 grid-col-start-large-3 grid-col-medium-4 grid-col-start-medium-2">
           <h1>{{ author.name }}</h1>
           <p class="p-muted-heading">
             {{ total_posts }}

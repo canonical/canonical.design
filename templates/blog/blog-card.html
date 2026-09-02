@@ -1,14 +1,14 @@
 <div class="p-section--shallow">
-  <div class="row">
+  <div class="grid-row">
     <hr class="p-rule" />
-    <div class="col-3 u-hide--small u-hide--medium">
+    <div class="grid-col-2 u-hide--small u-hide--medium">
       {% if article.image and article.image.source_url %}
         <a href="/blog/{{ article.slug }}" aria-hidden="true" tabindex="-1">
           <div class="p-image-wrapper">{{ article.image.rendered|safe }}</div>
         </a>
       {% endif %}
     </div>
-    <div class="col-6 col-medium-4">
+    <div class="grid-col-4 grid-col-medium-3">
       <h3 class="p-heading--4">
         <a href="/blog/{{ article.slug }}">{{ article.title.rendered|safe }}</a>
       </h3>
@@ -22,7 +22,7 @@
       </span>
       <p class="u-hide--small u-hide--medium">{{ article.excerpt.raw.replace('[…]', '') |truncate(1000) }}...</p>
     </div>
-    <div class="aside col-3 col-medium-2">
+    <div class="aside grid-col-2 grid-col-medium-1">
       <p>
         <a href="/blog/author/{{ article.author.slug }}">{{ article.author.name }}</a>
         <br />
