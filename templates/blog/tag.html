@@ -10,11 +10,11 @@
 
 {% block content %}
   <div class="p-strip">
-    <div class="row">
-      <div class="col-9 col-start-large-4 col-medium-4 col-start-medium-3">
-        <div class="row">
+    <div class="grid-row">
+      <div class="grid-col-6 grid-col-start-large-3 grid-col-start-medium-2">
+        <div class="grid-row">
           <div class="p-section">
-            <div class="col-6 col-medium-4">
+            <div class="grid-col-8 grid-col-medium-4">
               <h1>
                 Blog posts tagged
                 <br />
@@ -27,7 +27,7 @@
     </div>
   </div>
   <section class="p-section" id="posts-list">
-    <div class="row u-equal-height u-clearfix">{% include 'blog/article_list.html' %}</div>
+    <div class="grid-row u-equal-height u-clearfix">{% include 'blog/article_list.html' %}</div>
   </section>
 
   {% with %}

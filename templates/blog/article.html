@@ -39,8 +39,8 @@
   {% include '/shared/_breadcrumbs.html' %}
 
   <article class="p-section">
-    <header class="row">
-      <div class="aside col-3 col-medium-2">
+    <header class="grid-row">
+      <div class="aside grid-col-2 grid-col-medium-1">
         <div class="p-media-object">
           {% if article.author %}
             {% if article.author and article.author.id == 217 %}
@@ -70,7 +70,7 @@
           </div>
         </div>
       </div>
-      <div class="p-block col-9 col-medium-4">
+      <div class="p-block grid-col-6 grid-col-medium-3">
         <div class="p-block">
           <h1>{{ article.title.rendered|safe }}</h1>
         </div>
@@ -110,9 +110,9 @@
         </ul>
       </div>
     </header>
-    <div class="row">
+    <div class="grid-row">
       <hr class="p-rule" />
-      <section class="p-block col-9 col-start-large-4">
+      <section class="p-block grid-col-6 grid-col-start-large-3">
         {{ article.content.rendered|safe }}
       </section>
     </div>
