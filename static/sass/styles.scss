@@ -102,6 +102,31 @@
   }
 }
 
+// Vanilla's docs layout adds the right rail at 1276px, which immediately
+// removes 15rem from the main column. Match the full-width layout's balanced
+// breakpoint instead: only add the right rail when the viewport can fit the
+// maximum grid width between both rails.
+$l-docs-sidebar-width: 15rem;
+$l-docs-balanced-breakpoint: calc(
+  ($grid-max-width + 2 * $l-docs-sidebar-width) *
+    $font-size-ratio--largescreen
+);
+
+@media (min-width: $breakpoint-large) and (width < $l-docs-balanced-breakpoint) {
+  .l-docs {
+    grid-template:
+      "header  header" auto
+      "sidebar title" auto
+      "sidebar meta" auto
+      "sidebar main" 1fr
+      "footer  footer" auto / $l-docs-sidebar-width minmax(0, 1fr);
+  }
+
+  .l-docs__subgrid {
+    grid-template-columns: $l-docs-sidebar-width minmax(0, 1fr) min-content;
+  }
+}
+
 // TODO: Remove this override when the fix is available in Vanilla Framework.
 // https://github.com/canonical/vanilla-framework/issues/5850
 // Vanilla offsets docs navigation by the grid margin minus the link padding,
