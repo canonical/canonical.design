@@ -94,56 +94,56 @@
   font-weight: $font-weight-bold;
 }
 
-// Section pages pair a fixed-width side navigation rail with the content column.
-// Below the threshold the sidenav is hidden (`is-drawer-hidden`) and content is full width.
-$sidenav-rail-width: 20rem;
+.l-site.l-docs {
+  @media (min-width: $breakpoint-large) {
+    // The site layout is included after the docs layout in Vanilla and would
+    // otherwise override its grid with flexbox.
+    display: grid;
+  }
+}
 
-// The global nav mirrors that layout on section pages: the logo sits in a
-// rail-width column so it lines up with the sidenav items, and the nav items
-// start at the content column.
+// TODO: Remove this override when the fix is available in Vanilla Framework.
+// https://github.com/canonical/vanilla-framework/issues/5850
+// Vanilla offsets docs navigation by the grid margin minus the link padding,
+// which aligns the label but leaves the selected tab surface between the
+// outer and inner edges of an 8-column grid. Keep the whole tab aligned with
+// the grid's outer edge, as in Vanilla's full-width layout.
 @media (min-width: $breakpoint-navigation-threshold) {
-  .p-navigation--sliding .p-navigation__row--full-width {
-    .p-navigation__banner {
-      flex: 0 0 $sidenav-rail-width;
+  .l-docs__main .p-navigation__nav {
+    margin-left: 0;
+
+    // Seat the first label on the grid's inner edge while its selected
+    // surface remains aligned to the outer edge.
+    .p-navigation__items > :first-child > .p-navigation__link {
       padding-left: map-get($grid-margin-widths, default);
     }
-
-    .p-navigation__nav {
-      padding-left: map-get($grid-margin-widths, default);
-    }
   }
 }
 
-.l-sidenav-layout {
-  @media (min-width: $threshold-4-8-col) {
-    display: flex;
+.l-docs > .l-docs__sidebar {
+  background-color: $colors--theme--background-alt;
+  position: relative;
+
+  // Match the subtle edge shadow used by Vanilla's full-width layout demo.
+  &::after {
+    background: linear-gradient(90deg, transparent, rgba($color-x-dark, 0.05));
+    bottom: 0;
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 8px;
+  }
+
+  .p-side-navigation__drawer {
+    background: transparent;
   }
 }
 
-.l-sidenav-layout__content {
-  flex: 1 1 auto;
-  min-width: 0;
-
-  // Fixed-width containers centre themselves, which pushes content away from the
-  // rail on wide screens. The rail column is the page gutter already.
-  @media (min-width: $threshold-4-8-col) {
-    .row,
-    [class*="row--"],
-    .grid-row,
-    .u-fixed-width {
-      margin-left: 0;
-      margin-right: 0;
-    }
-  }
-}
-
-.l-sidenav-layout > .p-side-navigation {
-  @media (min-width: $threshold-4-8-col) {
-    background-color: $colors--theme--background-alt;
-    flex: 0 0 $sidenav-rail-width;
-
+.l-docs__sidebar > .p-side-navigation {
+  @media (min-width: $breakpoint-large) {
     .p-side-navigation__drawer {
-      background: transparent;
       max-height: calc(100dvh - #{$navigation-height});
       overflow-y: auto;
       padding-bottom: $spv--x-large;
