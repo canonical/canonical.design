@@ -91,7 +91,7 @@
           crossorigin />
 
     <meta name="google-site-verification"
-                content="ITVxw4kVzTxOCEYMB-zn9Z7JQdlcyC9d5kgVcQQ1_xc" />
+          content="ITVxw4kVzTxOCEYMB-zn9Z7JQdlcyC9d5kgVcQQ1_xc" />
 
     <meta name="copydoc" content=" 
       {% block meta_copydoc %}https://drive.google.com/drive/folders/1WJxVFy-UHHUi60OByNqYpG2rsrqBvNYx{% endblock %}" />
@@ -106,7 +106,7 @@
 
       </head>
       <body class=" 
-        {% block body_class %}{% endblock %} l-site">
+        {% block body_class %}{% endblock %} l-site{{ ' l-docs' if sidenav_section }}">
 
         <!-- Google Tag Manager (noscript) -->
         <noscript><iframe title="Google Tag Manager"
@@ -119,19 +119,19 @@
 
         <a href="#main-content" class="p-link--skip">Jump to main content</a>
 
-        {% include '_layouts/_navigation.html' %}
+        <div class="{{ 'l-docs__header' if sidenav_section }}">{% include '_layouts/_navigation.html' %}</div>
 
-        <div class="wrapper">
-          <div id="main-content" class="{{ 'l-sidenav-layout' if sidenav_section }}">
-            {% include '_layouts/_sidenav.html' %}
-            <div class="{{ 'l-sidenav-layout__content' if sidenav_section }}">
-              {% block content %}{% endblock %}
+        {% include '_layouts/_sidenav.html' %}
 
-            </div>
+        <div class="wrapper{{ ' l-docs__main' if sidenav_section }}">
+          <div id="main-content">
+
+            {% block content %}{% endblock %}
+
           </div>
         </div>
 
-        {% include '_layouts/_footer.html' %}
+        <div class="{{ 'l-docs__footer' if sidenav_section }}">{% include '_layouts/_footer.html' %}</div>
 
       </body>
     </html>

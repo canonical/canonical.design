@@ -1,8 +1,10 @@
 {% macro nav_item(page, slug, top_level) %}
   {% set is_current = current_path == page.url or current_path.startswith(page.url ~ '/') %}
   {% if page.children %}
-    {# `dropdown: false` sections rely on the sidenav on desktop, so they link straight to their page #}
-    {% set is_section = top_level and not page.dropdown | default(true) %}
+    {# Top-level sections use the sidenav on desktop, so their tabs link
+       straight to the section page. Their child panels remain available in
+       the sliding mobile navigation. #}
+    {% set is_section = top_level %}
     <li class="p-navigation__item--dropdown-toggle js-navigation-dropdown-toggle{% if is_section %} is-section-link{% endif %}{% if is_current %} is-selected{% endif %}"
         id="{{ slug }}">
       {% if is_section %}
@@ -48,33 +50,42 @@
   {% endif %}
 {% endmacro %}
 
-<header id="navigation" class="p-navigation--sliding is-dark is-sticky">
-  {# Section pages align the nav with the sidenav rail; everywhere else keeps the centred grid #}
-  <div class="{{ 'p-navigation__row--full-width' if sidenav_section else 'p-navigation__row--25-75' }}">
-    <div class="p-navigation__banner">
-      <div class="p-navigation__tagged-logo">
-        <a class="p-navigation__link" href="/">
-          <div class="p-navigation__logo-tag">
-            <img class="p-navigation__logo-icon"
-                 src="https://assets.ubuntu.com/v1/82818827-CoF_white.svg"
-                 alt="" />
-          </div>
-          <span class="p-navigation__logo-title">Canonical&nbsp;Design</span>
-        </a>
-      </div>
-      <ul class="p-navigation__items">
-        <li class="p-navigation__item">
-          <button type="button" class="js-menu-button p-navigation__link">Menu</button>
-        </li>
-      </ul>
+{% macro navigation_banner() %}
+  <div class="p-navigation__banner">
+    <div class="p-navigation__tagged-logo">
+      <a class="p-navigation__link" href="/">
+        <div class="p-navigation__logo-tag">
+          <img class="p-navigation__logo-icon"
+               src="https://assets.ubuntu.com/v1/82818827-CoF_white.svg"
+               alt="" />
+        </div>
+        <span class="p-navigation__logo-title">Canonical&nbsp;Design</span>
+      </a>
     </div>
-    <nav class="p-navigation__nav" id="main-nav" aria-label="Main">
-      <ul class="p-navigation__items js-dropdown-nav-list js-navigation-sliding-panel">
-        {% for page in navigation.pages %}
-          {{ nav_item(page, page.title | lower | replace(' ', '-') | replace('(', '') | replace(')', ''), true) }}
-        {% endfor %}
-      </ul>
-    </nav>
+    <ul class="p-navigation__items">
+      <li class="p-navigation__item">
+        <button type="button" class="js-menu-button p-navigation__link">Menu</button>
+      </li>
+    </ul>
+  </div>
+{% endmacro %}
+
+{% macro navigation_menu() %}
+  <nav class="p-navigation__nav" id="main-nav" aria-label="Main">
+    <ul class="p-navigation__items js-dropdown-nav-list js-navigation-sliding-panel">
+      {% for page in navigation.pages %}
+        {{ nav_item(page, page.title | lower | replace(' ', '-') | replace('(', '') | replace(')', ''), true) }}
+      {% endfor %}
+    </ul>
+  </nav>
+{% endmacro %}
+
+<header id="navigation" class="p-navigation--sliding is-dark is-sticky">
+  <div class="l-docs__subgrid">
+    <div class="l-docs__sidebar">{{ navigation_banner() }}</div>
+    <div class="l-docs__main">
+      <div class="p-navigation__row u-fixed-width">{{ navigation_menu() }}</div>
+    </div>
   </div>
 </header>
 <script src="{{ versioned_static('js/dist/navigation.js') }}" defer></script>
