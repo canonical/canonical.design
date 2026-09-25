@@ -91,7 +91,7 @@
           crossorigin />
 
     <meta name="google-site-verification"
-          content="ITVxw4kVzTxOCEYMB-zn9Z7JQdlcyC9d5kgVcQQ1_xc" />
+                content="ITVxw4kVzTxOCEYMB-zn9Z7JQdlcyC9d5kgVcQQ1_xc" />
 
     <meta name="copydoc" content=" 
       {% block meta_copydoc %}https://drive.google.com/drive/folders/1WJxVFy-UHHUi60OByNqYpG2rsrqBvNYx{% endblock %}" />
@@ -119,7 +119,7 @@
 
         <a href="#main-content" class="p-link--skip">Jump to main content</a>
 
-        <div class="{{ 'l-docs__header' if sidenav_section }}">{% include '_layouts/_navigation.html' %}</div>
+        {% include '_layouts/_navigation.html' %}
 
         {% include '_layouts/_sidenav.html' %}
 
@@ -131,7 +131,7 @@
           </div>
         </div>
 
-        <div class="{{ 'l-docs__footer' if sidenav_section }}">{% include '_layouts/_footer.html' %}</div>
+        {% include '_layouts/_footer.html' %}
 
       </body>
     </html>

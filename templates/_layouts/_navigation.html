@@ -1,10 +1,8 @@
 {% macro nav_item(page, slug, top_level) %}
   {% set is_current = current_path == page.url or current_path.startswith(page.url ~ '/') %}
   {% if page.children %}
-    {# Top-level sections use the sidenav on desktop, so their tabs link
-       straight to the section page. Their child panels remain available in
-       the sliding mobile navigation. #}
-    {% set is_section = top_level %}
+    {# `dropdown: false` sections rely on the sidenav on desktop, so they link straight to their page #}
+    {% set is_section = top_level and not page.dropdown | default(true) %}
     <li class="p-navigation__item--dropdown-toggle js-navigation-dropdown-toggle{% if is_section %} is-section-link{% endif %}{% if is_current %} is-selected{% endif %}"
         id="{{ slug }}">
       {% if is_section %}
@@ -80,7 +78,7 @@
   </nav>
 {% endmacro %}
 
-<header id="navigation" class="p-navigation--sliding is-dark is-sticky">
+<header id="navigation" class="p-navigation--sliding is-dark is-sticky{{ ' l-docs__header' if sidenav_section }}">
   <div class="l-docs__subgrid">
     <div class="l-docs__sidebar">{{ navigation_banner() }}</div>
     <div class="l-docs__main">

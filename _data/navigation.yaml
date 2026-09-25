@@ -10,6 +10,7 @@ pages:
         href: /accessibility
   - title: Brand
     href: /brand
+    dropdown: false
     children:
       - title: Brand
         href: /
