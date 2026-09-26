@@ -106,7 +106,7 @@
 
       </head>
       <body class=" 
-        {% block body_class %}{% endblock %} l-site">
+        {% block body_class %}{% endblock %} l-site{{ ' l-docs' if sidenav_section }}">
 
         <!-- Google Tag Manager (noscript) -->
         <noscript><iframe title="Google Tag Manager"
@@ -121,13 +121,13 @@
 
         {% include '_layouts/_navigation.html' %}
 
-        <div class="wrapper">
-          <div id="main-content" class="{{ 'l-sidenav-layout' if sidenav_section }}">
-            {% include '_layouts/_sidenav.html' %}
-            <div class="{{ 'l-sidenav-layout__content' if sidenav_section }}">
-              {% block content %}{% endblock %}
+        {% include '_layouts/_sidenav.html' %}
 
-            </div>
+        <div class="wrapper{{ ' l-docs__main' if sidenav_section }}">
+          <div id="main-content">
+
+            {% block content %}{% endblock %}
+
           </div>
         </div>
 

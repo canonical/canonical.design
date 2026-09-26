@@ -1,25 +1,28 @@
 {% if sidenav_section %}
   {# is-drawer-hidden keeps the sidenav off small screens, where the same links live in the global nav #}
-  <div class="p-side-navigation is-drawer-hidden">
-    <nav class="p-side-navigation__drawer" aria-label="{{ sidenav_section.title }}">
-      <ul class="p-side-navigation__list">
-        {% for item in sidenav_section.children recursive %}
-          {% set is_ancestor = current_path == item.url or current_path.startswith(item.url ~ '/') %}
-          {% set is_open_branch = item.children and is_ancestor %}
-          <li class="p-side-navigation__item{% if is_open_branch %}--title{% endif %}">
-            <a class="p-side-navigation__link"
-               href="{{ item.url }}"
-               {% if item.external %}target="_blank" rel="noopener noreferrer"{% endif %}
-               {% if current_path == item.url %}aria-current="page"{% endif %}>{{ item.title }}</a>
-            {% if is_open_branch %}
-              {# the parent link already covers the section index, so drop its self-referencing child #}
-              <ul class="p-side-navigation__list">
-                {{ loop(item.children | rejectattr('url', 'equalto', item.url)) }}
-              </ul>
-            {% endif %}
-          </li>
-        {% endfor %}
-      </ul>
-    </nav>
-  </div>
+  <aside class="l-docs__sidebar">
+    <div class="p-side-navigation is-drawer-hidden">
+      <nav class="p-side-navigation__drawer"
+           aria-label="{{ sidenav_section.title }}">
+        <ul class="p-side-navigation__list">
+          {% for item in sidenav_section.children recursive %}
+            {% set is_ancestor = current_path == item.url or current_path.startswith(item.url ~ '/') %}
+            {% set is_open_branch = item.children and is_ancestor %}
+            <li class="p-side-navigation__item{% if is_open_branch %}--title{% endif %}">
+              <a class="p-side-navigation__link"
+                 href="{{ item.url }}"
+                 {% if item.external %}target="_blank" rel="noopener noreferrer"{% endif %}
+                 {% if current_path == item.url %}aria-current="page"{% endif %}>{{ item.title }}</a>
+              {% if is_open_branch %}
+                {# the parent link already covers the section index, so drop its self-referencing child #}
+                <ul class="p-side-navigation__list">
+                  {{ loop(item.children | rejectattr('url', 'equalto', item.url) ) }}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+    </div>
+  </aside>
 {% endif %}
