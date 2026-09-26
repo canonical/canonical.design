@@ -48,41 +48,38 @@
   {% endif %}
 {% endmacro %}
 
-{% macro navigation_banner() %}
-  <div class="p-navigation__banner">
-    <div class="p-navigation__tagged-logo">
-      <a class="p-navigation__link" href="/">
-        <div class="p-navigation__logo-tag">
-          <img class="p-navigation__logo-icon"
-               src="https://assets.ubuntu.com/v1/82818827-CoF_white.svg"
-               alt="" />
-        </div>
-        <span class="p-navigation__logo-title">Canonical&nbsp;Design</span>
-      </a>
-    </div>
-    <ul class="p-navigation__items">
-      <li class="p-navigation__item">
-        <button type="button" class="js-menu-button p-navigation__link">Menu</button>
-      </li>
-    </ul>
-  </div>
-{% endmacro %}
-
-{% macro navigation_menu() %}
-  <nav class="p-navigation__nav" id="main-nav" aria-label="Main">
-    <ul class="p-navigation__items js-dropdown-nav-list js-navigation-sliding-panel">
-      {% for page in navigation.pages %}
-        {{ nav_item(page, page.title | lower | replace(' ', '-') | replace('(', '') | replace(')', ''), true) }}
-      {% endfor %}
-    </ul>
-  </nav>
-{% endmacro %}
-
-<header id="navigation" class="p-navigation--sliding is-dark is-sticky{{ ' l-docs__header' if sidenav_section }}">
+<header id="navigation"
+        class="p-navigation--sliding is-dark is-sticky{{ ' l-docs__header' if sidenav_section }}">
   <div class="l-docs__subgrid">
-    <div class="l-docs__sidebar">{{ navigation_banner() }}</div>
+    <div class="l-docs__sidebar">
+      <div class="p-navigation__banner">
+        <div class="p-navigation__tagged-logo">
+          <a class="p-navigation__link" href="/">
+            <div class="p-navigation__logo-tag">
+              <img class="p-navigation__logo-icon"
+                   src="https://assets.ubuntu.com/v1/82818827-CoF_white.svg"
+                   alt="" />
+            </div>
+            <span class="p-navigation__logo-title">Canonical&nbsp;Design</span>
+          </a>
+        </div>
+        <ul class="p-navigation__items">
+          <li class="p-navigation__item">
+            <button type="button" class="js-menu-button p-navigation__link">Menu</button>
+          </li>
+        </ul>
+      </div>
+    </div>
     <div class="l-docs__main">
-      <div class="p-navigation__row u-fixed-width">{{ navigation_menu() }}</div>
+      <div class="p-navigation__row">
+        <nav class="p-navigation__nav" id="main-nav" aria-label="Main">
+          <ul class="p-navigation__items js-dropdown-nav-list js-navigation-sliding-panel">
+            {% for page in navigation.pages %}
+              {{ nav_item(page, page.title | lower | replace(' ', '-') | replace('(', '') | replace(')', ''), true) }}
+            {% endfor %}
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
 </header>

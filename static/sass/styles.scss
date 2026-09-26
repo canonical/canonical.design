@@ -130,8 +130,9 @@ $l-docs-balanced-breakpoint: calc(
 }
 // stylelint-enable media-feature-range-notation
 
-// TODO: Remove this override when the fix is available in Vanilla Framework.
-// https://github.com/canonical/vanilla-framework/issues/5850
+// TODO: Remove this override when Vanilla's docs-aligned navigation variant
+// is available: https://github.com/canonical/vanilla-framework/issues/5852
+// The selected-surface alignment itself is tracked in #5850.
 // Vanilla offsets docs navigation by the grid margin minus the link padding,
 // which aligns the label but leaves the selected tab surface between the
 // outer and inner edges of an 8-column grid. Keep the whole tab aligned with
