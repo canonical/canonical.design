@@ -1,21 +1,105 @@
 @mixin design-p-font-tester {
-    .font-tester {
-      &__demo {
-        height: 300px;
-        margin: $sp-xx-large 0;
-        overflow-y: auto;
-        width: 100%;
-  
-        &[data-style="normal"] { font-style: normal; }
-        &[data-style="italic"] { font-style: italic; }
-  
-        &[data-family="ubuntu"] { font-family: "Ubuntu variable", sans-serif; }
-        &[data-family="monospace"] { font-family: "Ubuntu Mono variable", monospace;}
-  
-        &[data-color="black"] { color: $color-dark; }
-        &[data-color="red"] { color: $color-negative; }
-        &[data-color="orange"] { color: $color-accent; }
+  .font-tester {
+    &__demo {
+      height: 300px;
+      margin: $sp-xx-large 0;
+      overflow-y: auto;
+      width: 100%;
+
+      &[data-style="normal"] {
+        font-style: normal;
+      }
+      &[data-style="italic"] {
+        font-style: italic;
+      }
+
+      &[data-family="ubuntu"] {
+        font-family: "Ubuntu variable", sans-serif;
+      }
+      &[data-family="monospace"] {
+        font-family: "Ubuntu Mono variable", monospace;
+      }
+
+      &[data-color="black"] {
+        color: $color-dark;
+      }
+      &[data-color="red"] {
+        color: $color-negative;
+      }
+      &[data-color="orange"] {
+        color: $color-accent;
       }
     }
   }
-  
+
+  .font-axes {
+    &__control {
+      align-items: center;
+      display: flex;
+      gap: $sp-medium;
+
+      // `.p-slider__wrapper` is `width: 100%`, which overflows once the label
+      // takes up part of the row, so let it share the space instead.
+      .p-slider__wrapper {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+    }
+
+    &__label {
+      flex: 0 0 auto;
+      margin-bottom: 0;
+      padding-top: 0;
+    }
+
+    // The specimen is an editable `<textarea>`, so it picks up Vanilla's input
+    // styling. That is sized for 1rem body copy, which needs unpicking before
+    // the display type scale can be applied on top.
+    &__preview {
+      margin-bottom: 0;
+      // `%vf-input-elements` sets `min-width: 8em`, which is 672px once the
+      // specimen is display-sized and would overflow its column.
+      min-width: 0;
+      // JS re-fits the height to the content, so a scrollbar would only ever
+      // flash mid-keystroke.
+      overflow-y: hidden;
+      resize: vertical;
+
+      // Starting axis values, matching the sliders' initial positions, so the
+      // specimen is styled correctly before and without JavaScript. The script
+      // sets these inline from then on.
+      font-variation-settings:
+        "wght" 100,
+        "wdth" 100;
+
+      // Match the display heading scale, stepping down to `h3` on small
+      // screens so a couple of lines still fit on a phone.
+      font-size: #{map-get($settings-text-h3, font-size)}rem;
+      line-height: map-get($settings-text-h3, line-height);
+
+      @media (min-width: $breakpoint-small) {
+        font-size: #{map-get($settings-text-display-mobile, font-size)}rem;
+        line-height: map-get($settings-text-display-mobile, line-height);
+      }
+
+      @media (min-width: $breakpoint-heading-threshold) {
+        font-size: #{map-get($settings-text-display, font-size)}rem;
+        line-height: map-get($settings-text-display, line-height);
+      }
+    }
+  }
+
+  // Vanilla paints the filled part of a range natively in Firefox
+  // (`::-moz-range-progress`), but Chrome and Safari have no equivalent. Fill
+  // the track with a gradient driven by the `--font-axes-progress` custom
+  // property that `font-variable-axes.js` keeps in sync with the value.
+  .js-font-axis::-webkit-slider-runnable-track {
+    background: linear-gradient(
+      to right,
+      #{$colors--theme--link-default} 0,
+      #{$colors--theme--link-default} var(--font-axes-progress, 0%),
+      #{$colors--theme--border-default} var(--font-axes-progress, 0%),
+      #{$colors--theme--border-default} 100%
+    );
+  }
+}
