@@ -1,0 +1,184 @@
+{#
+  Glyph specimen.
+
+  A self-contained section: markup, data and behaviour travel together, so it
+  can be dropped into any page that renders `base.html`.
+
+    {% include "shared/_glyph-specimen.html" %}
+
+  Two optional variables may be set before the include:
+
+    glyph_specimen_title          heading text, defaults to "Glyph specimen"
+    glyph_specimen_heading_level  1 when this section owns the page heading,
+                                  otherwise 2 (the default)
+#}
+
+{% set is_page_title = (glyph_specimen_heading_level | default(2)) == 1 %}
+{% set specimen_title = glyph_specimen_title | default("Glyph specimen") %}
+{% set default_family = glyphs.families[0] %}
+{% set metrics = default_family.metrics %}
+
+<div class="js-glyph-specimen-root">
+  <section class="p-section">
+    <div class="grid-row">
+      <hr class="p-rule" />
+    </div>
+
+    <div class="grid-row--50-50">
+      <div class="grid-col">
+        {% if is_page_title %}
+          <h1>{{ specimen_title }}</h1>
+        {% else %}
+          <h2>{{ specimen_title }}</h2>
+        {% endif %}
+      </div>
+
+      <div class="grid-col">
+        <nav class="p-tabs p-glyph-specimen__families" aria-label="Typeface">
+          <ul class="p-tabs__list" role="tablist">
+            {% for family in glyphs.families %}
+              <li class="p-tabs__item" role="presentation">
+                <button class="p-tabs__link js-glyph-family"
+                        type="button"
+                        role="tab"
+                        data-family="{{ family.id }}"
+                        aria-selected="{{ 'true' if loop.first else 'false' }}">
+                  {{ family.name }}
+                </button>
+              </li>
+            {% endfor %}
+          </ul>
+        </nav>
+
+        {# The tab strip has nowhere to go in a single column. #}
+        <div class="p-glyph-specimen__family-select">
+          <select class="js-glyph-family-select" aria-label="Typeface">
+            {% for family in glyphs.families %}
+              <option value="{{ family.id }}">{{ family.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        {# Only meaningful while the preview and the character set are stacked. #}
+        <nav class="p-tabs p-glyph-specimen__views" aria-label="Specimen view">
+          <ul class="p-tabs__list" role="tablist">
+            {% for view in [('specimen', 'Specimen'), ('glyphs', 'Glyphs')] %}
+              <li class="p-tabs__item" role="presentation">
+                <button class="p-tabs__link js-glyph-view"
+                        type="button"
+                        role="tab"
+                        data-view="{{ view[0] }}"
+                        aria-selected="{{ 'true' if view[0] == 'glyphs' else 'false' }}">
+                  {{ view[1] }}
+                </button>
+              </li>
+            {% endfor %}
+          </ul>
+        </nav>
+
+        <div class="p-glyph-specimen__features js-glyph-features">
+          <div class="p-glyph-specimen__feature" data-feature="smallCaps">
+            <label class="p-switch">
+              <input class="p-switch__input js-glyph-feature"
+                     type="checkbox"
+                     name="smallCaps" />
+              <span class="p-switch__slider"></span>
+              <span class="p-switch__label u-glyph-preview--small-caps">Small caps</span>
+            </label>
+          </div>
+
+          <div class="p-glyph-specimen__feature" data-feature="italic">
+            <label class="p-switch">
+              <input class="p-switch__input js-glyph-feature"
+                     type="checkbox"
+                     name="italic" />
+              <span class="p-switch__slider"></span>
+              <span class="p-switch__label u-glyph-preview--italic">Italics</span>
+            </label>
+          </div>
+
+          <div class="p-glyph-specimen__feature" data-feature="textFigures">
+            <label class="p-switch">
+              <input class="p-switch__input js-glyph-feature"
+                     type="checkbox"
+                     name="textFigures" />
+              <span class="p-switch__slider"></span>
+              <span class="p-switch__label u-glyph-preview--text-figures">Text figures 123</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    <div class="grid-row--50-50 p-glyph-specimen js-glyph-specimen"
+         data-view="glyphs"
+         style="--glyph-ascender: {{ metrics.ascender / 1000 }};
+                --glyph-cap-height: {{ metrics.capHeight / 1000 }};
+                --glyph-x-height: {{ metrics.xHeight / 1000 }};
+                --glyph-descender: {{ (0 - metrics.descender) / 1000 }}">
+
+      <div class="grid-col p-glyph-specimen__pane p-glyph-specimen__pane--specimen">
+        <div class="p-glyph-specimen__preview js-glyph-preview">
+          {% for metric in [
+            ('ascender', 'Ascenders'),
+            ('cap-height', 'Cap height'),
+            ('x-height', 'x-height'),
+            ('baseline', 'Baseline'),
+            ('descender', 'Descenders'),
+            ] %}
+            <div class="p-glyph-specimen__metric" data-metric="{{ metric[0] }}">
+              <span class="p-glyph-specimen__metric-label">{{ metric[1] }}</span>
+            </div>
+          {% endfor %}
+
+          <svg class="p-glyph-specimen__figure js-glyph-figure"
+               viewBox="-500 {{ 0 - metrics.ascender }} 2000 {{ metrics.ascender - metrics.descender }}"
+               preserveAspectRatio="xMidYMid meet"
+               aria-hidden="true"
+               focusable="false">
+            <text class="js-glyph-figure-text"
+                  x="500"
+                  y="0"
+                  font-size="1000"
+                  text-anchor="middle">A</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="grid-col p-glyph-specimen__pane p-glyph-specimen__pane--glyphs">
+        <div class="p-glyph-specimen__set js-glyph-set">
+          {% for group in glyphs.scripts %}
+            <section class="p-glyph-specimen__group">
+              {% if is_page_title %}
+                <h2 class="p-glyph-specimen__group-title">{{ group.name }}</h2>
+              {% else %}
+                <h3 class="p-glyph-specimen__group-title">{{ group.name }}</h3>
+              {% endif %}
+              <div class="p-glyph-specimen__grid">
+                {% for glyph in group.glyphs %}
+                  <button class="p-glyph-specimen__glyph js-glyph{{ ' is-selected' if glyph.char == 'A' }}"
+                          type="button"
+                          title="{{ glyph.name }} &middot; {{ glyph.code }}"
+                          aria-pressed="{{ 'true' if glyph.char == 'A' else 'false' }}"
+                          data-roman="{{ 'true' if glyph.roman else 'false' }}"
+                          data-italic="{{ 'true' if glyph.italic else 'false' }}"
+                          data-mono="{{ 'true' if glyph.mono else 'false' }}"
+                          data-small-caps="{{ 'true' if glyph.smallCaps else 'false' }}"
+                          data-text-figures="{{ 'true' if glyph.textFigures else 'false' }}">{{ glyph.char }}</button>
+                {% endfor %}
+              </div>
+            </section>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script type="application/json" class="js-glyph-specimen-config">
+    {{ {'families': glyphs.families, 'italicFeatures': glyphs.italicFeatures} | tojson }}
+  </script>
+</div>
+
+<script src="{{ versioned_static('js/glyphs.js') }}" defer></script>

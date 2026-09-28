@@ -11,7 +11,9 @@
 // Site patterns
 @import "pattern-resources";
 @import "pattern-font-tester";
+@import "pattern-glyph-specimen";
 @include design-p-font-tester;
+@include design-p-glyph-specimen;
 @include design-p-resources;
 @include vf-p-icons;
 @include vf-p-icon-highlight-off;

@@ -26,6 +26,9 @@ with open("_data/resources.yaml", "r") as stream:
 with open("_data/icons.yaml", "r") as stream:
     parsed_icons = yaml.safe_load(stream)
 
+with open("_data/glyphs.yaml", "r") as stream:
+    glyphs = yaml.safe_load(stream)
+
 resources_data = {
     "logos": parsed_resources,
     "icons": parsed_icons,
@@ -44,7 +47,7 @@ def global_template_context():
 def render_error_page(error):
     app.logger.error(
         f"Error occurred: {error}",
-        exc_info=os.environ.get("DISPLAY_FULL_TRACEBACK").lower() == "true",
+        exc_info=os.environ.get("DISPLAY_FULL_TRACEBACK", "").lower() == "true",
     )
     error_code = getattr(error, "code", 500)
     error_message = getattr(error, "description", "Something went wrong!")
@@ -86,4 +89,5 @@ def utility_processor():
     return {
         "modify_query": modify_query,
         "image": image_template,
+        "glyphs": glyphs,
     }

@@ -1,0 +1,206 @@
+@mixin design-p-glyph-specimen {
+  // Preview each toggle's effect on its own label.
+  .u-glyph-preview--small-caps {
+    font-feature-settings:
+      "smcp" 1,
+      "c2sc" 1;
+    letter-spacing: 0.05em;
+  }
+
+  .u-glyph-preview--italic {
+    font-style: italic;
+  }
+
+  .u-glyph-preview--text-figures {
+    font-feature-settings:
+      "onum" 1,
+      "tnum" 1;
+  }
+
+  .p-glyph-specimen__features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spv--small $sph--large;
+    margin-top: $spv--medium;
+  }
+
+  // Toggles stay in place when the selected face cannot support them, so the
+  // row never reflows underneath the pointer mid-interaction.
+  .p-glyph-specimen__feature.is-disabled .p-switch__label {
+    cursor: not-allowed;
+    opacity: $disabled-element-opacity;
+  }
+
+  // The rendered em size that every metric line is derived from.
+  .p-glyph-specimen {
+    --glyph-em: min(70vw, 55vh);
+  }
+
+  .p-glyph-specimen__preview {
+    height: calc(
+      (var(--glyph-ascender) + var(--glyph-descender)) * var(--glyph-em)
+    );
+    margin-bottom: $spv--x-large;
+    position: relative;
+    // Where the preview is not pinned, selecting a glyph scrolls back to it.
+    // Clear the sticky site navigation when it does.
+    scroll-margin-top: calc(#{$navigation-height} + #{$spv--medium});
+  }
+
+  // Each line sits at its metric's distance from the top of the type area,
+  // so the whole diagram rescales from the four custom properties alone.
+  .p-glyph-specimen__metric {
+    border-top: 1px solid $colors--theme--border-low-contrast;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: calc(var(--offset) * var(--glyph-em));
+
+    &[data-metric="ascender"] {
+      --offset: 0;
+    }
+
+    &[data-metric="cap-height"] {
+      --offset: calc(var(--glyph-ascender) - var(--glyph-cap-height));
+    }
+
+    &[data-metric="x-height"] {
+      --offset: calc(var(--glyph-ascender) - var(--glyph-x-height));
+    }
+
+    &[data-metric="baseline"] {
+      --offset: var(--glyph-ascender);
+    }
+
+    &[data-metric="descender"] {
+      --offset: calc(var(--glyph-ascender) + var(--glyph-descender));
+    }
+  }
+
+  .p-glyph-specimen__metric-label {
+    color: $colors--theme--text-muted;
+    display: block;
+    padding-top: $spv--x-small;
+  }
+
+  // The SVG viewBox is expressed in the font's own em units, so the baseline
+  // lands exactly on the baseline rule without relying on line-box metrics.
+  .p-glyph-specimen__figure {
+    height: calc(
+      (var(--glyph-ascender) + var(--glyph-descender)) * var(--glyph-em)
+    );
+    left: 50%;
+    // Twice the em box, so the figure overhangs its column and would otherwise
+    // swallow clicks on the glyphs alongside it.
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    width: calc(2 * var(--glyph-em));
+
+    text {
+      fill: $colors--theme--text-default;
+    }
+  }
+
+  .p-glyph-specimen__group + .p-glyph-specimen__group {
+    margin-top: $spv--x-large;
+  }
+
+  .p-glyph-specimen__group-title {
+    color: $colors--theme--text-muted;
+    font-size: #{map-get($settings-text-small, font-size)}rem;
+    font-weight: $font-weight-regular-text;
+    line-height: map-get($settings-text-small, line-height);
+    margin-bottom: $spv--small;
+  }
+
+  .p-glyph-specimen__group[hidden] {
+    display: none;
+  }
+
+  .p-glyph-specimen__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(2.5rem, 1fr));
+  }
+
+  .p-glyph-specimen__glyph {
+    align-items: center;
+    aspect-ratio: 1;
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+    border-top: 1px solid $colors--theme--border-low-contrast;
+    color: $color-link;
+    display: flex;
+    font-size: 1.25rem;
+    justify-content: center;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+
+    @include vf-transition(background-color, snap);
+
+    &:hover {
+      background-color: $colors--theme--background-hover;
+    }
+
+    &.is-selected {
+      // Drawn inside the box so selecting a glyph never shifts the grid.
+      box-shadow: inset 0 (-$bar-thickness) 0 0 $colors--theme--text-default;
+    }
+
+    // Present in the character set, but with no outline in the active style.
+    &.is-unavailable {
+      color: $colors--theme--text-muted;
+      cursor: not-allowed;
+      opacity: $disabled-element-opacity;
+    }
+
+    // Absent from the selected family altogether.
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  // Stacked in one column there is no room to show the preview and the
+  // character set at once, so they become two views of the same widget and the
+  // typeface tab strip collapses into a select.
+  @media (max-width: $breakpoint-small - 1) {
+    .p-glyph-specimen__families {
+      display: none;
+    }
+
+    .p-glyph-specimen[data-view="glyphs"] > .p-glyph-specimen__pane--specimen,
+    .p-glyph-specimen[data-view="specimen"] > .p-glyph-specimen__pane--glyphs {
+      display: none;
+    }
+  }
+
+  // Once the two halves sit side by side both are visible at all times, so the
+  // view switcher falls away and the preview pins instead.
+  @media (min-width: $breakpoint-small) {
+    .p-glyph-specimen__family-select,
+    .p-glyph-specimen__views {
+      display: none;
+    }
+
+    .p-glyph-specimen {
+      // Bound by the viewport as well, so the whole diagram stays pinned.
+      --glyph-em: min(40vw, 37.5rem, 50vh);
+    }
+
+    .p-glyph-specimen__preview {
+      position: sticky;
+      top: calc(#{$navigation-height} + #{$spv--large});
+    }
+
+    .p-glyph-specimen__grid {
+      grid-template-columns: repeat(auto-fill, minmax(3.75rem, 1fr));
+    }
+
+    .p-glyph-specimen__glyph {
+      font-size: 2rem;
+    }
+  }
+}

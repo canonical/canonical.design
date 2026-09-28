@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block meta_title %}
+  Glyph specimen
+{% endblock meta_title %}
+
+{% block meta_description %}
+  Browse the full character set of the Ubuntu and Ubuntu Mono typefaces.
+{% endblock meta_description %}
+
+{% block body_class %}
+  is-paper
+{% endblock body_class %}
+
+{% block content %}
+
+  {% set glyph_specimen_heading_level = 1 %}
+  {% include "shared/_glyph-specimen.html" %}
+
+{% endblock content %}
