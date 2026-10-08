@@ -1,0 +1,78 @@
+{#
+  Variable axes type tester.
+
+  A self-contained section for exploring the Ubuntu variable font's weight and
+  width axes. The specimen is an editable textarea, so the sample text stays
+  editable at every screen size while keeping the display type styles.
+
+  Include it on any page:
+
+    {% include "shared/_font-variable-axes.html" %}
+
+  The starting axis values come from the stylesheet, so the specimen is styled
+  correctly before, and without, JavaScript.
+#}
+<section class="p-section--deep js-font-axes">
+  <div class="grid-row">
+    <hr class="p-rule" />
+    <div class="grid-col-2 grid-col-medium-4">
+      <h2>Variable axes</h2>
+    </div>
+    <div class="grid-col-3 grid-col-start-large-3 grid-col-medium-4">
+      <div class="font-axes__control">
+        <label class="font-axes__label" for="font-axis-wght">Weight</label>
+        <div class="p-slider__wrapper">
+          <input id="font-axis-wght"
+                 class="js-font-axis"
+                 type="range"
+                 data-axis="wght"
+                 min="100"
+                 max="800"
+                 step="1"
+                 value="100" />
+          <input class="p-slider__input js-font-axis-value"
+                 type="number"
+                 data-axis="wght"
+                 min="100"
+                 max="800"
+                 step="1"
+                 value="100"
+                 aria-label="Weight axis value" />
+        </div>
+      </div>
+    </div>
+    <div class="grid-col-3 grid-col-medium-4">
+      <div class="font-axes__control">
+        <label class="font-axes__label" for="font-axis-wdth">Width</label>
+        <div class="p-slider__wrapper">
+          <input id="font-axis-wdth"
+                 class="js-font-axis"
+                 type="range"
+                 data-axis="wdth"
+                 min="75"
+                 max="100"
+                 step="1"
+                 value="100" />
+          <input class="p-slider__input js-font-axis-value"
+                 type="number"
+                 data-axis="wdth"
+                 min="75"
+                 max="100"
+                 step="1"
+                 value="100"
+                 aria-label="Width axis value" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="grid-row">
+    <div class="grid-col-6 grid-col-start-large-3 grid-col-medium-4">
+      <textarea class="font-axes__preview js-font-axes-preview"
+                rows="3"
+                spellcheck="false"
+                aria-label="Editable type specimen">The quick brown fox jumps over the lazy dog.</textarea>
+    </div>
+  </div>
+</section>
+
+<script src="{{ versioned_static('js/font-variable-axes.js') }}" defer></script>
