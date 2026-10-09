@@ -185,6 +185,17 @@
     .p-glyph-specimen[data-view="specimen"] > .p-glyph-specimen__pane--glyphs {
       display: none;
     }
+
+    // The preview is hidden while this view is shown, so its height cannot be
+    // borrowed from the layout. Match it from the same metrics instead, so
+    // switching views leaves the page below where it was.
+    .p-glyph-specimen__set {
+      margin-bottom: $spv--x-large;
+      max-height: calc(
+        (var(--glyph-ascender) + var(--glyph-descender)) * var(--glyph-em)
+      );
+      overflow-y: auto;
+    }
   }
 
   // Once the two halves sit side by side both are visible at all times, so the
