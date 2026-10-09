@@ -27,7 +27,7 @@
   "author": "canonical",
   "license": "ISC",
   "dependencies": {
-    "@canonical/cookie-policy": "3.6.5",
+    "@canonical/cookie-policy": "3.10.0",
     "@canonical/latest-news": "2.1.0",
     "autoprefixer": "10.4.13",
     "global": "^4.4.0",
