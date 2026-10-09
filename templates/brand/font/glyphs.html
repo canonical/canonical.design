@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% from "_macros/vf_hero.jinja" import vf_hero %}
+{% from "_macros/vf_tiered-list.jinja" import vf_tiered_list %}
+
+{% block meta_title %}
+  Glyph specimen
+{% endblock meta_title %}
+
+{% block meta_description %}
+  Browse the full character set of the Ubuntu and Ubuntu Mono typefaces.
+{% endblock meta_description %}
+
+{% block body_class %}
+  is-paper
+{% endblock body_class %}
+
+{% block content %}
+
+  {% call(slot) vf_hero(
+    title_text='H1 - ideally one line, up to two',
+    subtitle_text='H2 placeholder - aim for one line, 2 is acceptable.',
+    layout='50/50-full-width-image',
+    blocks=[
+      {
+        "type": "description",
+        "padding": "shallow",
+        "item": {
+          "type": "text",
+          "content": "Generally, the height of the right hand side of a 50/50 split should contain more content than the left
+          hand side."
+        }
+      },
+      {
+        "type": "cta-block",
+        "padding": "shallow",
+        "item": {
+          "primary": {
+            "content_html": "Learn more",
+            "attrs": {
+              "href": "#"
+            }
+          },
+          "link": {
+            "content_html": "Contact us ›",
+            "attrs": {
+              "href": "#"
+            }
+          }
+        }
+      },
+      {
+        "type": "image",
+        "item": {
+          "aspect_ratio": "cinematic",
+          "is_highlighted": false,
+          "is_cover": true,
+          "attrs": {
+            "src": "https://assets.ubuntu.com/v1/a299c914-GettyImages-DataCenter.jpeg",
+            "alt": "alt-text"
+          }
+        }
+      },
+    ]
+  ) -%}
+  {% endcall -%}
+
+  {% set glyph_specimen_heading_level = 1 %}
+  {% include "shared/_glyph-specimen.html" %}
+
+  {%- call(slot) vf_tiered_list(is_list_full_width_on_tablet=false) -%}
+  {%- if slot == 'title' -%}
+  <h2>Our commitment to ethical research</h2>
+  {%- endif -%}
+
+  {%- if slot == 'list_item_title_1' -%}
+  <h3 class="p-heading--5">What is ethical research?</h3>
+  {%- endif -%}
+
+  {%- if slot == 'list_item_description_1' -%}
+  <p>Ethical research respects participants' rights, ensuring their consent, privacy, and well-being. It involves transparent practices and avoids harm, prioritizing honesty and integrity in all interactions.</p>
+  {%- endif -%}
+
+  {%- if slot == 'list_item_title_2' -%}
+  <h3 class="p-heading--5">Why ethical research is important</h3>
+  {%- endif -%}
+
+  {%- if slot == 'list_item_description_2' -%}
+  <p>Sticking to ethical standards builds trust, ensures data accuracy, and protects participants from harm. It preserves credibility and reliability, creating a positive impact on both the research and its outcomes.</p>
+  {%- endif -%}
+
+  {%- if slot == 'list_item_title_3' -%}
+  <h3 class="p-heading--5">Embedding ethics into processes</h3>
+  {%- endif -%}
+
+  {%- if slot == 'list_item_description_3' -%}
+  <p>We follow strict guidelines to respect privacy, avoid unnecessary data collection, and adhere to GDPR and international laws requirements. Our practices include obtaining clear consent, safeguarding data, and prioritizing transparency throughout the research process.</p>
+  {%- endif -%}
+
+  {%- endcall -%}
+
+{% endblock content %}
