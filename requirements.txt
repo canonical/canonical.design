@@ -1,6 +1,6 @@
 canonicalwebteam.flask-base==2.0.0
 canonicalwebteam.templatefinder==1.0.0
-canonicalwebteam.blog==6.4.4
+canonicalwebteam.blog==6.8.4
 canonicalwebteam.yaml-responses==1.2.0
 Flask==2.3.3
 Jinja2==3.1.4
