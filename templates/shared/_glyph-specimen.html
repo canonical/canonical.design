@@ -19,12 +19,12 @@
 {% set metrics = default_family.metrics %}
 
 <div class="js-glyph-specimen-root">
-  <section class="p-section">
+  <section class="p-section--shallow">
     <div class="grid-row">
       <hr class="p-rule" />
     </div>
 
-    <div class="grid-row--50-50">
+    <div class="grid-row--50-50-on-large">
       <div class="grid-col">
         {% if is_page_title %}
           <h1>{{ specimen_title }}</h1>
@@ -35,7 +35,7 @@
 
       <div class="grid-col">
         <nav class="p-tabs p-glyph-specimen__families" aria-label="Typeface">
-          <ul class="p-tabs__list" role="tablist">
+          <ul class="p-tabs__list u-no-margin--bottom" role="tablist">
             {% for family in glyphs.families %}
               <li class="p-tabs__item" role="presentation">
                 <button class="p-tabs__link js-glyph-family"
@@ -112,7 +112,7 @@
   </section>
 
   <section class="p-section">
-    <div class="grid-row--50-50 p-glyph-specimen js-glyph-specimen"
+    <div class="grid-row--50-50-on-large p-glyph-specimen js-glyph-specimen"
          data-view="glyphs"
          style="--glyph-ascender: {{ metrics.ascender / 1000 }};
                 --glyph-cap-height: {{ metrics.capHeight / 1000 }};
@@ -151,10 +151,12 @@
         <div class="p-glyph-specimen__set js-glyph-set">
           {% for group in glyphs.scripts %}
             <section class="p-glyph-specimen__group">
-              {% if is_page_title %}
-                <h2 class="p-glyph-specimen__group-title">{{ group.name }}</h2>
-              {% else %}
-                <h3 class="p-glyph-specimen__group-title">{{ group.name }}</h3>
+              {% if group.name %}
+                {% if is_page_title %}
+                  <h2 class="p-glyph-specimen__group-title">{{ group.name }}</h2>
+                {% else %}
+                  <h3 class="p-glyph-specimen__group-title">{{ group.name }}</h3>
+                {% endif %}
               {% endif %}
               <div class="p-glyph-specimen__grid">
                 {% for glyph in group.glyphs %}

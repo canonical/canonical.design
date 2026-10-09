@@ -42,7 +42,7 @@
     );
     margin-bottom: $spv--x-large;
     position: relative;
-    // Where the preview is not pinned, selecting a glyph scrolls back to it.
+    // While stacked, selecting a glyph scrolls back to it.
     // Clear the sticky site navigation when it does.
     scroll-margin-top: calc(#{$navigation-height} + #{$spv--medium});
   }
@@ -163,10 +163,20 @@
     }
   }
 
+  @media (min-width: $breakpoint-small) {
+    .p-glyph-specimen__grid {
+      grid-template-columns: repeat(auto-fill, minmax(3.75rem, 1fr));
+    }
+
+    .p-glyph-specimen__glyph {
+      font-size: 2rem;
+    }
+  }
+
   // Stacked in one column there is no room to show the preview and the
   // character set at once, so they become two views of the same widget and the
   // typeface tab strip collapses into a select.
-  @media (max-width: $breakpoint-small - 1) {
+  @media (max-width: $breakpoint-large - 1) {
     .p-glyph-specimen__families {
       display: none;
     }
@@ -178,29 +188,30 @@
   }
 
   // Once the two halves sit side by side both are visible at all times, so the
-  // view switcher falls away and the preview pins instead.
-  @media (min-width: $breakpoint-small) {
+  // view switcher falls away. The preview sets the height of the row and the
+  // character set scrolls within it, rather than pushing the page down.
+  @media (min-width: $breakpoint-large) {
     .p-glyph-specimen__family-select,
     .p-glyph-specimen__views {
       display: none;
     }
 
     .p-glyph-specimen {
-      // Bound by the viewport as well, so the whole diagram stays pinned.
-      --glyph-em: min(40vw, 37.5rem, 50vh);
+      --glyph-em: 37.5rem;
     }
 
     .p-glyph-specimen__preview {
-      position: sticky;
-      top: calc(#{$navigation-height} + #{$spv--large});
+      margin-bottom: 0;
     }
 
-    .p-glyph-specimen__grid {
-      grid-template-columns: repeat(auto-fill, minmax(3.75rem, 1fr));
+    .p-glyph-specimen__pane--glyphs {
+      position: relative;
     }
 
-    .p-glyph-specimen__glyph {
-      font-size: 2rem;
+    .p-glyph-specimen__set {
+      inset: 0;
+      overflow-y: auto;
+      position: absolute;
     }
   }
 }

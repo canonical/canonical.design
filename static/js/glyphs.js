@@ -233,17 +233,15 @@
     }
 
     /**
-     * Wherever the preview is not pinned alongside the character set, it has
-     * scrolled out of sight by the time a glyph is picked. Bring it back.
+     * While stacked, the preview is hidden behind the other view by the time a
+     * glyph is picked. Bring it back.
      */
     function revealPreview() {
-      if (window.getComputedStyle(preview).position === "sticky") {
+      if (!viewsAreSeparate()) {
         return;
       }
 
-      if (viewsAreSeparate()) {
-        setView("specimen");
-      }
+      setView("specimen");
 
       preview.scrollIntoView({
         behavior: prefersReducedMotion.matches ? "auto" : "smooth",

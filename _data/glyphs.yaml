@@ -29,7 +29,6 @@ italicFeatures:
   textFigures: true
 scripts:
 - id: latin
-  name: Latin
   glyphs:
   - char: A
     code: U+0041
