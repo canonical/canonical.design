@@ -2,6 +2,7 @@
 
 {% from "_macros/vf_hero.jinja" import vf_hero %}
 {% from "_macros/vf_tiered-list.jinja" import vf_tiered_list %}
+{% from "_macros/vf_cta-section.jinja" import vf_cta_section %}
 
 {% block meta_title %}
   Design systems
@@ -290,6 +291,23 @@
       </div>
     </div>
   </section>
+
+  {% call(slot) vf_cta_section(
+    title_text='We are hiring',
+    variant='default',
+    layout='100',
+    attrs={'id': 'full-width-default'},
+    blocks=[
+      {
+        "type": "cta",
+        "item": {
+          "type": "html",
+          "content": "<a href='https://job-boards.greenhouse.io/canonical/jobs/7043028?gh_src=v1wptr601us'>UX Designer - Design Systems &rsaquo;</a>"
+          }
+        }
+      ]
+    ) -%}
+  {% endcall -%}
 
   {% with section_classes='p-section--deep', tag_id='1239', limit='3', hide_date=True, link_image=True, show_image=True, show_excerpt=True, excerptLength=200 %}
     {% include "/shared/_blogsection.html" %}
