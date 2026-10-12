@@ -42,8 +42,11 @@
     );
     margin-bottom: $spv--x-large;
     position: relative;
-    // While stacked, selecting a glyph scrolls back to it.
-    // Clear the sticky site navigation when it does.
+  }
+
+  // While stacked, selecting a glyph scrolls back to the view tabs.
+  // Clear the sticky site navigation when it does.
+  .p-glyph-specimen__views {
     scroll-margin-top: calc(#{$navigation-height} + #{$spv--medium});
   }
 
@@ -133,7 +136,11 @@
     border-top: 1px solid $colors--theme--border-low-contrast;
     color: $color-link;
     display: flex;
+    // Browsers reset font styling on buttons, which would shut the cells out
+    // of the italic and OpenType settings applied to the set.
+    font-feature-settings: inherit;
     font-size: 1.25rem;
+    font-style: inherit;
     justify-content: center;
     line-height: 1;
     margin: 0;
@@ -150,14 +157,7 @@
       box-shadow: inset 0 (-$bar-thickness) 0 0 $colors--theme--text-default;
     }
 
-    // Present in the character set, but with no outline in the active style.
-    &.is-unavailable {
-      color: $colors--theme--text-muted;
-      cursor: not-allowed;
-      opacity: $disabled-element-opacity;
-    }
-
-    // Absent from the selected family altogether.
+    // Absent from the active face altogether.
     &[hidden] {
       display: none;
     }

@@ -60,7 +60,8 @@
         </div>
 
         {# Only meaningful while the preview and the character set are stacked. #}
-        <nav class="p-tabs p-glyph-specimen__views" aria-label="Specimen view">
+        <nav class="p-tabs p-glyph-specimen__views js-glyph-views"
+             aria-label="Specimen view">
           <ul class="p-tabs__list" role="tablist">
             {% for view in [('specimen', 'Specimen'), ('glyphs', 'Glyphs')] %}
               <li class="p-tabs__item" role="presentation">
@@ -120,7 +121,7 @@
                 --glyph-descender: {{ (0 - metrics.descender) / 1000 }}">
 
       <div class="grid-col p-glyph-specimen__pane p-glyph-specimen__pane--specimen">
-        <div class="p-glyph-specimen__preview js-glyph-preview">
+        <div class="p-glyph-specimen__preview">
           {% for metric in [
             ('ascender', 'Ascenders'),
             ('cap-height', 'Cap height'),

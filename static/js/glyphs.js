@@ -1,13 +1,13 @@
 /**
  * Glyph specimen.
  *
- * Renders the character set of the bundled Ubuntu faces. The markup for every
- * glyph is server-rendered; this script only switches families, applies
+ * Renders the character set of the bundled Ubuntu Sans faces. The markup for
+ * every glyph is server-rendered; this script only switches families, applies
  * OpenType features, and keeps the preview in sync with the selection.
  *
  * Feature toggles are disabled rather than removed whenever the active face
- * cannot express them -- Ubuntu Mono has no small-caps or italic coverage, and
- * the italic subset has no small caps of its own. Withdrawing them would
+ * cannot express them -- Ubuntu Sans Mono has no small-caps or italic coverage,
+ * and the italic subset has no small caps of its own. Withdrawing them would
  * reflow the row and shift the remaining switches under the pointer.
  *
  * Every lookup is scoped to a specimen root, so the section can be included on
@@ -26,7 +26,6 @@
     );
 
     var specimen = root.querySelector(".js-glyph-specimen");
-    var preview = root.querySelector(".js-glyph-preview");
     var figure = root.querySelector(".js-glyph-figure");
     var figureText = root.querySelector(".js-glyph-figure-text");
     var glyphSet = root.querySelector(".js-glyph-set");
@@ -34,6 +33,7 @@
       root.querySelectorAll(".js-glyph-family"),
     );
     var familySelect = root.querySelector(".js-glyph-family-select");
+    var viewTabs = root.querySelector(".js-glyph-views");
     var viewButtons = Array.prototype.slice.call(
       root.querySelectorAll(".js-glyph-view"),
     );
@@ -149,9 +149,9 @@
     }
 
     /**
-     * Hide glyphs the active family has no outline for, narrow the grid to
-     * the glyphs any active feature rewrites, and flag those that exist in
-     * the roman face but not in the italic subset.
+     * Hide glyphs the active face has no outline for -- including those the
+     * italic subset lacks -- and narrow the grid to the glyphs any active
+     * feature rewrites.
      */
     function applyCoverage() {
       var supported = supportedFeatures();
@@ -170,9 +170,7 @@
             return button.dataset[name] === "true";
           });
 
-        button.hidden = !inFamily || !affected;
-        button.classList.toggle("is-unavailable", inFamily && missingItalic);
-        button.disabled = !inFamily || missingItalic;
+        button.hidden = !inFamily || missingItalic || !affected;
       });
 
       // Collapse a script heading once none of its glyphs are left.
@@ -234,7 +232,8 @@
 
     /**
      * While stacked, the preview is hidden behind the other view by the time a
-     * glyph is picked. Bring it back.
+     * glyph is picked. Bring it back, scrolled to the view tabs so it is clear
+     * where the character set went.
      */
     function revealPreview() {
       if (!viewsAreSeparate()) {
@@ -243,7 +242,7 @@
 
       setView("specimen");
 
-      preview.scrollIntoView({
+      viewTabs.scrollIntoView({
         behavior: prefersReducedMotion.matches ? "auto" : "smooth",
         block: "start",
       });
@@ -256,12 +255,12 @@
     function ensureVisibleSelection() {
       var selected = root.querySelector(".js-glyph.is-selected");
 
-      if (selected && !selected.hidden && !selected.disabled) {
+      if (selected && !selected.hidden) {
         return;
       }
 
       var fallback = glyphButtons.find(function (button) {
-        return !button.hidden && !button.disabled;
+        return !button.hidden;
       });
 
       if (fallback) {

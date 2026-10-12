@@ -270,7 +270,7 @@ def main():
         "families": [
             {
                 "id": "ubuntu",
-                "name": "Ubuntu",
+                "name": "Ubuntu Sans",
                 "stack": '"Ubuntu variable", sans-serif',
                 "features": {
                     "smallCaps": "smcp" in roman_features,
@@ -281,7 +281,7 @@ def main():
             },
             {
                 "id": "ubuntu-mono",
-                "name": "Ubuntu Mono",
+                "name": "Ubuntu Sans Mono",
                 "stack": '"Ubuntu Mono variable", monospace',
                 "features": {
                     "smallCaps": "smcp" in mono_features,
