@@ -154,23 +154,6 @@ $l-docs-balanced-breakpoint: calc(
   // `l-full-width__sidebar` treatment for the persistent desktop rail.
   .l-docs > .l-docs__sidebar {
     background-color: $colors--theme--background-alt;
-    position: relative;
-
-    // Match the subtle edge shadow used by Vanilla's full-width layout demo.
-    &::after {
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba($color-x-dark, 0.05)
-      );
-      bottom: 0;
-      content: "";
-      pointer-events: none;
-      position: absolute;
-      right: 0;
-      top: 0;
-      width: 8px;
-    }
 
     .p-side-navigation__drawer {
       background: transparent;
