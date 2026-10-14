@@ -17,6 +17,7 @@
 {% set specimen_title = glyph_specimen_title | default("Glyph specimen") %}
 {% set default_family = glyphs.families[0] %}
 {% set metrics = default_family.metrics %}
+{% set bounds = default_family.bounds %}
 
 <div class="js-glyph-specimen-root">
   <section class="p-section--shallow">
@@ -118,7 +119,10 @@
          style="--glyph-ascender: {{ metrics.ascender / 1000 }};
                 --glyph-cap-height: {{ metrics.capHeight / 1000 }};
                 --glyph-x-height: {{ metrics.xHeight / 1000 }};
-                --glyph-descender: {{ (0 - metrics.descender) / 1000 }}">
+                --glyph-descender: {{ (0 - metrics.descender) / 1000 }};
+                --glyph-top: {{ bounds.top / 1000 }};
+                --glyph-bottom: {{ (0 - bounds.bottom) / 1000 }};
+                --glyph-half-width: {{ bounds.halfWidth / 1000 }}">
 
       <div class="grid-col p-glyph-specimen__pane p-glyph-specimen__pane--specimen">
         <div class="p-glyph-specimen__preview">
@@ -135,12 +139,12 @@
           {% endfor %}
 
           <svg class="p-glyph-specimen__figure js-glyph-figure"
-               viewBox="-500 {{ 0 - metrics.ascender }} 2000 {{ metrics.ascender - metrics.descender }}"
+               viewBox="{{ 0 - bounds.halfWidth }} {{ 0 - bounds.top }} {{ 2 * bounds.halfWidth }} {{ bounds.top - bounds.bottom }}"
                preserveAspectRatio="xMidYMid meet"
                aria-hidden="true"
                focusable="false">
             <text class="js-glyph-figure-text"
-                  x="500"
+                  x="0"
                   y="0"
                   font-size="1000"
                   text-anchor="middle">A</text>

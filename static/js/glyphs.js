@@ -114,6 +114,7 @@
     /** Rescale the metric diagram to the active family's own metrics. */
     function applyMetrics() {
       var metrics = state.family.metrics;
+      var bounds = state.family.bounds;
       var descender = Math.abs(metrics.descender);
 
       specimen.style.setProperty("--glyph-ascender", metrics.ascender / 1000);
@@ -123,12 +124,18 @@
       );
       specimen.style.setProperty("--glyph-x-height", metrics.xHeight / 1000);
       specimen.style.setProperty("--glyph-descender", descender / 1000);
+      specimen.style.setProperty("--glyph-top", bounds.top / 1000);
+      specimen.style.setProperty("--glyph-bottom", -bounds.bottom / 1000);
+      specimen.style.setProperty("--glyph-half-width", bounds.halfWidth / 1000);
 
       figure.setAttribute(
         "viewBox",
-        ["-500", -metrics.ascender, "2000", metrics.ascender + descender].join(
-          " ",
-        ),
+        [
+          -bounds.halfWidth,
+          -bounds.top,
+          2 * bounds.halfWidth,
+          bounds.top - bounds.bottom,
+        ].join(" "),
       );
     }
 

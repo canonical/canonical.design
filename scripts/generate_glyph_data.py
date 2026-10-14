@@ -20,10 +20,12 @@ The output is committed to the repository so that neither the build nor the
 running app needs fontTools as a dependency.
 """
 
+import math
 import unicodedata
 from pathlib import Path
 
 import yaml
+from fontTools.pens.boundsPen import BoundsPen
 from fontTools.ttLib import TTFont
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -39,14 +41,19 @@ FACE_PREFIXES = [
 ]
 
 # Displayed in this order. Everything else falls through to "Symbols".
+# Numerals lead so that text figures, which are almost all digits, sit at the
+# top of the grid when that toggle narrows it.
 SCRIPT_ORDER = [
+    ("numerals", "Numerals"),
     ("latin", "Latin"),
     ("greek", "Greek"),
     ("cyrillic", "Cyrillic"),
-    ("numerals", "Numerals"),
     ("punctuation", "Punctuation"),
     ("symbols", "Symbols"),
 ]
+
+# Every feature a specimen toggle can switch on.
+TOGGLE_FEATURES = {"smcp", "c2sc", "onum"}
 
 
 def discover_subsets():
@@ -195,6 +202,84 @@ def metrics(subset):
     }
 
 
+def _substitution_targets(subtable, sources):
+    """Glyph names a GSUB subtable substitutes `sources` with."""
+    subtable = getattr(subtable, "ExtSubTable", None) or subtable
+    targets = set()
+
+    for source, target in (getattr(subtable, "mapping", None) or {}).items():
+        if source in sources:
+            targets.add(target)
+
+    for source, options in (getattr(subtable, "alternates", None) or {}).items():
+        if source in sources:
+            targets |= set(options)
+
+    return targets
+
+
+def bounds(subsets, displayed, vertical):
+    """The canvas the preview needs to draw any glyph without clipping.
+
+    Accents stacked on capitals rise above the ascender, and some Greek
+    capitals with breathing marks and an iota adscript are far wider than an
+    em, so the font's vertical metrics alone do not bound the ink. Measure
+    every outline the specimen can show -- each displayed character plus
+    whatever the feature toggles swap it for -- and grow the metric box to
+    cover them.
+
+    The preview centres glyphs on their advance width, so the horizontal
+    extent is the furthest the ink reaches from that centre, on either side.
+    Outlines are read at the default instance (weight 400), the weight the
+    preview renders at.
+    """
+    top = vertical["ascender"]
+    bottom = vertical["descender"]
+    half_width = 0
+
+    for subset in subsets:
+        font = load(subset)
+        scale = 1000 / font["head"].unitsPerEm
+        glyph_set = font.getGlyphSet()
+
+        names = {
+            name
+            for codepoint, name in font.getBestCmap().items()
+            if codepoint in displayed
+        }
+
+        if "GSUB" in font:
+            table = font["GSUB"].table
+            for record in table.FeatureList.FeatureRecord:
+                if record.FeatureTag not in TOGGLE_FEATURES:
+                    continue
+                for index in record.Feature.LookupListIndex:
+                    for subtable in table.LookupList.Lookup[index].SubTable:
+                        names |= _substitution_targets(subtable, names)
+
+        for name in names:
+            pen = BoundsPen(glyph_set)
+            glyph_set[name].draw(pen)
+            if pen.bounds is None:
+                continue
+
+            x_min, y_min, x_max, y_max = pen.bounds
+            centre = glyph_set[name].width / 2
+
+            top = max(top, y_max * scale)
+            bottom = min(bottom, y_min * scale)
+            half_width = max(
+                half_width, (centre - x_min) * scale, (x_max - centre) * scale
+            )
+
+    # Round outwards, so an outline never lands on a fractional edge.
+    return {
+        "top": math.ceil(top),
+        "bottom": math.floor(bottom),
+        "halfWidth": math.ceil(half_width),
+    }
+
+
 def classify(char):
     """Bucket a character into one of the display groups."""
     category = unicodedata.category(char)
@@ -244,6 +329,7 @@ def main():
     text_figure_glyphs = feature_codepoints(all_subsets, {"onum"})
 
     buckets = {script_id: [] for script_id, _ in SCRIPT_ORDER}
+    displayed = set()
 
     for codepoint in sorted(roman | mono):
         char = chr(codepoint)
@@ -251,6 +337,7 @@ def main():
         if unicodedata.category(char) in ("Cc", "Cf", "Cn", "Zs", "Zl", "Zp"):
             continue
 
+        displayed.add(codepoint)
         buckets[classify(char)].append(
             {
                 "char": char,
@@ -266,6 +353,17 @@ def main():
             }
         )
 
+    scripts = [
+        {"id": script_id, "name": name, "glyphs": buckets[script_id]}
+        for script_id, name in SCRIPT_ORDER
+        if buckets[script_id]
+    ]
+    # The specimen's own heading already introduces the leading group.
+    del scripts[0]["name"]
+
+    roman_metrics = metrics(primary(roman_subsets))
+    mono_metrics = metrics(primary(mono_subsets))
+
     data = {
         "families": [
             {
@@ -277,7 +375,10 @@ def main():
                     "textFigures": "onum" in roman_features,
                     "italic": True,
                 },
-                "metrics": metrics(primary(roman_subsets)),
+                "metrics": roman_metrics,
+                "bounds": bounds(
+                    roman_subsets + italic_subsets, displayed, roman_metrics
+                ),
             },
             {
                 "id": "ubuntu-mono",
@@ -289,22 +390,15 @@ def main():
                     # No italic Ubuntu Mono file is bundled.
                     "italic": False,
                 },
-                "metrics": metrics(primary(mono_subsets)),
+                "metrics": mono_metrics,
+                "bounds": bounds(mono_subsets, displayed, mono_metrics),
             },
         ],
         "italicFeatures": {
             "smallCaps": "smcp" in italic_features,
             "textFigures": "onum" in italic_features,
         },
-        "scripts": [
-            {
-                "id": script_id,
-                "name": name,
-                "glyphs": buckets[script_id],
-            }
-            for script_id, name in SCRIPT_ORDER
-            if buckets[script_id]
-        ],
+        "scripts": scripts,
     }
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
@@ -319,7 +413,7 @@ def main():
             print(f"  {key:<7} {name}")
     print(f"\nWrote {total} glyphs to {OUTPUT.relative_to(REPO_ROOT)}")
     for group in data["scripts"]:
-        print(f"  {group['name']:<12} {len(group['glyphs']):>5}")
+        print(f"  {group['id']:<12} {len(group['glyphs']):>5}")
 
 
 if __name__ == "__main__":

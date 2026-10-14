@@ -31,15 +31,21 @@
     opacity: $disabled-element-opacity;
   }
 
-  // The rendered em size that every metric line is derived from.
+  // The rendered em size that every metric line is derived from: as large as
+  // the column allows for the widest glyph in the family, up to 600px.
   .p-glyph-specimen {
-    --glyph-em: min(70vw, 55vh);
+    --glyph-canvas-height: calc(var(--glyph-top) + var(--glyph-bottom));
+    --glyph-canvas-width: calc(2 * var(--glyph-half-width));
+    --glyph-em: min(100cqi / var(--glyph-canvas-width), 37.5rem);
+  }
+
+  // Resolves `cqi` above against each column rather than the viewport.
+  .p-glyph-specimen__pane {
+    container-type: inline-size;
   }
 
   .p-glyph-specimen__preview {
-    height: calc(
-      (var(--glyph-ascender) + var(--glyph-descender)) * var(--glyph-em)
-    );
+    height: calc(var(--glyph-canvas-height) * var(--glyph-em));
     margin-bottom: $spv--x-large;
     position: relative;
   }
@@ -50,8 +56,8 @@
     scroll-margin-top: calc(#{$navigation-height} + #{$spv--medium});
   }
 
-  // Each line sits at its metric's distance from the top of the type area,
-  // so the whole diagram rescales from the four custom properties alone.
+  // Each line sits at its metric's distance from the top of the canvas, so
+  // the whole diagram rescales from the custom properties alone.
   .p-glyph-specimen__metric {
     border-top: 1px solid $colors--theme--border-low-contrast;
     left: 0;
@@ -60,23 +66,23 @@
     top: calc(var(--offset) * var(--glyph-em));
 
     &[data-metric="ascender"] {
-      --offset: 0;
+      --offset: calc(var(--glyph-top) - var(--glyph-ascender));
     }
 
     &[data-metric="cap-height"] {
-      --offset: calc(var(--glyph-ascender) - var(--glyph-cap-height));
+      --offset: calc(var(--glyph-top) - var(--glyph-cap-height));
     }
 
     &[data-metric="x-height"] {
-      --offset: calc(var(--glyph-ascender) - var(--glyph-x-height));
+      --offset: calc(var(--glyph-top) - var(--glyph-x-height));
     }
 
     &[data-metric="baseline"] {
-      --offset: var(--glyph-ascender);
+      --offset: var(--glyph-top);
     }
 
     &[data-metric="descender"] {
-      --offset: calc(var(--glyph-ascender) + var(--glyph-descender));
+      --offset: calc(var(--glyph-top) + var(--glyph-descender));
     }
   }
 
@@ -86,23 +92,21 @@
     padding-top: $spv--x-small;
   }
 
-  // The SVG viewBox is expressed in the font's own em units, so the baseline
-  // lands exactly on the baseline rule without relying on line-box metrics.
+  // The SVG viewBox is expressed in the font's own em units and spans the
+  // family's measured ink bounds, so the baseline lands exactly on the
+  // baseline rule and no outline is ever clipped.
   .p-glyph-specimen__figure {
-    height: calc(
-      (var(--glyph-ascender) + var(--glyph-descender)) * var(--glyph-em)
-    );
+    height: calc(var(--glyph-canvas-height) * var(--glyph-em));
     left: 50%;
-    // Twice the em box, so the figure overhangs its column and would otherwise
-    // swallow clicks on the glyphs alongside it.
-    pointer-events: none;
     position: absolute;
     top: 0;
     transform: translateX(-50%);
-    width: calc(2 * var(--glyph-em));
+    width: calc(var(--glyph-canvas-width) * var(--glyph-em));
 
     text {
       fill: $colors--theme--text-default;
+      // The weight the bounds were measured at.
+      font-weight: $font-weight-regular-text;
     }
   }
 
@@ -191,9 +195,7 @@
     // switching views leaves the page below where it was.
     .p-glyph-specimen__set {
       margin-bottom: $spv--x-large;
-      max-height: calc(
-        (var(--glyph-ascender) + var(--glyph-descender)) * var(--glyph-em)
-      );
+      max-height: calc(var(--glyph-canvas-height) * var(--glyph-em));
       overflow-y: auto;
     }
   }
@@ -205,10 +207,6 @@
     .p-glyph-specimen__family-select,
     .p-glyph-specimen__views {
       display: none;
-    }
-
-    .p-glyph-specimen {
-      --glyph-em: 37.5rem;
     }
 
     .p-glyph-specimen__preview {
