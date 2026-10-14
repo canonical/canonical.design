@@ -18,6 +18,17 @@ const initNavigationSliding = () => {
     menuButton.innerHTML = "Menu";
   };
 
+  // The "Back" buttons are only rendered above the navigation breakpoint,
+  // so their visibility tells us whether the sliding menu is in use.
+  const isSlidingMenu = () => {
+    const backButton = navigation.querySelector(
+      ".p-navigation__item--dropdown-close",
+    );
+    return (
+      !backButton || window.getComputedStyle(backButton).display !== "none"
+    );
+  };
+
   const keyPressHandler = (e) => {
     if (e.key === "Escape") {
       closeAllDropdowns();
@@ -152,6 +163,11 @@ const initNavigationSliding = () => {
 
   toggles.forEach(function (toggle) {
     toggle.addEventListener("click", function (e) {
+      // section items are links: above the navigation breakpoint they navigate
+      // to their page instead of opening a dropdown
+      if (toggle.tagName === "A" && !isSlidingMenu()) {
+        return;
+      }
       e.preventDefault();
       const target = document.getElementById(
         toggle.getAttribute("aria-controls"),
@@ -236,3 +252,22 @@ const initNavigationSliding = () => {
 };
 
 initNavigationSliding();
+
+// Chevrons in the side navigation mark parent pages and expand their children.
+const initSideNavigationExpand = () => {
+  document.querySelectorAll(".js-sidenav-expand").forEach((button) => {
+    button.addEventListener("click", () => {
+      const isExpanded = button.getAttribute("aria-expanded") === "true";
+      const label = button.getAttribute("aria-label") || "";
+      button.setAttribute("aria-expanded", isExpanded ? "false" : "true");
+      button.setAttribute(
+        "aria-label",
+        isExpanded
+          ? label.replace(/^Hide/, "Show")
+          : label.replace(/^Show/, "Hide"),
+      );
+    });
+  });
+};
+
+initSideNavigationExpand();

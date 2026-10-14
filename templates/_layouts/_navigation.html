@@ -1,118 +1,86 @@
-<header id="navigation" class="p-navigation--sliding is-dark">
-  <div class="p-navigation__row--25-75">
-    <div class="p-navigation__banner">
-      <div class="p-navigation__tagged-logo">
-        <a class="p-navigation__link" href="/">
-          <div class="p-navigation__logo-tag">
-            <img class="p-navigation__logo-icon"
-                 src="https://assets.ubuntu.com/v1/82818827-CoF_white.svg"
-                 alt="" />
-          </div>
-          <span class="p-navigation__logo-title">Canonical&nbsp;Design</span>
-        </a>
+{% macro nav_item(page, slug, top_level) %}
+  {% set is_current = current_path == page.url or current_path.startswith(page.url ~ '/') %}
+  {% if page.children %}
+    {# `dropdown: false` sections rely on the sidenav on desktop, so they link straight to their page #}
+    {% set is_section = top_level and not page.dropdown | default(true) %}
+    <li class="p-navigation__item--dropdown-toggle js-navigation-dropdown-toggle{% if is_section %} is-section-link{% endif %}{% if is_current %} is-selected{% endif %}"
+        id="{{ slug }}">
+      {% if is_section %}
+        {# On desktop this navigates to the section page, on mobile it opens the sliding panel #}
+        <a href="{{ page.url }}"
+           aria-controls="{{ slug }}-menu"
+           class="p-navigation__link"
+           {% if current_path == page.url %}aria-current="page"{% endif %}>{{ page.title }}</a>
+      {% else %}
+        <button type="button"
+                href="#{{ slug }}-menu"
+                aria-controls="{{ slug }}-menu"
+                class="p-navigation__link">{{ page.title }}</button>
+      {% endif %}
+      <ul class="p-navigation__dropdown js-dropdown-nav-list js-navigation-sliding-panel"
+          id="{{ slug }}-menu"
+          aria-hidden="true">
+        <li class="p-navigation__item--dropdown-close" id="{{ slug }}-back">
+          <button type="button"
+                  href="#{{ slug }}-menu"
+                  aria-controls="{{ slug }}-menu"
+                  class="p-navigation__link js-back-button">Back</button>
+        </li>
+        {% for child in page.children %}
+          {{ nav_item(child, slug ~ '-' ~ (child.title | lower | replace(' ', '-') | replace('(', '') | replace(')', '')), false) }}
+        {% endfor %}
+      </ul>
+    </li>
+  {% elif top_level %}
+    <li class="p-navigation__item{% if is_current %} is-selected{% endif %}">
+      <a class="p-navigation__link"
+         href="{{ page.url }}"
+         {% if page.external %}target="_blank" rel="noopener noreferrer"{% endif %}
+         {% if current_path == page.url %}aria-current="page"{% endif %}>{{ page.title }}</a>
+    </li>
+  {% else %}
+    <li>
+      <a href="{{ page.url }}"
+         class="p-navigation__dropdown-item"
+         {% if page.external %}target="_blank" rel="noopener noreferrer"{% endif %}
+         {% if current_path == page.url %}aria-current="page"{% endif %}>{{ page.title }}</a>
+    </li>
+  {% endif %}
+{% endmacro %}
+
+<header id="navigation"
+        class="p-navigation--sliding is-dark is-sticky{{ ' l-docs__header' if sidenav_section }}">
+  <div class="l-docs__subgrid">
+    <div class="l-docs__sidebar">
+      <div class="p-navigation__banner">
+        <div class="p-navigation__tagged-logo">
+          <a class="p-navigation__link" href="/">
+            <div class="p-navigation__logo-tag">
+              <img class="p-navigation__logo-icon"
+                   src="https://assets.ubuntu.com/v1/82818827-CoF_white.svg"
+                   alt="" />
+            </div>
+            <span class="p-navigation__logo-title">Canonical&nbsp;Design</span>
+          </a>
+        </div>
+        <ul class="p-navigation__items">
+          <li class="p-navigation__item">
+            <button type="button" class="js-menu-button p-navigation__link">Menu</button>
+          </li>
+        </ul>
       </div>
-      <ul class="p-navigation__items">
-        <li class="p-navigation__item">
-          <button class="js-menu-button p-navigation__link">Menu</button>
-        </li>
-      </ul>
     </div>
-    <nav class="p-navigation__nav" id="main-nav" aria-label="Example main">
-      <ul class="p-navigation__items js-dropdown-nav-list js-navigation-sliding-panel">
-        <li class="p-navigation__item--dropdown-toggle js-navigation-dropdown-toggle"
-            id="design-practice">
-          <button href="#design-practice-menu"
-                  aria-controls="design-practice-menu"
-                  class="p-navigation__link">Design practice</button>
-          <ul class="p-navigation__dropdown js-dropdown-nav-list js-navigation-sliding-panel"
-              id="design-practice-menu"
-              aria-hidden="true">
-            <li class="p-navigation__item--dropdown-close" id="design-practice-back">
-              <button href="#design-practice-menu"
-                      aria-controls="design-practice-menu"
-                      class="p-navigation__link js-back-button">Back</button>
-            </li>
-            <li>
-              <a href="/design-practice" class="p-navigation__dropdown-item">Design practice</a>
-            </li>
-            <li>
-              <a href="/design-practice/user-research"
-                 class="p-navigation__dropdown-item">User research</a>
-            </li>
-            <li>
-              <a href="/design-practice/accessibility"
-                 class="p-navigation__dropdown-item">Accessibility</a>
-            </li>
+    <div class="l-docs__main">
+      <div class="p-navigation__row">
+        <nav class="p-navigation__nav" id="main-nav" aria-label="Main">
+          <ul class="p-navigation__items js-dropdown-nav-list js-navigation-sliding-panel">
+            {% for page in navigation.pages %}
+              {{ nav_item(page, page.title | lower | replace(' ', '-') | replace('(', '') | replace(')', ''), true) }}
+            {% endfor %}
           </ul>
-        </li>
-        <li class="p-navigation__item--dropdown-toggle js-navigation-dropdown-toggle"
-            id="brand">
-          <button href="#brand-menu"
-                  aria-controls="brand-menu"
-                  class="p-navigation__link">Brand</button>
-          <ul class="p-navigation__dropdown js-dropdown-nav-list js-navigation-sliding-panel"
-              id="brand-menu"
-              aria-hidden="true">
-            <li class="p-navigation__item--dropdown-close" id="brand-back">
-              <button href="#brand-menu"
-                      aria-controls="brand-menu"
-                      class="p-navigation__link js-back-button">Back</button>
-            </li>
-            <li>
-              <a href="/brand" class="p-navigation__dropdown-item">Brand</a>
-            </li>
-            <li>
-              <a href="/brand/font" class="p-navigation__dropdown-item">Font</a>
-            </li>
-            <li>
-              <a href="/brand/resources" class="p-navigation__dropdown-item">Resources</a>
-            </li>
-            <li>
-              <a href="/brand/colour-palette" class="p-navigation__dropdown-item">Colour palette</a>
-            </li>
-          </ul>
-        </li>
-        <li class="p-navigation__item">
-          <a class="p-navigation__link" href="/design-systems">Design systems</a>
-        </li>
-        <li class="p-navigation__item">
-          <a class="p-navigation__link" href="/blog">Blog</a>
-        </li>
-        <li class="p-navigation__item--dropdown-toggle js-navigation-dropdown-toggle"
-            id="open-design">
-          <button href="#open-design-menu"
-                  aria-controls="open-design-menu"
-                  class="p-navigation__link">Open design</button>
-          <ul class="p-navigation__dropdown js-dropdown-nav-list js-navigation-sliding-panel"
-              id="open-design-menu"
-              aria-hidden="true">
-            <li class="p-navigation__item--dropdown-close" id="open-design-back">
-              <button href="#open-design-menu"
-                      aria-controls="open-design-menu"
-                      class="p-navigation__link js-back-button">Back</button>
-            </li>
-            <li>
-              <a href="/open-design" class="p-navigation__dropdown-item">Open design</a>
-            </li>
-            <li>
-              <a href="/open-design/get-started-for-designers"
-                 class="p-navigation__dropdown-item">Get started for designers</a>
-            </li>
-            <li>
-              <a href="/open-design/get-started-for-maintainers"
-                 class="p-navigation__dropdown-item">Get started for maintainers</a>
-            </li>
-          </ul>
-        </li>
-        <li class="p-navigation__item">
-          <a class="p-navigation__link"
-             href="https://canonical.com/careers/web-and-design"
-             target="_blank">Careers</a>
-        </li>
-      </ul>
-    </nav>
+        </nav>
+      </div>
+    </div>
   </div>
 </header>
-<script src="{{ versioned_static('js/dist/navigation.js') }}"
-        type="text/javascript"
-        defer></script>
+<script src="{{ versioned_static('js/dist/navigation.js') }}" defer></script>
