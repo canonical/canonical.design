@@ -1,0 +1,39 @@
+name: Glyph data
+
+on:
+    push:
+        paths:
+            - "static/fonts/**"
+            - "scripts/generate_glyph_data.py"
+            - "_data/glyphs.yaml"
+    pull_request:
+        paths:
+            - "static/fonts/**"
+            - "scripts/generate_glyph_data.py"
+            - "_data/glyphs.yaml"
+
+jobs:
+    check-glyph-data:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            # Character names and categories come from Python's bundled Unicode
+            # database, so pin the version the committed data was generated with.
+            - uses: actions/setup-python@v5
+              with:
+                  python-version: "3.14"
+
+            - name: Install dependencies
+              run: pip install fonttools==4.67.0 brotli==1.2.0 pyyaml==6.0.3
+
+            - name: Regenerate glyph data
+              run: python scripts/generate_glyph_data.py
+
+            - name: Check glyph data is up to date
+              run: |
+                  if ! git diff --exit-code _data/glyphs.yaml; then
+                    echo "::error file=_data/glyphs.yaml::_data/glyphs.yaml is out of date with static/fonts. Run 'python scripts/generate_glyph_data.py' and commit the result."
+                    exit 1
+                  fi
