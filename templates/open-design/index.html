@@ -3,6 +3,7 @@
 {% from "_macros/vf_quote-wrapper.jinja" import vf_quote_wrapper %}
 {% from "_macros/vf_hero.jinja" import vf_hero %}
 {% from "_macros/vf_tiered-list.jinja" import vf_tiered_list %}
+{% from "_macros/vf_basic-section.jinja" import vf_basic_section %}
 
 {% block meta_title %}
   Contribute to Open Design
@@ -243,5 +244,30 @@
     show_excerpt=True, excerptLength=200 %}
     {% include "/shared/_blogsection.html" %}
   {% endwith %}
+
+  {{ vf_basic_section(
+    title={"text": "We are hiring"},
+    is_split_on_medium=true,
+    items=[
+      {
+        "type": "description",
+        "item": {
+          "type": "text",
+          "content": "If you are interested in joining the team designing and building these resources, check out our career page to see open positions."
+        }
+      },
+      {
+        "type": "cta-block",
+        "item": {
+          "primary": {
+            "content_html": "See open positions",
+            "attrs": {
+              "href": "https://canonical.com/careers/web-and-design/?utm_source=ownedcontent-canonical-design-website&utm_medium=website&utm_campaign=evergreen-recruiting&utm_content=brand-resources-evergreen-recruiting-blurb"
+            }
+          }
+        }
+      }
+    ]
+  ) }}
 
 {% endblock content %}

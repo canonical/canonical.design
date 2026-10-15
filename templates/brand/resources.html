@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_macros/vf_basic-section.jinja" import vf_basic_section %}
 
 {% block meta_title %}
   Brand resources
@@ -18,6 +19,22 @@
 {% endblock body_class %}
 
 {% block content %}
+  <section class="p-strip is-shallow u-no-padding--bottom">
+    <div class="u-fixed-width">
+      <div class="p-notification--information">
+        <div class="p-notification__content">
+          <p class="p-notification__title p-heading--5">We are hiring</p>
+          <p class="p-notification__message">
+            If you are interested in joining the team designing and building these resources, check out our career page to see open positions.
+          </p>
+        </div>
+        <div class="p-notification__actions">
+          <a href="https://canonical.com/careers/web-and-design/?utm_source=ownedcontent-canonical-design-website&utm_medium=website&utm_campaign=evergreen-recruiting&utm_content=brand-resources-evergreen-recruiting-blurb"
+             class="p-button--positive">See open positions</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section class="p-suru--50-50">
     <div class="grid-row--50-50">
@@ -48,6 +65,31 @@
       </div>
     </div>
   </section>
+
+  {{ vf_basic_section(
+    title={"text": "We are hiring"},
+    is_split_on_medium=true,
+    items=[
+      {
+        "type": "description",
+        "item": {
+          "type": "text",
+          "content": "If you are interested in joining the team designing and building these resources, check out our career page to see open positions."
+        }
+      },
+      {
+        "type": "cta-block",
+        "item": {
+          "primary": {
+            "content_html": "See open positions",
+            "attrs": {
+              "href": "https://canonical.com/careers/web-and-design/?utm_source=ownedcontent-canonical-design-website&utm_medium=website&utm_campaign=evergreen-recruiting&utm_content=brand-resources-evergreen-recruiting-blurb"
+            }
+          }
+        }
+      }
+    ]
+  ) }}
 
   <div class="p-section--deep">
     <div class="u-fixed-width">
