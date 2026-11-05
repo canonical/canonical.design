@@ -9,6 +9,7 @@ from canonicalwebteam.blog import BlogAPI, BlogViews, build_blueprint
 from canonicalwebteam.flask_base.app import FlaskBase
 from canonicalwebteam.templatefinder import TemplateFinder
 from flask import render_template, request
+from webapp.sso import init_sso
 
 app = FlaskBase(
     __name__,
@@ -30,6 +31,8 @@ with open("_data/glyphs.yaml", "r") as stream:
 
 with open("_data/navigation.yaml", "r") as stream:
     navigation = yaml.safe_load(stream)
+
+init_sso(app)
 
 
 def resolve_navigation(pages, parent_url=""):
