@@ -8,7 +8,7 @@
 
 @font-face {
   font-family: "Ubuntu variable";
-  font-stretch: 100%;
+  font-stretch: 75% 100%;
   font-style: normal;
   font-weight: 100 800;
   src: url("/static/fonts/Ubuntu-latin-v0.896a.woff2") format("woff2");
@@ -16,7 +16,7 @@
 
 @font-face {
   font-family: "Ubuntu variable";
-  font-stretch: 100%;
+  font-stretch: 75% 100%;
   font-style: normal;
   font-weight: 100 800;
   src: url("/static/fonts/Ubuntu-latin-extended-v0.896a.woff2") format("woff2");
@@ -24,7 +24,7 @@
 
 @font-face {
   font-family: "Ubuntu variable";
-  font-stretch: 100%;
+  font-stretch: 75% 100%;
   font-style: normal;
   font-weight: 100 800;
   src: url("/static/fonts/Ubuntu-greek-v0.896a.woff2") format("woff2");
@@ -32,7 +32,7 @@
 
 @font-face {
   font-family: "Ubuntu variable";
-  font-stretch: 100%;
+  font-stretch: 75% 100%;
   font-style: normal;
   font-weight: 100 800;
   src: url("/static/fonts/Ubuntu-greek-extended-v0.896a.woff2") format("woff2");
@@ -40,7 +40,7 @@
 
 @font-face {
   font-family: "Ubuntu variable";
-  font-stretch: 100%;
+  font-stretch: 75% 100%;
   font-style: normal;
   font-weight: 100 800;
   src: url("/static/fonts/Ubuntu-cyrillic-v0.896a.woff2") format("woff2");
@@ -48,10 +48,11 @@
 
 @font-face {
   font-family: "Ubuntu variable";
-  font-stretch: 100%;
+  font-stretch: 75% 100%;
   font-style: normal;
   font-weight: 100 800;
-  src: url("/static/fonts/Ubuntu-cyrillic-extended-v0.896a.woff2") format("woff2");
+  src: url("/static/fonts/Ubuntu-cyrillic-extended-v0.896a.woff2")
+    format("woff2");
 }
 
 /* ==========================================================================
@@ -60,7 +61,7 @@
 
 @font-face {
   font-family: "Ubuntu variable";
-  font-stretch: 100%;
+  font-stretch: 75% 100%;
   font-style: italic;
   font-weight: 100 800;
   src: url("/static/fonts/Ubuntu-Italic-latin-v0.896a.woff2") format("woff2");
