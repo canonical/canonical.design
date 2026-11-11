@@ -1,0 +1,48 @@
+pages:
+  - title: Design practice
+    href: /design-practice
+    children:
+      - title: Design practice
+        href: /
+      - title: User research
+        href: /user-research
+      - title: Accessibility
+        href: /accessibility
+  - title: Brand
+    href: /brand
+    dropdown: false
+    children:
+      - title: Brand
+        href: /
+      - title: Logos
+        href: /logos
+      - title: Color
+        href: /color
+      - title: Typography
+        href: /typography
+        children:
+          - title: Typography
+            href: /
+          - title: Typeface
+            href: /typeface
+          - title: Type scale
+            href: /type-scale
+          - title: Setting type
+            href: /setting-type
+      - title: Resources
+        href: /resources
+  - title: Design systems
+    href: /design-systems
+  - title: Blog
+    href: /blog
+  - title: Open design
+    href: /open-design
+    children:
+      - title: Open design
+        href: /
+      - title: Get started for designers
+        href: /get-started-for-designers
+      - title: Get started for maintainers
+        href: /get-started-for-maintainers
+  - title: Careers
+    href: https://canonical.com/careers/web-and-design

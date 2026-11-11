@@ -101,16 +101,16 @@
         <meta name="author" content="Canonical" />
 
         <link rel="stylesheet"
-              type="text/css"
               media="screen"
               href="{{ url_for('static', filename='css/styles.css') }}" />
 
       </head>
       <body class=" 
-        {% block body_class %}{% endblock %} l-site">
+        {% block body_class %}{% endblock %} l-site{{ ' l-docs' if sidenav_section }}">
 
         <!-- Google Tag Manager (noscript) -->
-        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P2LV34ZH"
+        <noscript><iframe title="Google Tag Manager"
+        src="https://www.googletagmanager.com/ns.html?id=GTM-P2LV34ZH"
         height="0"
         width="0"
         style="display:none;
@@ -121,7 +121,9 @@
 
         {% include '_layouts/_navigation.html' %}
 
-        <div class="wrapper">
+        {% include '_layouts/_sidenav.html' %}
+
+        <div class="wrapper{{ ' l-docs__main' if sidenav_section }}">
           <div id="main-content">
 
             {% block content %}{% endblock %}
