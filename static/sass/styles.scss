@@ -169,6 +169,10 @@ $l-docs-balanced-breakpoint: calc(
 
 .l-docs__sidebar > .p-side-navigation {
   @media (min-width: $breakpoint-large) {
+    // fill the sidebar, so that the sticky drawer has room to travel with
+    // the page instead of scrolling away with its own short container
+    height: 100%;
+
     .p-side-navigation__drawer {
       max-height: calc(100dvh - #{$navigation-height});
       overflow-y: auto;
@@ -180,6 +184,15 @@ $l-docs-balanced-breakpoint: calc(
       // dropdown's page overlay
       z-index: auto;
     }
+  }
+}
+
+// Vanilla makes the sliding navigation `position: relative` while a dropdown
+// is open, which drops the sticky header back to the top of the document, so
+// a dropdown opened further down the page appears off screen.
+@media (min-width: $breakpoint-navigation-threshold) {
+  .p-navigation--sliding.is-sticky.has-menu-open {
+    position: sticky;
   }
 }
 
