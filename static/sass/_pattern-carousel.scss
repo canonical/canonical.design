@@ -1,0 +1,33 @@
+// A horizontally scrolling row of images. It scrolls natively, by touch,
+// trackpad or keyboard; `static/js/logos.js` adds the previous/next controls.
+@mixin design-p-carousel {
+  $carousel-gap: map-get($grid-gutter-widths, default);
+
+  .p-carousel {
+    display: flex;
+    gap: $carousel-gap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .p-carousel__cell {
+    // leave part of the next image in view, to show that there is more
+    flex: 0 0 85%;
+    scroll-snap-align: start;
+
+    @media (min-width: $breakpoint-large) {
+      // 6 of the grid's 8 columns
+      flex-basis: calc(75% - #{$carousel-gap * 0.25});
+    }
+  }
+
+  // The controls do nothing until the script has loaded.
+  .p-carousel__controls:not(.is-ready) {
+    visibility: hidden;
+  }
+}

@@ -12,8 +12,10 @@
 @import "pattern-resources";
 @import "pattern-font-tester";
 @import "pattern-glyph-specimen";
+@import "pattern-carousel";
 @include design-p-font-tester;
 @include design-p-glyph-specimen;
+@include design-p-carousel;
 @include design-p-resources;
 @include vf-p-icons;
 @include vf-p-icon-highlight-off;
@@ -62,6 +64,8 @@
 @include vf-p-icon-starred;
 @include vf-p-icon-status-failed-small;
 @include vf-p-icon-error;
+@include vf-p-icon-file;
+@include vf-p-icon-folder;
 @include vf-p-icon-status-in-progress-small;
 @include vf-p-icon-status-in-progress;
 @include vf-p-icon-status-queued-small;
