@@ -1,0 +1,680 @@
+{% extends "base.html" %}
+{% from "_macros/vf_hero.jinja" import vf_hero %}
+{% from "_macros/vf_card.jinja" import vf_card %}
+{% from "_macros/shared/vf_equal-heights-block.jinja" import vf_equal_heights_block %}
+
+{% block meta_title %}
+  Canonical logo
+{% endblock meta_title %}
+
+{% block meta_description %}
+  The Canonical logo system provides assets and guidelines for the Circle of Friends, wordmark, and co-branding to ensure a consistent, recognizable identity.
+{% endblock meta_description %}
+
+{% block meta_copydoc %}
+  https://docs.google.com/document/d/1_gkZ-IX8qI8BUvvot7XZ65YRHf3flbEMWs9qOh4H7Ew/edit?tab=t.nu320wnvfi4q
+{% endblock meta_copydoc %}
+
+{% block body_class %}
+  is-paper
+{% endblock body_class %}
+
+{% set assets_url = "https://assets.ubuntu.com/v1/" %}
+{% set brand_drive_url = "https://drive.google.com/drive/folders/1I6Oi39qKONRN3gjNKLtovUUtwu8YYwEf" %}
+{% set partner_guidelines_url = "https://drive.google.com/drive/folders/1p7xYRnqpbM3TTQrsIlDNGrrl8e_wbran" %}
+
+{#-
+  Image that fills the image container it is placed in.
+
+  - file: file name of the asset on assets.ubuntu.com
+  - alt: alternative text
+  - width, height: rendered size. The defaults fit an equal heights item.
+-#}
+{% macro contained_image(file, alt, width="426", height="284") %}
+  {{ image(url=assets_url ~ file,
+      alt=alt,
+      width=width,
+      height=height,
+      hi_def=True,
+      loading="lazy",
+      attrs={"class": "p-image-container__image"}) | safe
+  }}
+{% endmacro %}
+
+{#-
+  Image displayed at its own aspect ratio, as wide as its column.
+
+  - file: file name of the asset on assets.ubuntu.com
+  - alt: alternative text
+  - width, height: rendered size
+  - attrs: additional attributes for the image
+
+  The image is aligned to the middle of its line, as an inline image on the
+  baseline leaves a gap for descenders below it.
+-#}
+{% macro block_image(file, alt, width="900", height="506", attrs={}) %}
+  {{ image(url=assets_url ~ file,
+      alt=alt,
+      width=width,
+      height=height,
+      hi_def=True,
+      loading="lazy",
+      attrs=dict(attrs, class="u-vertical-align--middle")) | safe
+  }}
+{% endmacro %}
+
+{#-
+  Opens a section with the heading on the left and its description (the
+  caller's content) on the right.
+
+  - title: heading text
+  - heading_level: 2 for a page section, 3 for a subsection within one
+  - top_rule: "default" | "muted" | "none"
+-#}
+{% macro section_header(title, heading_level=2, top_rule="default") %}
+  {%- if top_rule != "none" -%}
+    <hr class="p-rule{{ '--muted' if top_rule == 'muted' }} is-fixed-width" />
+  {%- endif -%}
+  <div class="p-section--shallow">
+    <div class="grid-row--50-50-on-large">
+      <div class="grid-col">
+        <h{{ heading_level }}>{{ title }}</h{{ heading_level }}>
+      </div>
+      <div class="grid-col">{{ caller() }}</div>
+    </div>
+  </div>
+{% endmacro %}
+
+{#-
+  Opens a section whose description lives in its subsections.
+
+  - title: heading text
+-#}
+{% macro section_title(title) %}
+  <hr class="p-rule is-fixed-width" />
+  <div class="p-section--shallow">
+    <div class="u-fixed-width">
+      <h2>{{ title }}</h2>
+    </div>
+  </div>
+{% endmacro %}
+
+{#-
+  Equal heights row, aligned to the right of the grid in the same way as the
+  equal heights pattern. An optional lead (the caller's content) spans the
+  full width of the row, above the items.
+
+  - items: equal heights items ('image_html', 'title_text', 'description_html')
+-#}
+{% macro specimen_row(items=[]) %}
+  {%- set count = items | length -%}
+  {%- set lead = caller() | trim if caller else "" -%}
+  <div class="grid-row">
+    <div class="{%- if count == 2 -%}grid-col-4 grid-col-start-large-5{%- elif count % 4 == 0 and count > 0 -%}grid-col-8{%- else -%}grid-col-6 grid-col-start-large-3{%- endif -%}">
+      {%- if lead | length > 0 -%}
+        <div class="{{ 'p-section--shallow' if count > 0 }}">
+          <div class="p-image-container--16-9 is-cover">{{ lead }}</div>
+        </div>
+      {%- endif -%}
+      {%- if count > 0 -%}
+        {{ vf_equal_heights_block(
+          items=items,
+          image_aspect_ratio_small="3-2",
+          image_aspect_ratio_medium="3-2",
+          image_aspect_ratio_large="3-2"
+        ) }}
+      {%- endif -%}
+    </div>
+  </div>
+{% endmacro %}
+
+{#-
+  Tiered list item, with the title on the left and the caller's content (its
+  image and description) on the right.
+
+  - title: heading text
+  - is_first: whether this is the first item of the list, which has no rule
+-#}
+{% macro tiered_item(title, is_first=false) %}
+  {%- if not is_first -%}
+    <div class="grid-row">
+      <div class="grid-col-6 grid-col-start-large-3">
+        <hr class="p-rule--muted" />
+      </div>
+    </div>
+  {%- endif -%}
+  <div class="grid-row">
+    <div class="grid-col-2 grid-col-start-large-3">
+      <h3 class="p-heading--5">{{ title }}</h3>
+    </div>
+    <div class="grid-col-4">{{ caller() }}</div>
+  </div>
+{% endmacro %}
+
+{% block content %}
+
+  {% call(slot) vf_hero(
+    title_text='Logos',
+    subtitle_text='A Canonical brand',
+    layout='50/50'
+    ) -%}
+    {%- if slot == 'description' -%}
+      <p>
+        The Canonical logo system combines the Circle of Friends, the tag, and the wordmark, forming a recognizable identity used across our products and communications.
+      </p>
+      <p>
+        Consistent and coherent use of Canonical&rsquo;s logos across all touch points is essential to maintaining the integrity of the Canonical brand.
+      </p>
+    {%- endif -%}
+  {% endcall -%}
+
+  <section class="p-section">
+    <div class="grid-row--50-50-on-large">
+      <hr class="p-rule" />
+      <div class="grid-col">
+        <h2>Download</h2>
+      </div>
+      <div class="grid-col">
+        <p>For quick access to our asset files and guidelines for partners, download the relevant files below.</p>
+        <div class="grid-row">
+          {{ vf_card(
+            columns=2,
+            heading="Canonical, Ubuntu, and products logo assets",
+            link=brand_drive_url,
+            footer={"resource_type": {"icon": "folder", "text": "Assets"} }
+          ) }}
+          {{ vf_card(
+            columns=2,
+            heading="Logo guidelines for partners",
+            link=partner_guidelines_url,
+            footer={"resource_type": {"icon": "file", "text": "Guidelines"} }
+          ) }}
+        </div>
+        <p>Keep reading for more in-depth guidance on how to use Canonical&rsquo;s logos.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section">
+    {% call section_header("Canonical logo") %}
+      <p>
+        The Canonical logo is a lockup of the tag and wordmark, and it is the preferred logo to be used in our internal and customer-facing communications, as well as in third party communications. It consists of three key elements: the symbol, the tag, and the wordmark.
+      </p>
+    {% endcall %}
+    {% call specimen_row(
+      items=[
+        {
+          "image_html": contained_image("a6dfbdd3-1_2. Canonical logo-symbol.png", "The Circle of Friends symbol"),
+          "title_text": "Symbol",
+          "description_html": "<p>The Circle of Friends is the symbol of Canonical, Ubuntu, and the Ubuntu community. It can also be used stand-alone in various assets like illustrations, diagrams, or social media thumbnails.</p>"
+        },
+        {
+          "image_html": contained_image("c63e682a-1_3. Canonical logo-tag.png", "The Canonical tag, an orange rectangle containing the Circle of Friends"),
+          "title_text": "Tag",
+          "description_html": "<p>The tag is an essential element of Canonical&rsquo;s logo and acts as a container for the symbol. The tag can be used stand-alone in certain environments and media.</p>"
+        },
+        {
+          "image_html": contained_image("e2142c4c-1_4. Canonical logo-wordmark.png", "The Canonical wordmark, locked up with the tag"),
+          "title_text": "Wordmark",
+          "description_html": "<p>The wordmark is the text component of the logo, set in <a href='/brand/typography/typeface'>Ubuntu Sans</a>. It always appears as a fixed lockup with the tag, and should be used as provided in the official artwork.</p>"
+        }
+      ]
+    ) %}
+      {{ contained_image("77391dbe-1_1. Canonical logo.png", "The Canonical logo", width="1374", height="773") }}
+    {% endcall %}
+  </section>
+
+  <section class="p-section">
+    {% call section_header("Circle of Friends") %}
+      <p>
+        The Circle of Friends (CoF) is the core symbol of the Canonical and Ubuntu brands. It is the smallest unit used to identify Canonical and can be used by both Canonical and the Ubuntu community across a wide range of assets.
+      </p>
+      <p>
+        The symbol represents connection, collaboration, and openness - all of which are representative of our open source ethos. Its form can be described as three people holding their arms out and forming a continuous circle.
+      </p>
+    {% endcall %}
+    {% call specimen_row() %}
+      <video class="p-image-container__image"
+             src="{{ assets_url }}e496c03f-2.%20Circle%20of%20friends.mp4"
+             width="1778"
+             height="1000"
+             aria-label="Animation of the Circle of Friends symbol"
+             autoplay
+             loop
+             muted
+             playsinline
+             controls></video>
+    {% endcall %}
+  </section>
+
+  <section class="p-section">
+    {% call section_header("Product logo") %}
+      <p>
+        Canonical provides logos for a range of products and solutions. All product logos follow the same structural logic as the Canonical logo to ensure visual consistency across the ecosystem.
+      </p>
+      <p>
+        The full set of logos is available on our company&rsquo;s <a href="{{ brand_drive_url }}">brand drive</a>.
+      </p>
+    {% endcall %}
+    {% call specimen_row(
+      items=[
+        {
+          "image_html": contained_image("ee903cde-3_2. Product logo-Standalone product logos.png", "The Ubuntu logo, without a prefix"),
+          "title_text": "Standalone product logos",
+          "description_html": "<p>Standalone logos show only the product name and symbol. They are used within Canonical contexts where the relationship to Canonical is already clear, such as the Canonical and Ubuntu websites, and product pages.</p>"
+        },
+        {
+          "image_html": contained_image("983e0a17-3_3. Product logo-Product logos with prefix.png", "The Canonical Ubuntu logo, with Canonical set above the product name"),
+          "title_text": "Product logos with prefix",
+          "description_html": "<p>Prefix versions of the product logos combine &ldquo;Canonical&rdquo; with the product name. The prefix version of product logos is required for external use and in contexts where Canonical is not named separately.</p>"
+        },
+        {
+          "image_html": contained_image("223abf99-3_4. Product logo-Product symbols.png", "The Canonical Snapcraft logo, which has the Snapcraft symbol in its tag"),
+          "title_text": "Product symbols",
+          "description_html": "<p>Product logos may use either the Circle of Friends (CoF) or a dedicated product symbol, depending on their relationship to the Ubuntu ecosystem. Certain products may have their own dedicated symbol to establish a stronger individual identity while remaining visually connected to the Canonical ecosystem.</p>"
+        }
+      ]
+    ) %}
+      {{ contained_image("fd4ee039-3_1. Product logo.png", "The Ubuntu logo", width="1374", height="773") }}
+    {% endcall %}
+  </section>
+
+  <section class="p-section">
+    {% call section_header("Color") %}
+      <p>
+        Canonical logos are provided in specific color variations to ensure legibility across different backgrounds and environments.
+      </p>
+      <p>Approved color options include:</p>
+    {% endcall %}
+    {{ specimen_row(
+      items=[
+        {
+          "image_html": contained_image("b909be33-5_1. Background-Light background.png", "The Canonical logo with an orange tag and black wordmark, on white"),
+          "title_text": "Color, light",
+          "description_html": "<p>The color, light version of our logo is our preferred option to use on light backgrounds.</p>"
+        },
+        {
+          "image_html": contained_image("25fbca95-5_2. Background-Dark background.png", "The Canonical logo with an orange tag and white wordmark, on black"),
+          "title_text": "Color, dark",
+          "description_html": "<p>For dark backgrounds, use the color, dark version of the logo.</p>"
+        },
+        {
+          "image_html": contained_image("ecfe03f0-4_3. Color-Black.png", "The Canonical logo with a black tag and black wordmark, on white"),
+          "title_text": "Black",
+          "description_html": "<p>The black logo can be used in light environments, only when monochrome usage is strictly required.</p>"
+        },
+        {
+          "image_html": contained_image("ae8c9694-4_4. Color-White.png", "The Canonical logo with a white tag and white wordmark, on orange"),
+          "title_text": "White",
+          "description_html": "<p>The white logo is the preferred variant to use on our orange brand color. When necessary, it can be used on dark backgrounds as a fallback.</p>"
+        }
+      ]
+    ) }}
+  </section>
+
+  <section class="p-section">
+    {% call section_header("Background") %}
+      <p>
+        Our logos can appear on a variety of backgrounds. To match the right logo option to the appropriate background, keep in mind contrast and accessibility standards to ensure legibility and visibility.
+      </p>
+    {% endcall %}
+    {{ specimen_row(
+      items=[
+        {
+          "image_html": contained_image("b909be33-5_1. Background-Light background.png", "The color, light Canonical logo on a white background"),
+          "title_text": "Light background",
+          "description_html": "<p>The light version of our logos is used on white and grey surfaces with a contrast ratio of at least 3:1. The black logo should only be used when monochrome is required.</p>"
+        },
+        {
+          "image_html": contained_image("25fbca95-5_2. Background-Dark background.png", "The color, dark Canonical logo on a black background"),
+          "title_text": "Dark background",
+          "description_html": "<p>The dark version of our logos can be used on black and dark grey surfaces with a contrast ratio of at least 3:1. The white logo is the default version to be used on orange backgrounds for better in-practice legibility, and can be used on darker backgrounds when monochrome is required.</p>"
+        },
+        {
+          "image_html": contained_image("6722bc06-5_3. Background-On photography or video.png", "The Canonical logo placed over the sky in a photograph of a coastline"),
+          "title_text": "On photography or video",
+          "description_html": "<p>The logo can be placed carefully on photos and videos &ndash; using a uniform area of the image and minding the composition. Avoid cluttered backgrounds that compete with the logo. Use the version of the logo that fits the color contrast best.</p>"
+        }
+      ]
+    ) }}
+  </section>
+
+  <section class="p-section">
+    {{ section_title("Size and space") }}
+
+    <div class="p-section--shallow">
+      {% call section_header("Logo", heading_level=3, top_rule="none") %}
+        <p>
+          Canonical logos should always be displayed at an appropriate size and with sufficient space around them. Adhering to the minimum size ensures the logo remains readable, while clear space prevents surrounding elements from interfering with the logo.
+        </p>
+      {% endcall %}
+      {{ specimen_row(
+        items=[
+          {
+            "image_html": contained_image("a05e1675-6_1_1. logo-Minimum size.png", "The Canonical logo with the height of its tag marked as 36px or 10mm"),
+            "title_text": "Minimum size",
+            "description_html": "<p>The minimum logo sizes can be measured through the height of the tag. On screen, it should not be smaller than 36px. In print it must be at least 10&nbsp;mm.</p>"
+          },
+          {
+            "image_html": contained_image("344c3f63-6_1_2. logo-Clear space.png", "The Canonical logo surrounded on every side by clear space as wide as its tag"),
+            "title_text": "Clear space",
+            "description_html": "<p>To define the minimum clear space, use the width of the tag and apply it all around the logo.</p>"
+          },
+          {
+            "image_html": contained_image("bce89fb3-6_1_3. logo-Top-edge placement.png", "The Canonical logo with its tag hanging from the bleeding top edge of an artboard"),
+            "title_text": "Top-edge placement",
+            "description_html": "<p>Where the medium allows, both the logo and the stand-alone tag should hang from the top edge of the artboard.</p>"
+          }
+        ]
+      ) }}
+    </div>
+
+    {% call section_header("Symbol", heading_level=3, top_rule="muted") %}
+      <p>
+        As with Canonical logos, the Circle of Friends (CoF) symbol should always be displayed at an appropriate size and with sufficient space around it. Minimum size ensures the symbol remains clear and recognizable, while clear space helps preserve its form and prevents surrounding elements from interfering with its meaning.
+      </p>
+    {% endcall %}
+    {{ specimen_row(
+      items=[
+        {
+          "image_html": contained_image("c64658ad-6_2_1. symbol-Minimum size.png", "The Circle of Friends symbol with its height marked as 12px or 4mm"),
+          "title_text": "Minimum size",
+          "description_html": "<p>The minimum symbol size can be measured by its height. For screen use, it should be no smaller than 12px. For print, it must be at least 4mm.</p>"
+        },
+        {
+          "image_html": contained_image("35fbe36f-6_2_2. symbol-Clear space.png", "The Circle of Friends symbol surrounded by clear space of twice its main line thickness"),
+          "title_text": "Clear space",
+          "description_html": "<p>To set the minimum clear space, use 2x the symbol&rsquo;s main line thickness around the symbol. Larger uses should include more space to maintain visual balance.</p>"
+        }
+      ]
+    ) }}
+  </section>
+
+  <section class="p-section">
+    {{ section_title("Placement") }}
+
+    <div class="p-section--shallow">
+      {% call section_header("Logo", heading_level=3, top_rule="none") %}
+        <p>
+          The logo placement should be determined by the type of asset it appears in. It follows the asset grids and has a strong relationship with typography, content and context. Always be mindful of the needed clear space.
+        </p>
+      {% endcall %}
+      {{ specimen_row(
+        items=[
+          {
+            "image_html": contained_image("1f682ab8-7_1_1. Logo-Logo at top left.png", "Two page layouts with the Canonical logo at the top left, its tag bleeding over the top edge"),
+            "title_text": "Logo at top left",
+            "description_html": "<p>For all content pieces, the default placement is top left, above visual content and bleeding over the edge. For materials targeting home printing, we add mandatory margins.</p>"
+          },
+          {
+            "image_html": contained_image("f6e28706-7_1_2. Logo-Logo as signature.png", "A printed page with the Canonical logo in its bottom left corner"),
+            "title_text": "Logo as signature",
+            "description_html": "<p>If a sign-off is included in print materials or pdfs, the logo can be placed in the bottom left corner of the page.</p>"
+          },
+          {
+            "image_html": contained_image("5987254e-7_1_3. Logo-Logo as overlay.png", "The Canonical logo placed freely over an abstract image"),
+            "title_text": "Logo as overlay",
+            "description_html": "<p>When the logo is the hero element of the content or imagery, it can be positioned freely while maintaining clear visibility and sufficient clear space.</p>"
+          }
+        ]
+      ) }}
+    </div>
+
+    {% call section_header("Tag and symbols", heading_level=3, top_rule="muted") %}
+      <p>
+        The tag and our Circle of Friends (CoF) symbol allow the logo to be adapted to the specific requirements of different media.
+      </p>
+    {% endcall %}
+    {{ specimen_row(
+      items=[
+        {
+          "image_html": contained_image("867e385e-7_2_1. Tag at top left.png", "A dark presentation slide with the tag at its top left"),
+          "title_text": "Tag at top left",
+          "description_html": "<p>This is usually the default. We often use the tag as a stand-alone element, placed at the top of the surface or asset, to elegantly brand an asset or improve visibility in a physical space.</p>"
+        },
+        {
+          "image_html": contained_image("fbfc05bd-7_2_2. Symbol on vertical formats.png", "Two orange vertical banners with the Circle of Friends symbol at the bottom center"),
+          "title_text": "Symbol on vertical formats",
+          "description_html": "<p>For vertical assets &ndash; especially in physical surroundings &ndash; the CoF symbol is placed at the bottom center of the surface or asset, as an adapted interpretation of the tag.</p>"
+        },
+        {
+          "image_html": contained_image("76a85b3d-7_2_3. Symbol stand-alone.png", "The Circle of Friends symbol centered on an orange circle and on an orange square"),
+          "title_text": "Symbol stand-alone",
+          "description_html": "<p>The CoF symbol can be placed centered on our brand color Orange on social media thumbnails, and can be used in context in flat and isometric illustrations.</p>"
+        }
+      ]
+    ) }}
+  </section>
+
+  <section class="p-section">
+    {% call section_header("Usage across formats") %}
+      <p>
+        Our logo system can be used across a wide range of formats, both digital and physical. This requires each element &ndash; logo, symbol, and tag &ndash; to be used intentionally, based on context, scale, and purpose.
+      </p>
+    {% endcall %}
+
+    {% call tiered_item("Digital products", is_first=true) %}
+      <div class="p-section--shallow">
+        {{ block_image("34d02588-8_1. Digital products.png", "Two application side navigations: an expanded one with the full Landscape logo, and a collapsed one with only the tag") }}
+      </div>
+      <p>
+        The logo is used in user interfaces and product surfaces to provide clearer associations to specific Canonical products. The full logo should be used in prominent placements, such as landing screens or when the navigation is expanded, while the tag can be used in constrained or repetitive UI.
+      </p>
+    {% endcall %}
+
+    {% call tiered_item("Communication and collateral") %}
+      <div class="p-section--shallow">
+        {{ block_image("79ae1f77-8_2. Communication and collateral.png", "A datasheet with the Canonical logo at the top left of its first page and as a signature on its last page") }}
+      </div>
+      <p>
+        Cover pages and signatures should primarily use the logo, to establish clear authorship. It should not be repeated throughout content. The standalone tag should be used alongside headings in presentations and webpages.
+      </p>
+    {% endcall %}
+
+    {% call tiered_item("Diagrams") %}
+      <div class="p-section--shallow">
+        {{ block_image("92e18502-8_3. Diagrams.png", "A diagram with the MAAS logo in a box that connects to boxes labelled CLI and UI") }}
+      </div>
+      <p>
+        Product names should primarily appear as text within diagrams. In certain cases, logos or tags may be used to provide clearer context. You can make use of logos when presented alongside third-party logos, and the tag when sufficient Canonical or product context is already established within the same space.
+      </p>
+    {% endcall %}
+
+    {% call tiered_item("Illustrations") %}
+      <div class="p-section--shallow">
+        {{ block_image("942d5cf6-8_4. Illustrations.png", "An isometric illustration of a circuit board, with the Circle of Friends symbol drawn in perspective on its chip") }}
+      </div>
+      <p>
+        Logos, tags, and symbols may be incorporated into illustrated compositions only when they provide meaningful and indispensable context. All elements must align with the illustration&rsquo;s perspective, whether flat or isometric.
+      </p>
+    {% endcall %}
+
+    {% call tiered_item("Physical event assets") %}
+      <div class="p-section--shallow">
+        {{ block_image("a260fad7-8_5. Physical event assets.png", "An orange booth backdrop with the Canonical Ubuntu logo at the top left, and a counter with the tag used alone") }}
+      </div>
+      <p>
+        For physical event assets such as booth backdrops and banners, place the full logo in the top-left corner of the main surface. The &ldquo;Canonical Ubuntu&rdquo; logo wordmark was created especially for physical events, when a wide surface is available. The tag may be used alone in secondary placements, such as counters.
+      </p>
+    {% endcall %}
+  </section>
+
+  <section class="p-section">
+    {% call section_header("Alignment") %}
+      <p>
+        Alongside our grid systems, we use different parts of the logo and the tag to align headlines, text, or other visual elements.
+      </p>
+    {% endcall %}
+
+    {% call tiered_item("Vertical alignment options", is_first=true) %}
+      <div class="p-section--shallow">
+        {{ block_image("61fa9b30-9_1. Vertical alignment options.png", "Two layouts with a headline and text below the Canonical logo: aligned to the left edge of the wordmark as the primary guide, and to the left edge of the tag as the alternative") }}
+      </div>
+      <p>The Canonical logo structure can be used to establish a vertical alignment edge for surrounding content.</p>
+      <p>
+        When space allows, the left edge of the wordmark should be used as the primary alignment reference. Headlines, images, and text align to this edge to create a clear and stable layout.
+      </p>
+      <p>
+        In more compact compositions, the left edge of the tag may instead be used as the alignment reference, allowing for a tighter structure while maintaining visual consistency.
+      </p>
+    {% endcall %}
+
+    {% call tiered_item("Horizontal alignment") %}
+      <div class="p-section--shallow">
+        {{ block_image("d1ad79be-9_2. Horizontal alignment.png", "Two layouts with content to the right of the Canonical logo: a headline and text on the baseline of the wordmark, and body text starting from its cap height") }}
+      </div>
+      <p>
+        Headlines align with the baseline of the wordmark and can align with its font size. If only the tag is used, the bottom of the symbol serves as the alignment guide. Text also follows on the same baseline for optimal horizontal alignment. When starting with body text without a heading, align from the cap height.
+      </p>
+    {% endcall %}
+  </section>
+
+  <section class="p-section">
+    {% call section_header("Co-branding") %}
+      <p>
+        When companies decide to market products or showcase solutions together, we consider that a co-branding situation.
+      </p>
+      <p>
+        As a default, company-level logos should be locked up together. Ubuntu-specific announcements may allow for a Canonical Ubuntu logo to be locked up with another company&rsquo;s logo, or in rare cases with a partner&rsquo;s product logo.
+      </p>
+      <p>
+        Lockups should not be created for other Canonical product logos, and the Canonical logo should not be locked up with another company&rsquo;s product logo.
+      </p>
+    {% endcall %}
+
+    {% call tiered_item("Divider and general clear space", is_first=true) %}
+      <div id="co-branding-divider">
+        {{ block_image("e00dc23e-10_1_1. Divider and general clear space-light.png", "The Canonical logo and a partner logo on a light background, separated by a vertical divider colored #A9A9A9, with clear space around each logo", attrs={"data-mode": "light"}) }}
+        {{ block_image("63298201-10_1_2. Divider and general clear space-dark.png", "The Canonical logo and a partner logo on a dark background, separated by a vertical divider colored #4D4D4D, with clear space around each logo", attrs={"data-mode": "dark", "hidden": ""}) }}
+      </div>
+      <label class="p-switch">
+        <input type="checkbox"
+               class="p-switch__input js-dark-mode-switch"
+               role="switch"
+               aria-controls="co-branding-divider"
+               disabled />
+        <span class="p-switch__slider"></span>
+        <span class="p-switch__label">Dark mode</span>
+      </label>
+      <p>
+        Our clear space rules also apply to logo lockups. To create a lockup, Canonical places a centered vertical divider between logos, extending across the height of both logos. Use #A9A9A9 for the divider on light backgrounds and #4D4D4D on dark backgrounds. The divider should be 0.25&nbsp;mm in print or 1&nbsp;px on screen, with a height equal to the tag height plus x.
+      </p>
+    {% endcall %}
+
+    {% call tiered_item("Alignment and sizes") %}
+      <div class="p-section--shallow">
+        {{ block_image("5509d13d-10_2. Alignment and sizes.png", "Lockups of the Canonical logo with one and with two partner logos, aligned to the cap height and baseline of the Canonical wordmark") }}
+      </div>
+      <p>
+        Logos come in all shapes and sizes, and co-branded logo lockups should feel visually balanced. Use the wordmark cap height and baseline as a guide for horizontal alignment, but adjust scale and alignment to ensure equal optical weight for all logos. Keep all logos within divider height.
+      </p>
+    {% endcall %}
+  </section>
+
+  <section class="p-section">
+    {% call section_header("What to avoid") %}
+      <p>
+        This section outlines incorrect logo uses that must be avoided to protect the Canonical brand identity. They apply equally to all logos, tags and symbols.
+      </p>
+    {% endcall %}
+    {{ specimen_row(
+      items=[
+        {
+          "image_html": contained_image("ff0ee135-11. What to avoid-1.png", "Incorrect: the Canonical logo recolored in blue"),
+          "description_html": "<p>Do not change the color of tag or wordmark</p>"
+        },
+        {
+          "image_html": contained_image("b10c43e0-11. What to avoid-2.png", "Incorrect: the Canonical logo compressed horizontally"),
+          "description_html": "<p>Do not distort, stretch and compress</p>"
+        },
+        {
+          "image_html": contained_image("8fa7093e-11. What to avoid-3.png", "Incorrect: the Canonical logo rotated"),
+          "description_html": "<p>Do not rotate any logo or tag</p>"
+        },
+        {
+          "image_html": contained_image("99715419-11. What to avoid-4.png", "Incorrect: the Canonical logo with its tag moved out of alignment with the wordmark"),
+          "description_html": "<p>Do not change the alignment of the symbol, tag, or wordmark</p>"
+        },
+        {
+          "image_html": contained_image("d3d32b10-11. What to avoid-5.png", "Incorrect: the Canonical Snapcraft logo with its prefix set as large as the product name"),
+          "description_html": "<p>Do not change the proportion of the wordmark, prefix, or symbol</p>"
+        },
+        {
+          "image_html": contained_image("2cfda170-11. What to avoid-6.png", "Incorrect: the Landscape logo with a tag-line in place of its prefix"),
+          "description_html": "<p>Do not add a tag-line</p>"
+        },
+        {
+          "image_html": contained_image("65b669f1-11. What to avoid-7.png", "Incorrect: the Circle of Friends symbol, without the tag, next to the Canonical wordmark"),
+          "description_html": "<p>Do not create lockups with the symbol and Canonical or any other name</p>"
+        },
+        {
+          "image_html": contained_image("14543f3b-11. What to avoid-8.png", "Incorrect: the Canonical logo over a busy photograph of a factory"),
+          "description_html": "<p>Do not place on busy backgrounds</p>"
+        }
+      ]
+    ) }}
+  </section>
+
+  <section class="p-section">
+    {% call section_header("Showcase") %}
+      <p>
+        The examples demonstrate correct logo usage across various communication contexts. They help illustrate how the logo appears in real-world applications.
+      </p>
+    {% endcall %}
+    {% set showcase = [
+      ("e0b0c52e-12. Showcase-1.png", "A large orange banner with the Circle of Friends symbol on the wood-panelled wall of an office"),
+      ("941bcc4d-12. Showcase-2.png", "A wide screen in an event hall, with the tag hanging from its top left corner"),
+      ("6aa56e71-12. Showcase-3.png", "Orange lanyards printed with the Canonical logo in white"),
+      ("9dd57565-12. Showcase-4.png", "Two social media posts from Canonical, with the Circle of Friends as the profile picture"),
+      ("266e5899-12. Showcase-5.png", "The canonical.com home page, with the Canonical logo at the top left of its navigation"),
+      ("c156837a-12. Showcase-6.png", "A slide with the tag above the words Trusted open source in every Ubuntu release, next to rows of Ubuntu release mascots"),
+      ("e1248d3f-12. Showcase-7.png", "A dark title slide for Ubuntu Summit 26.04, with the tag at its top left"),
+      ("b6e41e59-12. Showcase-8.png", "Four dark illustrated slides, each with the Canonical logo at its top left"),
+      ("faca4917-12. Showcase-9.png", "Pages of a whitepaper, with the tag on the cover and the Canonical logo as a signature on the last page")
+    ] %}
+    <div class="u-fixed-width">
+      <div class="p-carousel__controls js-carousel-controls u-align--right"
+           data-carousel="showcase-carousel">
+        <button class="p-button--base has-icon u-no-margin--right js-carousel-previous"
+                type="button"
+                aria-controls="showcase-carousel">
+          <i class="p-icon--chevron-left">Previous image</i>
+        </button>
+        <button class="p-button--base has-icon u-no-margin--right js-carousel-next"
+                type="button"
+                aria-controls="showcase-carousel">
+          <i class="p-icon--chevron-right">Next image</i>
+        </button>
+      </div>
+      <ul class="p-carousel p-list js-carousel"
+          id="showcase-carousel"
+          tabindex="0"
+          aria-label="Examples of correct logo usage">
+        {% for file, alt in showcase %}
+          <li class="p-carousel__cell">
+            <div class="p-image-container--3-2 is-cover">
+              {{ contained_image(file, alt, width="1374", height="915") }}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+
+  <section class="p-section--deep">
+    {% call section_header("Logo evolution") %}
+      <p>
+        The Canonical logo has evolved alongside the growth of Ubuntu and the open-source ecosystem since Canonical was founded in 2004. While visual refinements have occurred over time, the Circle of Friends symbol has remained the core element of the brand.
+      </p>
+      <p>
+        Historic versions of the logo demonstrate how the brand has matured while preserving its recognizable core identity.
+      </p>
+    {% endcall %}
+    <div class="u-fixed-width">
+      {{ block_image("5551df04-13. Logo evolution.png", "Timeline showing the evolution of the Canonical and Ubuntu logos and the Circle of Friends symbol in 2004, 2010, 2022 and 2024", width="1280", height="533") }}
+    </div>
+  </section>
+
+  <script src="{{ versioned_static('js/logos.js') }}" defer></script>
+
+{% endblock content %}
