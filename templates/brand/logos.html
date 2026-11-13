@@ -48,6 +48,9 @@
   - alt: alternative text
   - width, height: rendered size
   - attrs: additional attributes for the image
+
+  The image is aligned to the middle of its line, as an inline image on the
+  baseline leaves a gap for descenders below it.
 -#}
 {% macro block_image(file, alt, width="900", height="506", attrs={}) %}
   {{ image(url=assets_url ~ file,
@@ -56,7 +59,7 @@
       height=height,
       hi_def=True,
       loading="lazy",
-      attrs=attrs) | safe
+      attrs=dict(attrs, class="u-vertical-align--middle")) | safe
   }}
 {% endmacro %}
 
