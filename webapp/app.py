@@ -37,13 +37,16 @@ init_sso(app)
 
 def resolve_navigation(pages, parent_url=""):
     """Expand each page's `href`, which is relative to its parent, into an
-    absolute `url`. A child `href` of "/" refers to the parent page itself."""
+    absolute `url`. Set `root_relative` for a site-root path; otherwise a child
+    `href` of "/" refers to the parent page itself."""
     for page in pages:
         href = page.get("href", "")
 
         if href.startswith(("http://", "https://", "//")):
             page["url"] = href
             page["external"] = True
+        elif page.get("root_relative"):
+            page["url"] = href
         elif href == "/":
             page["url"] = parent_url or "/"
         else:

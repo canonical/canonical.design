@@ -26,7 +26,8 @@ pages:
           - title: Typeface
             href: /typeface
           - title: Type scale
-            href: /type-scale
+            href: /brand/type-scale
+            root_relative: true
           - title: Setting type
             href: /setting-type
       - title: Resources

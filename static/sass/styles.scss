@@ -177,6 +177,21 @@ $l-docs-balanced-breakpoint: calc(
       z-index: auto;
     }
   }
+
+}
+
+.p-type-scale__row {
+  align-items: center;
+  min-height: 3rem;
+}
+
+.p-type-scale__sample {
+  margin-bottom: 0 !important;
+  padding-top: 0;
+}
+
+.p-type-scale__display-data {
+  padding-top: 0.5rem;
 }
 
 // Blockquote style override until officially in vanilla
