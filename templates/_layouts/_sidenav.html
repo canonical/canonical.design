@@ -7,7 +7,8 @@
         <ul class="p-side-navigation__list">
           {% for item in sidenav_section.children recursive %}
             {% set is_ancestor = current_path == item.url or current_path.startswith(item.url ~ '/') %}
-            {% set is_open_branch = item.children and is_ancestor %}
+            {% set is_active_child = item.children | selectattr('url', 'equalto', current_path) | list | length > 0 %}
+            {% set is_open_branch = item.children and (is_ancestor or is_active_child) %}
             <li class="p-side-navigation__item{% if is_open_branch %}--title{% endif %}">
               <a class="p-side-navigation__link{% if item.children %} is-expandable{% endif %}"
                  href="{{ item.url }}"
@@ -17,7 +18,8 @@
                 {# the chevron flags this page as a parent and toggles its children #}
                 <button class="p-side-navigation__expand js-sidenav-expand"
                         aria-expanded="{{ 'true' if is_open_branch else 'false' }}"
-                        aria-label="{{ 'Hide' if is_open_branch else 'Show' }} submenu for {{ item.title }}" type="button"></button>
+                        aria-label="{{ 'Hide' if is_open_branch else 'Show' }} submenu for {{ item.title }}"
+                        type="button"></button>
                 {# the parent link already covers the section index, so drop its self-referencing child #}
                 <ul class="p-side-navigation__list">
                   {{ loop(item.children | rejectattr('url', 'equalto', item.url) ) }}
