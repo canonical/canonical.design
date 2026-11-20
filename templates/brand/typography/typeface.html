@@ -1,0 +1,348 @@
+{% extends "base.html" %}
+
+{% from "_macros/vf_hero.jinja" import vf_hero %}
+{% from "_macros/shared/vf_equal-heights-block.jinja" import vf_equal_heights_block %}
+{% from "_macros/shared/vf_tabs.jinja" import vf_tabs %}
+{% from "_macros/vf_basic-section.jinja" import vf_basic_section %}
+{% from "_macros/vf_tiered-list.jinja" import vf_tiered_list %}
+
+{% macro font_download_links(sans_url, mono_url) %}
+  <p class="p-heading--2">
+    <a href="{{ sans_url }}">Ubuntu Sans</a>
+  </p>
+  <hr class="p-rule" />
+  <p class="p-heading--2">
+    <a href="{{ mono_url }}">Ubuntu Sans Mono</a>
+  </p>
+{% endmacro %}
+
+{% block meta_title %}
+  Typeface
+{% endblock meta_title %}
+
+{% block meta_description %}
+  Ubuntu Sans is a typeface that embodies the spirit of Ubuntu.
+{% endblock meta_description %}
+
+{% block body_class %}
+  is-paper
+{% endblock body_class %}
+
+{% block content %}
+  {% set hero_image = {
+    "type": "image",
+    "item": {
+      "is_highlighted": false,
+      "is_cover": true,
+      "attrs": {
+        "src": "https://assets.ubuntu.com/v1/f98f2c90-deprecated_library_do_not_use_text.png",
+        "width": 3696,
+        "height": 648,
+        "alt": "Ubuntu Sans type specimen: abefop AQ 123"
+      }
+    }
+  } %}
+  {% call(slot) vf_hero(
+    title_text="Ubuntu Sans",
+    subtitle_text="A typeface that embodies the spirit of Ubuntu.",
+    layout="50-50-full-width-image",
+    is_split_on_medium=true,
+    blocks=[hero_image]
+    ) %}
+  {% endcall %}
+
+  <div class="p-section">
+    <div class="grid-row">
+      <div class="grid-col-6 grid-col-start-large-3">
+        {{ vf_equal_heights_block(items=[
+                {
+                "description_html": "<p>The Ubuntu typeface, originally released in 2010, was commissioned by Canonical to embody the spirit and philosophy of the Ubuntu operating system – bringing together humanity, precision, and a sense of openness.</p>"
+                },
+                {
+                "description_html": "<p>It was crafted by Dalton Maag, one of the world's most respected type foundries, and later expanded into a variable font by Type Network, DJR, and Dual Type.</p>"
+                },
+                {
+                "description_html": "<p>The 2023 update added small caps, text&nbsp;figures, improved italics, a refined monospace, variable width and weight axes, and a new name:</p><p>Ubuntu Sans.</p>"
+                }
+                ]) }}
+      </div>
+    </div>
+  </div>
+
+  <section class="p-section" aria-labelledby="typeface-download-heading">
+    <div class="grid-row">
+      <hr class="p-rule" />
+      <div class="grid-col-2">
+        <h2 id="typeface-download-heading">Download</h2>
+      </div>
+      <div class="grid-col-6">
+        {{ vf_tabs(list={
+                "tabs_list_attrs": {"aria-labelledby": "typeface-download-heading"},
+                "tabs": [
+                {
+                "name": "typeface-download-google-fonts",
+                "tab_html": "Google Fonts",
+                "content_html": font_download_links(
+                "https://fonts.google.com/specimen/Ubuntu+Sans",
+                "https://fonts.google.com/specimen/Ubuntu+Sans+Mono")
+        },
+        {
+        "name": "typeface-download-github",
+        "tab_html": "GitHub",
+        "content_html": font_download_links(
+        "https://github.com/canonical/Ubuntu-Sans-fonts/releases",
+        "https://github.com/canonical/Ubuntu-Sans-Mono-fonts/releases"
+        )
+        }
+        ]
+        }) }}
+      </div>
+    </div>
+  </section>
+
+  <section class="p-section" aria-labelledby="typeface-highlights-heading">
+    <div class="grid-row">
+      <hr class="p-rule" />
+      <div class="grid-col-2">
+        <h2 id="typeface-highlights-heading">Highlights</h2>
+      </div>
+      <div class="grid-col-2 grid-col-medium-2">
+        <h3 class="p-heading--5">At a glance</h3>
+      </div>
+      <div class="grid-col-4 grid-col-medium-2">
+        <p>
+          Ubuntu Sans and its monospaced companion, Ubuntu Sans Mono, form an open-source humanist sans-serif family designed for screen clarity. The two branches are intended to work together, not as separate voices: they share a consistent rhythm, compatible tone, and recognisable character details that keep the family distinctive without compromising legibility.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid-row">
+      <div class="grid-col-6 grid-col-start-large-3">
+        <hr class="p-rule--muted" />
+      </div>
+    </div>
+
+    <div class="grid-row">
+      <div class="grid-col-2 grid-col-start-large-3 grid-col-medium-2">
+        <h3 class="p-heading--5">Origins: Ubuntu (2010)</h3>
+      </div>
+      <div class="grid-col-4 grid-col-medium-2">
+        <p>
+          Ubuntu’s first release was crafted by Dalton Maag; among the team was Vincent Connare, known for Comic Sans and Trebuchet MS.
+        </p>
+        <p>
+          As in many typeface projects, the design process began with four characters – n,&nbsp;o,&nbsp;H,&nbsp;O – which established the proportions, curves, and rhythm that guided the remaining 80% of the character set. The result was a typeface that balanced friendliness with professionalism, distinctive enough to carry a brand yet neutral enough for extended reading.
+        </p>
+        <p>
+          The font’s impact was recognised by London’s Design Museum, which hosted the “Shape My Language” exhibition in early 2011 – a rare honour for a typeface, and rarer still for one released under an open licence.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid-row">
+      <div class="grid-col-6 grid-col-start-large-3">
+        <hr class="p-rule--muted" />
+      </div>
+    </div>
+
+    <div class="grid-row">
+      <div class="grid-col-2 grid-col-start-large-3 grid-col-medium-2">
+        <h3 class="p-heading--5">The 2023 update: Ubuntu Sans</h3>
+      </div>
+      <div class="grid-col-4 grid-col-medium-2">
+        <p>
+          In 2023, Canonical commissioned Type Network, DJR, and Dual Type to expand the typeface for use in design systems. The updated family was renamed Ubuntu Sans to reflect its maturity and expanded capabilities.
+        </p>
+        <p>
+          The update introduces variable font axes for weight and width. But Ubuntu Sans goes further: it includes true small caps and text figures, features vanishingly rare among open-source fonts.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {% include "shared/_glyph-specimen.html" %}
+  {% include "shared/_font-variable-axes.html" %}
+
+  <section class="p-section" aria-labelledby="typeface-improved-italics-heading">
+    <div class="p-section--shallow">
+      <div class="grid-row--50-50">
+        <hr class="p-rule" />
+        <div class="grid-col">
+          <h2 id="typeface-improved-italics-heading">Improved italics</h2>
+        </div>
+        <div class="grid-col p-section--shallow">
+          <p>
+            The original Ubuntu italic was set with tight tracking, a design choice that drew criticism for reducing readability at smaller sizes.
+          </p>
+          <p>
+            The 2023 update opens up the spacing, allowing the italic to breathe and improving legibility across paragraphs of text.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="grid-row">
+      <div class="grid-col-8 p-image-container is-cover">
+        <img class="p-image-container__image"
+             src="https://assets.ubuntu.com/v1/e691e3ef-italic_before_after_interim.png"
+             width="2464"
+             height="664"
+             alt="The same text in original Ubuntu Light Italic in grey and revised Ubuntu Sans Light Italic in black, showing the wider spacing of the revised design." />
+      </div>
+    </div>
+  </section>
+
+  {% set small_caps_description %}
+    <p>
+      Ubuntu Sans includes true small caps – not scaled-down capitals, but glyphs designed from scratch to harmonise with lowercase letterforms.
+    </p>
+    <p>
+      Small caps matter for acronyms, legal text, and subtle emphasis – yet most typefaces, free or commercial, simply omit them. True small caps are drawn to blend with lowercase, a mark of typographic maturity.
+    </p>
+    <p>
+      Alongside small caps come text figures (also known as oldstyle numerals) – numbers designed to sit comfortably within running text rather than standing at attention like tabular figures.
+    </p>
+  {% endset %}
+  {% set small_caps_items = [{"type": "description", "item": {"type": "html", "content": small_caps_description}}] %}
+
+  <div class="p-section">
+    {{ vf_basic_section(title={"text": "True small caps, text figures"},
+        items=small_caps_items,
+        padding="shallow",
+        is_split_on_medium=true) }}
+    <div class="grid-row">
+      <div class="grid-col-6 grid-col-start-large-3 p-image-container is-cover">
+        <img class="p-image-container__image"
+             src="https://assets.ubuntu.com/v1/0a8425fb-true_small_caps_and_text_figures.png"
+             width="1832"
+             height="704"
+             alt="Small caps and text figures in three samples: FIPS validated 140-2, ISO 27001:2022, and 16:30 PM." />
+      </div>
+    </div>
+  </div>
+
+  {% set mono_description %}
+    <p>
+      The 2010 Ubuntu Mono was a capable fixed-width companion, but its metrics didn’t quite align with its proportional sibling. The x-height sat lower; the stroke weight appeared lighter.
+    </p>
+    <p>
+      The 2023 update brought Ubuntu Sans Mono into alignment. When proportional and monospaced text appear together – in documentation, code samples, or UI – they share a consistent visual weight and rhythm.
+    </p>
+  {% endset %}
+  {% set mono_items = [{"type": "description", "item": {"type": "html", "content": mono_description}}] %}
+
+  <div class="p-section">
+    {{ vf_basic_section(title={"text": "Mono: matching proportional in x-height and weight"},
+        items=mono_items,
+        padding="shallow",
+        is_split_on_medium=true) }}
+    <div class="grid-row">
+      <div class="grid-col-8 p-image-container is-cover">
+        <img class="p-image-container__image"
+             src="https://assets.ubuntu.com/v1/c812951c-mono_example.png"
+             width="2464"
+             height="536"
+             alt="The same text and commands in the original Ubuntu and Ubuntu Mono in grey, and Ubuntu Sans and Ubuntu Sans Mono in black, showing the closer match in x-height and stroke weight." />
+      </div>
+    </div>
+  </div>
+
+  {% set language_support_description = "The Ubuntu Sans typeface supports the Latin, Cyrillic, and Greek character sets. It covers a comprehensive set of characters for various languages, ensuring compatibility and readability for users across diverse linguistic backgrounds." %}
+  {% set language_support_items = [{"type": "description", "item": {"type": "text", "content": language_support_description}}] %}
+  {% set languages = [
+    "Afrikaans",
+    "Albanian",
+    "Basque",
+    "Belarusian",
+    "Bosnian",
+    "Bulgarian",
+    "Catalan",
+    "Croatian",
+    "Czech",
+    "Danish",
+    "Dutch",
+    "English",
+    "Estonian",
+    "Finnish",
+    "French",
+    "Galician",
+    "German",
+    "Greek",
+    "Hungarian",
+    "Icelandic",
+    "Indonesian",
+    "Irish",
+    "Italian",
+    "Latvian",
+    "Lithuanian",
+    "Macedonian",
+    "Malay",
+    "Maltese",
+    "Norwegian",
+    "Polish",
+    "Portuguese",
+    "Romanian",
+    "Russian",
+    "Serbian",
+    "Slovak",
+    "Slovenian",
+    "Spanish",
+    "Swahili",
+    "Swedish",
+    "Turkish",
+    "Ukrainian",
+    "Vietnamese"
+  ] %}
+
+  <div class="p-section">
+    {{ vf_basic_section(title={"text": "Language support"},
+        items=language_support_items,
+        padding="shallow",
+        is_split_on_medium=true) }}
+    <div class="grid-row">
+      <div class="grid-col-4 grid-col-start-large-3 p-image-container is-cover">
+        <img class="p-image-container__image"
+             src="https://assets.ubuntu.com/v1/191bbd9f-language_support_map_2x.png"
+             width="1200"
+             height="838"
+             alt="World map with location markers." />
+      </div>
+    </div>
+    <div class="grid-row" role="group" aria-label="Supported languages">
+      {% for column in languages | slice(8) %}
+        <ul class="p-list grid-col-1 grid-col-medium-1 grid-col-small-2"
+            role="list">
+          {% for language in column %}<li class="p-list__item u-no-padding">{{ language }}</li>{% endfor %}
+        </ul>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% call(slot) vf_tiered_list(
+    is_description_full_width_on_desktop=false,
+    is_list_full_width_on_tablet=false
+    ) %}
+    {% if slot == "title" %}
+      <h2>More on typography</h2>
+    {% elif slot == "description" %}
+      <p>
+        We follow a strict set of rules to maintain coherence across everything we publish. The following pages offer a quick set of dos/don’ts followed by a deeper dive into the rationale behind our typographic system.
+      </p>
+    {% elif slot == "list_item_title_1" %}
+      <h3 class="p-heading--2">
+        <a href="/brand/typography/type-scale"><em>Type scale</em></a>
+      </h3>
+    {% elif slot == "list_item_description_1" %}
+      <p>Learn more about the type scale, and the 3 tier system we use across all our sites and products.</p>
+    {% elif slot == "list_item_title_2" %}
+      <h3 class="p-heading--2">
+        <a href="/brand/typography/setting-type"><em>Setting type</em></a>
+      </h3>
+    {% elif slot == "list_item_description_2" %}
+      <p>
+        Understand the rules we use to set type - alignment, line length, tracking, case, opentype features, color, emphasis, accessibility and more.
+      </p>
+    {% endif %}
+  {% endcall %}
+
+  <script src="{{ versioned_static('js/dist/tabs.js') }}" defer></script>
+{% endblock content %}
