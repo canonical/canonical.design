@@ -1,0 +1,64 @@
+@mixin design-p-type-specimen {
+  $specimen-guide-color: #f5b39e;
+
+  // Columns of running text, with guides between them, to compare line
+  // lengths at different column widths. Only shown on large screens, where
+  // the grid has all 8 columns.
+  .p-line-length-demo {
+    font-style: italic;
+
+    [class*="grid-col-"] {
+      position: relative;
+    }
+
+    // guide centred in the gutter before each column but the first
+    [class*="grid-col-"] + [class*="grid-col-"]::before {
+      background-color: $specimen-guide-color;
+      bottom: 0;
+      content: "";
+      left: calc(-0.5 * #{map-get($grid-gutter-widths, default)} - 0.5px);
+      position: absolute;
+      top: 0;
+      width: 1px;
+    }
+
+    p {
+      -webkit-box-orient: vertical;
+      display: -webkit-box;
+      -webkit-line-clamp: 5;
+      overflow: hidden;
+    }
+
+    .is-narrow p {
+      -webkit-line-clamp: 2;
+    }
+  }
+
+  // Heading levels set in pairs that share a size and differ in weight.
+  // Keep Vanilla's margins and padding: the even-level heading of a pair is
+  // pulled up by a negative margin that offsets the odd one's bottom margin.
+  .p-weight-pairing__item {
+    font-style: normal;
+    font-variant-caps: normal;
+    letter-spacing: normal;
+
+    &.p-heading--1,
+    &.p-heading--3 {
+      font-weight: 500;
+    }
+
+    &.p-heading--2,
+    &.p-heading--4 {
+      font-weight: 300;
+    }
+
+    &.p-heading--5,
+    &.p-heading--6 {
+      font-weight: 600;
+    }
+  }
+
+  .p-type-link-heading {
+    font-style: italic;
+  }
+}
