@@ -180,18 +180,119 @@ $l-docs-balanced-breakpoint: calc(
 
 }
 
+// Type scale tables. Each table is a single grid so every row shares the same
+// column tracks: the sample takes up to half of the width and the data columns
+// share the rest equally, but never get narrower than their content. When
+// space runs out the sample gives way and is truncated rather than wrapped, so
+// rows keep the height of the line they describe.
+$type-scale-min-row-height: 3rem;
+
+.p-type-scale {
+  display: grid;
+  grid-template-columns: minmax(0, 50%) repeat(4, minmax(max-content, 1fr));
+}
+
 .p-type-scale__row {
-  align-items: center;
-  min-height: 3rem;
+  display: contents;
+}
+
+.p-type-scale__sample,
+.p-type-scale__cell {
+  box-sizing: border-box;
+  margin: 0;
+  line-height: var(--type-scale-line-height, 1.5rem);
+  min-height: $type-scale-min-row-height;
+  // centres the line in rows shorter than the minimum height
+  padding-block: max(
+    0rem,
+    calc(($type-scale-min-row-height - var(--type-scale-line-height, 1.5rem)) / 2)
+  );
+  white-space: nowrap;
 }
 
 .p-type-scale__sample {
-  margin-bottom: 0 !important;
-  padding-top: 0;
+  overflow: hidden;
+  padding-right: $sph--large;
+  text-align: right;
+  text-overflow: ellipsis;
 }
 
-.p-type-scale__display-data {
-  padding-top: 0.5rem;
+.p-type-scale__cell {
+  // drawn as a shadow so the separator does not add to the row height
+  box-shadow: inset 0 -1px 0 $colors--theme--border-low-contrast;
+  text-align: right;
+
+  .p-type-scale__sample + & {
+    padding-left: 0;
+    text-align: left;
+  }
+
+  & + & {
+    padding-left: $sph--small;
+  }
+}
+
+// add `top_aligned` to a row in the macro to align its data text to the top.
+// The sample keeps the line height it describes, only the data cells drop
+// back to the default line height so their text is not centred in it.
+.p-type-scale__row--top-aligned {
+  .p-type-scale__sample {
+    padding-block: 0;
+  }
+
+  .p-type-scale__cell {
+    line-height: 1.5rem;
+    padding-block: $spv--medium 0;
+  }
+}
+
+.p-type-scale__row:last-child .p-type-scale__cell {
+  box-shadow: none;
+}
+
+// font-size, line-height, font-weight and, where the sample includes
+// <strong> text, its font-weight
+$type-scale-samples: (
+  sites-display: (5.25rem, 5.5rem, 100),
+  sites-h1: (2.625rem, 3rem, 500),
+  sites-h2: (2.625rem, 3rem, 300),
+  sites-h3: (1.5rem, 2rem, 500),
+  sites-h4: (1.5rem, 2rem, 300),
+  sites-h5: (1rem, 1.5rem, 600),
+  sites-h6: (1rem, 1.5rem, 600),
+  sites-body: (1rem, 1.5rem, 400),
+  docs-h1: (2rem, 2.5rem, 500, 700),
+  docs-h2: (2rem, 2.5rem, 300, 500),
+  docs-h3: (1.5rem, 2rem, 500, 700),
+  docs-h4: (1.5rem, 2rem, 300, 500),
+  docs-h5: (1.125rem, 1.5rem, 400, 600),
+  docs-h6: (1.125rem, 1.5rem, 400, 600),
+  docs-body: (0.875rem, 1.25rem, 400, 600),
+  apps-h1: (1.5rem, 2rem, 500),
+  apps-h2: (1.5rem, 2rem, 300),
+  apps-h3: (1.125rem, 1.5rem, 600),
+  apps-h4: (1.125rem, 1.5rem, 400),
+  apps-h5: (0.875rem, 1.25rem, 600),
+  apps-h6: (0.875rem, 1.25rem, 600),
+  apps-body: (0.875rem, 1.25rem, 400)
+);
+
+// stylelint-disable-next-line at-rule-no-unknown
+@each $name, $settings in $type-scale-samples {
+  .p-type-scale__row--#{$name} {
+    --type-scale-line-height: #{nth($settings, 2)};
+
+    .p-type-scale__sample {
+      font-size: nth($settings, 1);
+      font-weight: nth($settings, 3);
+
+      @if length($settings) > 3 {
+        strong {
+          font-weight: nth($settings, 4);
+        }
+      }
+    }
+  }
 }
 
 // Blockquote style override until officially in vanilla
