@@ -4,6 +4,7 @@
 {% from "_macros/vf_tiered-list.jinja" import vf_tiered_list %}
 {% from "_macros/vf_basic-section.jinja" import vf_basic_section %}
 {% from "_macros/vf_equal-heights.jinja" import vf_equal_heights %}
+{% from "_macros/shared/vf_equal-heights-block.jinja" import vf_equal_heights_block %}
 
 {% block meta_title %}
   Setting type
@@ -42,20 +43,38 @@
   }}
 {% endmacro %}
 
+{#- The Equal Heights title field supports H4 and H5. Use its HTML slot for H6 styling. -#}
+{% macro type_card_description(title, description="") %}
+  <h3 class="p-heading--6">{{ title }}</h3>
+  {% if description %}
+    <p>{{ description }}</p>
+  {% endif %}
+{% endmacro %}
+
 {% block content %}
+
+  {#- Older Vanilla releases support the tablet item split. Use the newer layout options when available. -#}
+  {% set tiered_list_layout = {"is_description_full_width_on_desktop": false, "is_list_full_width_on_tablet": false} %}
+  {% if "is_description_split_on_medium" in vf_tiered_list.arguments and "is_list_indented_on_medium" in vf_tiered_list.arguments %}
+    {% set tiered_list_layout = dict(tiered_list_layout, is_description_split_on_medium=true, is_list_indented_on_medium=true) %}
+  {% endif %}
 
   {% call(slot) vf_hero(
     title_text="Setting type",
-    layout="50/50"
-  ) -%}
-    {%- if slot == "description" -%}
-      <p>
-        Establish hierarchy and visual harmony across all digital touchpoints by adhering to consistent typography guidelines. Our system defines clear rules for type scaling, line spacing, and font weight pairings.
-      </p>
-    {%- endif -%}
-  {% endcall -%}
+    layout="50/50",
+    is_split_on_medium=true,
+    blocks=[
+      {
+        "type": "description",
+        "item": {
+          "type": "text",
+          "content": "Establish hierarchy and visual harmony across all digital touchpoints by adhering to consistent typography guidelines. Our system defines clear rules for type scaling, line spacing, and font weight pairings."
+        }
+      }
+    ]
+  ) -%}{% endcall -%}
 
-  {% call(slot) vf_tiered_list(is_description_full_width_on_desktop=false) -%}
+  {% call(slot) vf_tiered_list(**tiered_list_layout) -%}
     {%- if slot == "title" -%}
       <h2>Start with the right tier</h2>
     {%- endif -%}
@@ -67,31 +86,31 @@
       </p>
     {%- endif -%}
     {%- if slot == "list_item_title_1" -%}
-      <h3 class="p-heading--5">Sites</h3>
+      <h3 class="p-heading--6">Sites</h3>
     {%- endif -%}
     {%- if slot == "list_item_description_1" -%}
       <p>Use for marketing, product pages, blogs, and other content designed for rapid scanning.</p>
     {%- endif -%}
     {%- if slot == "list_item_title_2" -%}
-      <h3 class="p-heading--5">Docs</h3>
+      <h3 class="p-heading--6">Docs</h3>
     {%- endif -%}
     {%- if slot == "list_item_description_2" -%}
       <p>Use for product documentation and other structured technical content.</p>
     {%- endif -%}
     {%- if slot == "list_item_title_3" -%}
-      <h3 class="p-heading--5">Apps</h3>
+      <h3 class="p-heading--6">Apps</h3>
     {%- endif -%}
     {%- if slot == "list_item_description_3" -%}
       <p>Use when working on web-based apps.</p>
     {%- endif -%}
   {%- endcall %}
 
-  {% call(slot) vf_tiered_list(is_description_full_width_on_desktop=false) -%}
+  {% call(slot) vf_tiered_list(**tiered_list_layout) -%}
     {%- if slot == "title" -%}
       <h2>Follow text alignment rules</h2>
     {%- endif -%}
     {%- if slot == "list_item_title_1" -%}
-      <h3 class="p-heading--5">Prose</h3>
+      <h3 class="p-heading--6">Prose</h3>
     {%- endif -%}
     {%- if slot == "list_item_description_1" -%}
       <p>When it comes to aligning prose, we follow two rules:</p>
@@ -104,7 +123,7 @@
       </p>
     {%- endif -%}
     {%- if slot == "list_item_title_2" -%}
-      <h3 class="p-heading--5">Numbers</h3>
+      <h3 class="p-heading--6">Numbers</h3>
     {%- endif -%}
     {%- if slot == "list_item_description_2" -%}
       <ul class="p-list--bulleted">
@@ -113,7 +132,7 @@
       </ul>
     {%- endif -%}
     {%- if slot == "list_item_title_3" -%}
-      <h3 class="p-heading--5">Exceptions</h3>
+      <h3 class="p-heading--6">Exceptions</h3>
     {%- endif -%}
     {%- if slot == "list_item_description_3" -%}
       <ul class="p-list--bulleted">
@@ -123,36 +142,51 @@
     {%- endif -%}
   {%- endcall %}
 
-  {% call(slot) vf_equal_heights(
-    title_text="Use color semantically",
-    items=[
-      {
-        "image_html": contained_image("https://assets.ubuntu.com/v1/1822cc50-opentype_features.png", "The words fwd and back set in monospace, showing default and visited link colors"),
-        "title_text": "Link states"
-      },
-      {
-        "image_html": contained_image("https://assets.ubuntu.com/v1/80023397-opentype_features_1.png", "The word muted set in de-emphasized text color"),
-        "title_text": "De-emphasized text"
-      },
-      {
-        "image_html": contained_image("https://assets.ubuntu.com/v1/e4292271-opentype_features_2.png", "The word error set in monospace, highlighted as a syntax error"),
-        "title_text": "Syntax highlighting"
-      }
-    ]
-  ) -%}
-    {%- if slot == "description" -%}
-      <ul class="p-list--bulleted">
-        <li class="p-list__item">Default to black color for text.</li>
-        <li class="p-list__item">Use color primarily for semantic purposes, such as links, states, feedback, and syntax highlighting.</li>
-        <li class="p-list__item">Avoid using brand colors decoratively or as routine emphasis in running text.</li>
-        <li class="p-list__item">
-          Color may be used for emphasis when it has a clear purpose, meets accessibility requirements, and is not the only cue.
-        </li>
-      </ul>
-    {%- endif -%}
-  {%- endcall %}
+  {% set semantic_color_description %}
+    <ul class="p-list--bulleted">
+      <li class="p-list__item">Default to black color for text.</li>
+      <li class="p-list__item">Use color primarily for semantic purposes, such as links, states, feedback, and syntax highlighting.</li>
+      <li class="p-list__item">Avoid using brand colors decoratively or as routine emphasis in running text.</li>
+      <li class="p-list__item">
+        Color may be used for emphasis when it has a clear purpose, meets accessibility requirements, and is not the only cue.
+      </li>
+    </ul>
+  {% endset %}
 
-  {% call(slot) vf_tiered_list(is_description_full_width_on_desktop=false) -%}
+  <div class="p-section p-type-card-examples">
+    {{ vf_basic_section(title={"text": "Use color semantically"},
+      items=[
+        {
+          "type": "description",
+          "item": {"type": "html", "content": semantic_color_description}
+        }
+      ],
+      padding="shallow",
+      is_split_on_medium=true) }}
+    <div class="grid-row">
+      <div class="grid-col-6 grid-col-start-large-3">
+        {{ vf_equal_heights_block(
+          image_aspect_ratio_medium="2-3",
+          items=[
+            {
+              "image_html": contained_image("https://assets.ubuntu.com/v1/1822cc50-opentype_features.png", "The words fwd and back set in monospace, showing default and visited link colors"),
+              "description_html": type_card_description("Link states")
+            },
+            {
+              "image_html": contained_image("https://assets.ubuntu.com/v1/80023397-opentype_features_1.png", "The word muted set in de-emphasized text color"),
+              "description_html": type_card_description("De-emphasized text")
+            },
+            {
+              "image_html": contained_image("https://assets.ubuntu.com/v1/e4292271-opentype_features_2.png", "The word error set in monospace, highlighted as a syntax error"),
+              "description_html": type_card_description("Syntax highlighting")
+            }
+          ]
+        ) }}
+      </div>
+    </div>
+  </div>
+
+  {% call(slot) vf_tiered_list(**tiered_list_layout) -%}
     {%- if slot == "title" -%}
       <h2>Use sentence case</h2>
     {%- endif -%}
@@ -166,26 +200,26 @@
       </p>
     {%- endif -%}
     {%- if slot == "list_item_title_1" -%}
-      <h3 class="p-heading--5">Speeds up reading</h3>
+      <h3 class="p-heading--6">Speeds up reading</h3>
     {%- endif -%}
     {%- if slot == "list_item_description_1" -%}
       <p>It mirrors natural reading patterns, making text faster to scan.</p>
     {%- endif -%}
     {%- if slot == "list_item_title_2" -%}
-      <h3 class="p-heading--5">Reduces visual noise</h3>
+      <h3 class="p-heading--6">Reduces visual noise</h3>
     {%- endif -%}
     {%- if slot == "list_item_description_2" -%}
       <p>Eliminating unnecessary capital letters keeps layouts clean and calm.</p>
     {%- endif -%}
     {%- if slot == "list_item_title_3" -%}
-      <h3 class="p-heading--5">Highlights proper nouns</h3>
+      <h3 class="p-heading--6">Highlights proper nouns</h3>
     {%- endif -%}
     {%- if slot == "list_item_description_3" -%}
       <p>Restricting capitals to the first word makes brand or feature names stand out instantly.</p>
     {%- endif -%}
   {%- endcall %}
 
-  {% call(slot) vf_tiered_list(is_description_full_width_on_desktop=false) -%}
+  {% call(slot) vf_tiered_list(**tiered_list_layout) -%}
     {%- if slot == "title" -%}
       <h2>Emphasise sparingly</h2>
     {%- endif -%}
@@ -199,36 +233,38 @@
       <p>When it comes to emphasis, treatments vary slightly by tier:</p>
     {%- endif -%}
     {%- if slot == "list_item_title_1" -%}
-      <h3 class="p-heading--5">Sites and apps</h3>
+      <h3 class="p-heading--6">Sites and apps</h3>
     {%- endif -%}
     {%- if slot == "list_item_description_1" -%}
       <p>Use italics for emphasis.</p>
     {%- endif -%}
     {%- if slot == "list_item_title_2" -%}
-      <h3 class="p-heading--5">Documentation</h3>
+      <h3 class="p-heading--6">Documentation</h3>
     {%- endif -%}
     {%- if slot == "list_item_description_2" -%}
       <p>In documentation, we support two levels of emphasis &ndash; regular (italic) and strong (bold).</p>
     {%- endif -%}
   {%- endcall %}
 
-  <section class="p-section">
-    <div class="p-section--shallow">
-      <div class="grid-row--50-50-on-large">
-        <hr class="p-rule" />
-        <div class="grid-col">
-          <h2>Aim for optimal line-length</h2>
-        </div>
-        <div class="grid-col">
-          <p>
-            Aim for a line length between 45 and 80 characters for running text. Very short annotations may be narrower, provided they wrap no more than once.
-          </p>
-          <p>
-            Lines shorter than 45 characters can wrap too often and interrupt reading rhythm. Lines longer than 80 characters can become harder to follow, especially when moving from the end of one line to the start of the next.
-          </p>
-        </div>
-      </div>
-    </div>
+  {% set line_length_description %}
+    <p>
+      Aim for a line length between 45 and 80 characters for running text. Very short annotations may be narrower, provided they wrap no more than once.
+    </p>
+    <p>
+      Lines shorter than 45 characters can wrap too often and interrupt reading rhythm. Lines longer than 80 characters can become harder to follow, especially when moving from the end of one line to the start of the next.
+    </p>
+  {% endset %}
+
+  <div class="p-section">
+    {{ vf_basic_section(title={"text": "Aim for optimal line-length"},
+      items=[
+        {
+          "type": "description",
+          "item": {"type": "html", "content": line_length_description}
+        }
+      ],
+      padding="shallow",
+      is_split_on_medium=true) }}
     <div class="p-line-length-demo u-hide--small u-hide--medium"
          aria-hidden="true">
       <div class="grid-row">
@@ -253,9 +289,9 @@
         {% endfor %}
       </div>
     </div>
-  </section>
+  </div>
 
-  {% call(slot) vf_tiered_list(is_description_full_width_on_desktop=false) -%}
+  {% call(slot) vf_tiered_list(**tiered_list_layout) -%}
     {%- if slot == "title" -%}
       <h2>Do not track text casually</h2>
     {%- endif -%}
@@ -265,7 +301,7 @@
       </p>
     {%- endif -%}
     {%- if slot == "list_item_title_1" -%}
-      <h3 class="p-heading--5">Implementation rules</h3>
+      <h3 class="p-heading--6">Implementation rules</h3>
     {%- endif -%}
     {%- if slot == "list_item_description_1" -%}
       <ul class="p-list--bulleted">
@@ -281,27 +317,26 @@
   {#- vf_equal_heights always calls caller(), so it needs a call block even without slots -#}
   {% call(slot) vf_equal_heights(
     title_text="Match the type to the content",
+    attrs={"class": "p-type-card-examples"},
+    image_aspect_ratio_medium="2-3",
     items=[
       {
         "image_html": contained_image("https://assets.ubuntu.com/v1/df6696c0-opentype_features_tabular_figures.png", "Rows of digits set with tabular figures, each digit taking the same width"),
-        "title_text": "Tabular figures",
-        "description_html": "<p>Use tabular figures for tables, prices, and other aligned numeric data.</p>"
+        "description_html": type_card_description("Tabular figures", "Use tabular figures for tables, prices, and other aligned numeric data.")
       },
       {
         "image_html": contained_image("https://assets.ubuntu.com/v1/a5c76530-opentype_features_text_figures.png", "Numbers set with text figures inside lowercase text"),
-        "title_text": "Text figures",
-        "description_html": "<p>Use text figures for numbers placed within lowercase prose.</p>"
+        "description_html": type_card_description("Text figures", "Use text figures for numbers placed within lowercase prose.")
       },
       {
         "image_html": contained_image("https://assets.ubuntu.com/v1/b9f3b72f-opentype_features_mono.png", "Code set in Ubuntu Sans Mono"),
-        "title_text": "Mono",
-        "description_html": "<p>Use Ubuntu Sans Mono for code.</p>"
+        "description_html": type_card_description("Mono", "Use Ubuntu Sans Mono for code.")
       }
     ]
   ) -%}
   {%- endcall %}
 
-  {% call(slot) vf_tiered_list(is_description_full_width_on_desktop=false) -%}
+  {% call(slot) vf_tiered_list(**tiered_list_layout) -%}
     {%- if slot == "title" -%}
       <h2>Follow accessibility standards</h2>
     {%- endif -%}
@@ -311,7 +346,7 @@
       </p>
     {%- endif -%}
     {%- if slot == "list_item_title_1" -%}
-      <h3 class="p-heading--5">Use relative type sizes</h3>
+      <h3 class="p-heading--6">Use relative type sizes</h3>
     {%- endif -%}
     {%- if slot == "list_item_description_1" -%}
       <p>
@@ -319,7 +354,7 @@
       </p>
     {%- endif -%}
     {%- if slot == "list_item_title_2" -%}
-      <h3 class="p-heading--5">Meet contrast and state requirements</h3>
+      <h3 class="p-heading--6">Meet contrast and state requirements</h3>
     {%- endif -%}
     {%- if slot == "list_item_description_2" -%}
       <p>
@@ -333,7 +368,7 @@
       </p>
     {%- endif -%}
     {%- if slot == "list_item_title_3" -%}
-      <h3 class="p-heading--5">Support text spacing overrides</h3>
+      <h3 class="p-heading--6">Support text spacing overrides</h3>
     {%- endif -%}
     {%- if slot == "list_item_description_3" -%}
       <p>
@@ -342,7 +377,7 @@
     {%- endif -%}
   {%- endcall %}
 
-  {% call(slot) vf_tiered_list(is_description_full_width_on_desktop=false) -%}
+  {% call(slot) vf_tiered_list(**tiered_list_layout) -%}
     {%- if slot == "title" -%}
       <h2>The baseline grid</h2>
     {%- endif -%}
@@ -351,13 +386,13 @@
         The baseline grid is the backbone of the typography system. It gives type a consistent vertical rhythm and keeps text, components, and spacing from drifting apart as layouts grow more complex.
       </p>
       <p>
-        The baseline unit is <code>4px</code> (<code>0.25rem</code>). All line heights in the type system are multiples of that unit. This is what lets different text sizes sit in a coherent rhythm instead of each carrying its own private logic.
+        All line heights in the type system are multiples of the baseline unit. This is what lets different text sizes sit in a coherent rhythm instead of each carrying its own private logic.
       </p>
       <p>It is there to make the system dependable. When alignment is systematic, the whole interface reads as better made.</p>
       <p>This matters for three reasons:</p>
     {%- endif -%}
     {%- if slot == "list_item_title_1" -%}
-      <h3 class="p-heading--5">Visual consistency</h3>
+      <h3 class="p-heading--6">Visual consistency</h3>
     {%- endif -%}
     {%- if slot == "list_item_description_1" -%}
       <p>
@@ -365,7 +400,7 @@
       </p>
     {%- endif -%}
     {%- if slot == "list_item_title_2" -%}
-      <h3 class="p-heading--5">Scalable precision</h3>
+      <h3 class="p-heading--6">Scalable precision</h3>
     {%- endif -%}
     {%- if slot == "list_item_description_2" -%}
       <p>
@@ -373,7 +408,7 @@
       </p>
     {%- endif -%}
     {%- if slot == "list_item_title_3" -%}
-      <h3 class="p-heading--5">Accountability</h3>
+      <h3 class="p-heading--6">Accountability</h3>
     {%- endif -%}
     {%- if slot == "list_item_description_3" -%}
       <p>
@@ -384,7 +419,7 @@
 
   {%- set weight_pairing_description -%}
     <p>
-      We use weight to halve the number of type sizes needed for headings. The key rule is simple: adjacent weights in a pairing should differ by 200 units.
+      Heading pairs share a size and use a minimum weight difference of 200 units, with one exception. In Sites and Apps, H5 and H6 share weight 600, which is 200 above body text. Small caps distinguish H5 from H6.
     </p>
     <p>
       As size increases, weight usually decreases. Larger headings do not need as much weight to hold their place in the hierarchy. Smaller headings often need more. In tiers where emphasis is expressed through weight, use a further 200-unit increase for the emphasized text.
@@ -392,17 +427,33 @@
   {%- endset -%}
   {#- Set as paragraphs styled like headings, so the samples stay out of the page outline -#}
   {%- set weight_pairing_specimen -%}
-    <div class="p-weight-pairing">
-      <p class="p-heading--1 p-weight-pairing__item">h1: 42/48px, weight 500</p>
-      <p class="p-heading--2 p-weight-pairing__item">h2: 42/48px, weight 300</p>
+    <figure class="p-weight-pairing u-no-margin--bottom">
+      <figcaption>
+        Sites type sizes for
+        <span class="u-hide--large">small and medium screens</span>
+        <span class="u-hide--small u-hide--medium">large screens</span>
+        at a 16px root.
+      </figcaption>
+      <p class="p-heading--1">
+        h1:
+        <span class="u-hide--large">32/40px,</span>
+        <span class="u-hide--small u-hide--medium">42/48px,</span>
+        weight 400
+      </p>
+      <p class="p-heading--2">
+        h2:
+        <span class="u-hide--large">32/40px,</span>
+        <span class="u-hide--small u-hide--medium">42/48px,</span>
+        weight 200
+      </p>
       <hr class="p-rule--muted" />
-      <p class="p-heading--3 p-weight-pairing__item">h3: 24/32px, weight 500</p>
-      <p class="p-heading--4 p-weight-pairing__item">h4: 24/32px, weight 300</p>
+      <p class="p-heading--3">h3: 24/32px, weight 500</p>
+      <p class="p-heading--4">h4: 24/32px, weight 300</p>
       <hr class="p-rule--muted" />
-      <p class="p-heading--5 p-weight-pairing__item">h5: 16/24px, weight 600</p>
-      <p class="p-heading--6 p-weight-pairing__item">h6: 16/24px, weight 600</p>
-      <p class="p-weight-pairing__item">p: 16/24px, weight 400</p>
-    </div>
+      <p class="p-heading--5">h5: 16/24px, weight 600, small caps</p>
+      <p class="p-heading--6">h6: 16/24px, weight 600</p>
+      <p>p: 16/24px, weight 400</p>
+    </figure>
   {%- endset -%}
 
   {{ vf_basic_section(title={"text": "Weight pairing"},
@@ -415,15 +466,16 @@
         "type": "description",
         "item": {"type": "html", "content": weight_pairing_specimen}
       }
-    ]) }}
+    ],
+    is_split_on_medium=true) }}
 
   {%- set line_height_description -%}
     <p>
       Line-height ratios in our system follow a traditional pattern: most generous at body text size, then progressively tighter as heading sizes increase. We start at or around 1.5 for body text, depending on tier &ndash; a ratio that provides optimal readability for sustained reading while maintaining reasonable space efficiency.
     </p>
-    <h3 class="p-heading--5">Snapping line-heights to the baseline grid</h3>
+    <h3 class="p-heading--6">Snapping line-heights to the baseline grid</h3>
     <p>
-      Since all leading (or line-heights) need to conform to the baseline grid, we select a multiple of the baseline grid unit that results in a ratio matching the level of the heading in the overall heading hierarchy. The following table lists the recommended values for line-height at each type size for the Sites tier:
+      Since all leading (or line-heights) need to conform to the baseline grid, we select a multiple of the baseline grid unit that results in a ratio matching the level of the heading in the overall heading hierarchy. The table shows the Sites values in pixels at a 16px root.
     </p>
     <table>
       <thead>
@@ -445,8 +497,19 @@
         ] %}
           <tr>
             <td>{{ level }}</td>
-            <td>{{ size }}</td>
-            <td>{{ line_height }}</td>
+            {%- if level in ["H1", "H2"] %}
+              <td>
+                <span class="u-hide--large">32</span>
+                <span class="u-hide--small u-hide--medium">{{ size }}</span>
+              </td>
+              <td>
+                <span class="u-hide--large">40</span>
+                <span class="u-hide--small u-hide--medium">{{ line_height }}</span>
+              </td>
+            {%- else %}
+              <td>{{ size }}</td>
+              <td>{{ line_height }}</td>
+            {%- endif %}
           </tr>
         {%- endfor %}
       </tbody>
@@ -459,9 +522,10 @@
         "type": "description",
         "item": {"type": "html", "content": line_height_description}
       }
-    ]) }}
+    ],
+    is_split_on_medium=true) }}
 
-  {% call(slot) vf_tiered_list(is_description_full_width_on_desktop=false) -%}
+  {% call(slot) vf_tiered_list(**tiered_list_layout) -%}
     {%- if slot == "title" -%}
       <h2>Responsive behavior</h2>
     {%- endif -%}
@@ -471,20 +535,20 @@
       </p>
     {%- endif -%}
     {%- if slot == "list_item_title_1" -%}
-      <h3 class="p-heading--5">Sites</h3>
+      <h3 class="p-heading--6">Sites</h3>
     {%- endif -%}
     {%- if slot == "list_item_description_1" -%}
       <p>Root em scaling is on by default.</p>
     {%- endif -%}
     {%- if slot == "list_item_title_2" -%}
-      <h3 class="p-heading--5">Docs and apps</h3>
+      <h3 class="p-heading--6">Docs and apps</h3>
     {%- endif -%}
     {%- if slot == "list_item_description_2" -%}
       <p>Root em scaling is off by default.</p>
     {%- endif -%}
   {%- endcall %}
 
-  {% call(slot) vf_tiered_list(is_description_full_width_on_desktop=false) -%}
+  {% call(slot) vf_tiered_list(**tiered_list_layout) -%}
     {%- if slot == "title" -%}
       <h2>More on typography</h2>
     {%- endif -%}
@@ -495,7 +559,7 @@
       </p>
     {%- endif -%}
     {%- if slot == "list_item_title_1" -%}
-      <h3 class="p-heading--2 p-type-link-heading">
+      <h3 class="p-heading--6">
         <a href="/brand/typography/type-scale">Type scale</a>
       </h3>
     {%- endif -%}
@@ -503,7 +567,7 @@
       <p>Learn more about the type scale, and the 3 tier system we use across all our sites and products.</p>
     {%- endif -%}
     {%- if slot == "list_item_title_2" -%}
-      <h3 class="p-heading--2 p-type-link-heading">
+      <h3 class="p-heading--6">
         <a href="/brand/typography/typeface">Typeface</a>
       </h3>
     {%- endif -%}

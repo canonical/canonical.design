@@ -34,31 +34,14 @@
     }
   }
 
-  // Heading levels set in pairs that share a size and differ in weight.
-  // Keep Vanilla's margins and padding: the even-level heading of a pair is
-  // pulled up by a negative margin that offsets the odd one's bottom margin.
-  .p-weight-pairing__item {
-    font-style: normal;
-    font-variant-caps: normal;
-    letter-spacing: normal;
+  // Place three cards in columns 2–4 of Vanilla's four-column medium grid.
+  @media ($breakpoint-small <= width < $breakpoint-large) {
+    .p-type-card-examples .p-equal-height-row--wrap > .p-equal-height-row__col {
+      grid-column: span 1;
 
-    &.p-heading--1,
-    &.p-heading--3 {
-      font-weight: 500;
+      &:first-child {
+        grid-column-start: 2;
+      }
     }
-
-    &.p-heading--2,
-    &.p-heading--4 {
-      font-weight: 300;
-    }
-
-    &.p-heading--5,
-    &.p-heading--6 {
-      font-weight: 600;
-    }
-  }
-
-  .p-type-link-heading {
-    font-style: italic;
   }
 }
