@@ -3,6 +3,7 @@
 const entry = {
     ["cookie-policy"]: "./static/js/cookie-policy.js",
     ["navigation"]: "./static/js/navigation.js",
+    ["tabs"]: "./static/js/typeface-tabs.js",
   };
   
 

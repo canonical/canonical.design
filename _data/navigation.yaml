@@ -24,7 +24,8 @@ pages:
           - title: Typography
             href: /
           - title: Typeface
-            href: /typeface
+            href: /brand/ubuntu-sans
+            absolute: true
           - title: Type scale
             href: /type-scale
           - title: Setting type

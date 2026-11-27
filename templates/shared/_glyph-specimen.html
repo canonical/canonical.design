@@ -19,7 +19,7 @@
 {% set metrics = default_family.metrics %}
 {% set bounds = default_family.bounds %}
 
-<div class="js-glyph-specimen-root">
+<div class="js-glyph-specimen-root" id="glyph-specimen">
   <section class="p-section--shallow">
     <div class="grid-row">
       <hr class="p-rule" />
@@ -109,6 +109,9 @@
             </label>
           </div>
         </div>
+        <p class="js-glyph-keyboard-hint" hidden>
+          Use arrow keys to navigate glyphs, then Enter or Space to select.
+        </p>
       </div>
     </div>
   </section>

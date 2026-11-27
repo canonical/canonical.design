@@ -7,7 +7,7 @@
         <ul class="p-side-navigation__list">
           {% for item in sidenav_section.children recursive %}
             {% set is_ancestor = current_path == item.url or current_path.startswith(item.url ~ '/') %}
-            {% set is_open_branch = item.children and is_ancestor %}
+            {% set is_open_branch = item.children and (is_ancestor or item.children | selectattr('url', 'equalto', current_path) | list | length > 0) %}
             <li class="p-side-navigation__item{% if is_open_branch %}--title{% endif %}">
               <a class="p-side-navigation__link{% if item.children %} is-expandable{% endif %}"
                  href="{{ item.url }}"
