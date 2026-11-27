@@ -46,6 +46,7 @@
     var groups = Array.prototype.slice.call(
       root.querySelectorAll(".p-glyph-specimen__group"),
     );
+    var tabStop = null;
 
     var state = {
       family: config.families[0],
@@ -215,6 +216,73 @@
       figureText.textContent = button.textContent;
     }
 
+    function setTabStop(button) {
+      if (tabStop) {
+        tabStop.tabIndex = -1;
+      }
+      tabStop = button;
+      if (tabStop) {
+        tabStop.tabIndex = 0;
+      }
+    }
+
+    function moveGlyphFocus(event) {
+      var keys = [
+        "ArrowLeft",
+        "ArrowRight",
+        "ArrowUp",
+        "ArrowDown",
+        "Home",
+        "End",
+      ];
+      if (!keys.includes(event.key)) {
+        return;
+      }
+
+      var current = event.target.closest(".js-glyph");
+      if (!current) {
+        return;
+      }
+
+      event.preventDefault();
+      var visible = glyphButtons.filter(function (button) {
+        return !button.hidden;
+      });
+      var index = visible.indexOf(current);
+      var target;
+
+      if (event.key === "Home" || event.key === "End") {
+        target = visible[event.key === "Home" ? 0 : visible.length - 1];
+      } else if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+        target = visible[index + (event.key === "ArrowLeft" ? -1 : 1)];
+      } else {
+        var currentRect = current.getBoundingClientRect();
+        var direction = event.key === "ArrowUp" ? -1 : 1;
+        var nearestRow = Infinity;
+        var nearestColumn = Infinity;
+
+        visible.forEach(function (button) {
+          var rect = button.getBoundingClientRect();
+          var rowDistance = (rect.top - currentRect.top) * direction;
+          var columnDistance = Math.abs(rect.left - currentRect.left);
+          if (
+            rowDistance > 1 &&
+            (rowDistance < nearestRow - 1 ||
+              (Math.abs(rowDistance - nearestRow) <= 1 &&
+                columnDistance < nearestColumn))
+          ) {
+            nearestRow = rowDistance;
+            nearestColumn = columnDistance;
+            target = button;
+          }
+        });
+      }
+
+      if (target) {
+        target.focus();
+      }
+    }
+
     /**
      * The view switcher only exists while the two halves are stacked. Ask the
      * layout rather than re-declaring the breakpoint here, so the two cannot
@@ -247,7 +315,15 @@
         return;
       }
 
+      var hadGlyphFocus = glyphSet.contains(document.activeElement);
       setView("specimen");
+      if (hadGlyphFocus) {
+        viewButtons
+          .find(function (button) {
+            return button.dataset.view === "specimen";
+          })
+          .focus({ preventScroll: true });
+      }
 
       viewTabs.scrollIntoView({
         behavior: prefersReducedMotion.matches ? "auto" : "smooth",
@@ -281,6 +357,9 @@
       applyTypography();
       applyCoverage();
       ensureVisibleSelection();
+      if (!tabStop || tabStop.hidden) {
+        setTabStop(root.querySelector(".js-glyph.is-selected:not([hidden])"));
+      }
     }
 
     /** Drive both the tab strip and the select from a single entry point. */
@@ -327,12 +406,24 @@
     });
 
     glyphButtons.forEach(function (button) {
+      button.tabIndex = -1;
+      button.addEventListener("focus", function () {
+        setTabStop(button);
+      });
       button.addEventListener("click", function () {
+        setTabStop(button);
         selectGlyph(button);
         revealPreview();
       });
     });
 
+    glyphSet.setAttribute("role", "toolbar");
+    glyphSet.setAttribute(
+      "aria-label",
+      "Glyphs. Use arrow keys to navigate, then Enter or Space to select.",
+    );
+    root.querySelector(".js-glyph-keyboard-hint").hidden = false;
+    glyphSet.addEventListener("keydown", moveGlyphFocus);
     render();
   }
 

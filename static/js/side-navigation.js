@@ -99,20 +99,20 @@
         toggleButtonInsideDrawer.focus();
         toggleButtonOutsideDrawer.setAttribute("aria-expanded", true);
         toggleButtonInsideDrawer.setAttribute("aria-expanded", true);
-        focusFirstDescendant(sideNavigation);
+        lastFocus = toggleButtonInsideDrawer;
         focusAfterClose = toggleButtonOutsideDrawer;
         document.addEventListener("focus", trapFocus, true);
       } else {
         sideNavigation.classList.remove("is-drawer-expanded");
         sideNavigation.classList.add("is-drawer-collapsed");
 
-        toggleButtonOutsideDrawer.focus();
         toggleButtonOutsideDrawer.setAttribute("aria-expanded", false);
         toggleButtonInsideDrawer.setAttribute("aria-expanded", false);
+        document.removeEventListener("focus", trapFocus, true);
         if (focusAfterClose && focusAfterClose.focus) {
           focusAfterClose.focus();
         }
-        document.removeEventListener("focus", trapFocus, true);
+        focusAfterClose = null;
       }
     }
   }
@@ -138,7 +138,10 @@
     });
 
     window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
+      if (
+        e.key === "Escape" &&
+        sideNavigation.classList.contains("is-drawer-expanded")
+      ) {
         toggleDrawer(sideNavigation, false);
       }
     });
@@ -162,6 +165,9 @@
     window.addEventListener(
       "resize",
       throttle(function () {
+        if (sideNavigation.classList.contains("is-drawer-expanded")) {
+          toggleDrawer(sideNavigation, false);
+        }
         toggles.forEach((toggle) => {
           return toggle.setAttribute("aria-expanded", false);
         });
