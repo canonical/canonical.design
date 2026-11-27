@@ -13,9 +13,11 @@
 @import "pattern-font-tester";
 @import "pattern-glyph-specimen";
 @import "pattern-carousel";
+@import "pattern-type-specimen";
 @include design-p-font-tester;
 @include design-p-glyph-specimen;
 @include design-p-carousel;
+@include design-p-type-specimen;
 @include design-p-resources;
 @include vf-p-icons;
 @include vf-p-icon-highlight-off;

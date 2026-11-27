@@ -1,0 +1,579 @@
+{% extends "base.html" %}
+
+{% from "_macros/vf_hero.jinja" import vf_hero %}
+{% from "_macros/vf_tiered-list.jinja" import vf_tiered_list %}
+{% from "_macros/vf_basic-section.jinja" import vf_basic_section %}
+{% from "_macros/vf_equal-heights.jinja" import vf_equal_heights %}
+{% from "_macros/shared/vf_equal-heights-block.jinja" import vf_equal_heights_block %}
+
+{% block meta_title %}
+  Setting type
+{% endblock meta_title %}
+
+{% block meta_description %}
+  Explore the design system typography rules. Learn how to apply type scales, line heights, and weights across Sites, Documentation, and Apps for optimal readability.
+{% endblock meta_description %}
+
+{% block meta_copydoc %}
+  https://docs.google.com/document/d/1QAtmGC8tLKI3f__P_JwKjHurOrESCcSM0dGeYzERB8k/edit?tab=t.jijjhiya0no5
+{% endblock meta_copydoc %}
+
+{% block body_class %}
+  is-paper
+{% endblock body_class %}
+
+{% set lorem_long = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Fusce blandit magna sit amet magna tempor, ac euismod lorem varius. Integer laoreet viverra justo, nec aliquet nunc fermentum eget. Mauris dignissim, ipsum in gravida pharetra, justo justo fringilla felis, ac sollicitudin neque lorem ac est. Curabitur porta, urna id congue accumsan, ligula est viverra libero, vitae condimentum nisi sapien non libero. Cras a ligula nec nisl iaculis faucibus." %}
+{% set lorem_short = "Lorem ipsum dolor sit" %}
+
+{#-
+  Image that fills the equal heights image container it is placed in.
+
+  - url: full image URL
+  - alt: alternative text
+-#}
+
+{% macro contained_image(url, alt) %}
+  {{ image(url=url,
+    alt=alt,
+    width="706",
+    height="1119",
+    hi_def=True,
+    loading="lazy",
+    attrs={"class": "p-image-container__image"}) | safe
+  }}
+{% endmacro %}
+
+{#- The Equal Heights title field supports H4 and H5. Use its HTML slot for H6 styling. -#}
+{% macro type_card_description(title, description="") %}
+  <h3 class="p-heading--6">{{ title }}</h3>
+  {% if description %}
+    <p>{{ description }}</p>
+  {% endif %}
+{% endmacro %}
+
+{% block content %}
+
+  {#- Older Vanilla releases support the tablet item split. Use the newer layout options when available. -#}
+  {% set tiered_list_layout = {"is_description_full_width_on_desktop": false, "is_list_full_width_on_tablet": false} %}
+  {% if "is_description_split_on_medium" in vf_tiered_list.arguments and "is_list_indented_on_medium" in vf_tiered_list.arguments %}
+    {% set tiered_list_layout = dict(tiered_list_layout, is_description_split_on_medium=true, is_list_indented_on_medium=true) %}
+  {% endif %}
+
+  {% call(slot) vf_hero(
+    title_text="Setting type",
+    layout="50/50",
+    is_split_on_medium=true,
+    blocks=[
+      {
+        "type": "description",
+        "item": {
+          "type": "text",
+          "content": "Establish hierarchy and visual harmony across all digital touchpoints by adhering to consistent typography guidelines. Our system defines clear rules for type scaling, line spacing, and font weight pairings."
+        }
+      }
+    ]
+  ) -%}{% endcall -%}
+
+  {% call(slot) vf_tiered_list(**tiered_list_layout) -%}
+    {%- if slot == "title" -%}
+      <h2>Start with the right tier</h2>
+    {%- endif -%}
+    {%- if slot == "description" -%}
+      <p>
+        Our design system serves three tiers.
+        <br />
+        Identify the tier you&rsquo;re working in first, then apply the rules on this page.
+      </p>
+    {%- endif -%}
+    {%- if slot == "list_item_title_1" -%}
+      <h3 class="p-heading--6">Sites</h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_1" -%}
+      <p>Use for marketing, product pages, blogs, and other content designed for rapid scanning.</p>
+    {%- endif -%}
+    {%- if slot == "list_item_title_2" -%}
+      <h3 class="p-heading--6">Docs</h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_2" -%}
+      <p>Use for product documentation and other structured technical content.</p>
+    {%- endif -%}
+    {%- if slot == "list_item_title_3" -%}
+      <h3 class="p-heading--6">Apps</h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_3" -%}
+      <p>Use when working on web-based apps.</p>
+    {%- endif -%}
+  {%- endcall %}
+
+  {% call(slot) vf_tiered_list(**tiered_list_layout) -%}
+    {%- if slot == "title" -%}
+      <h2>Follow text alignment rules</h2>
+    {%- endif -%}
+    {%- if slot == "list_item_title_1" -%}
+      <h3 class="p-heading--6">Prose</h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_1" -%}
+      <p>When it comes to aligning prose, we follow two rules:</p>
+      <ul class="p-list--bulleted">
+        <li class="p-list__item">Align prose left.</li>
+        <li class="p-list__item">Do not force-justify.</li>
+      </ul>
+      <p>
+        They create consistent starting points, avoid uneven gaps and the &ldquo;river effect&rdquo;, and make text easier to read, especially for people with dyslexia.
+      </p>
+    {%- endif -%}
+    {%- if slot == "list_item_title_2" -%}
+      <h3 class="p-heading--6">Numbers</h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_2" -%}
+      <ul class="p-list--bulleted">
+        <li class="p-list__item">Align numbers by decimal point when decimals are present.</li>
+        <li class="p-list__item">Right-align numbers when no decimal point is present.</li>
+      </ul>
+    {%- endif -%}
+    {%- if slot == "list_item_title_3" -%}
+      <h3 class="p-heading--6">Exceptions</h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_3" -%}
+      <ul class="p-list--bulleted">
+        <li class="p-list__item">In rare cases, single-line labels directly beneath an icon may be centred. Use as last resort.</li>
+        <li class="p-list__item">Text labels inside diagrams created with tools that simply do not support left alignment.</li>
+      </ul>
+    {%- endif -%}
+  {%- endcall %}
+
+  {% set semantic_color_description %}
+    <ul class="p-list--bulleted">
+      <li class="p-list__item">Default to black color for text.</li>
+      <li class="p-list__item">Use color primarily for semantic purposes, such as links, states, feedback, and syntax highlighting.</li>
+      <li class="p-list__item">Avoid using brand colors decoratively or as routine emphasis in running text.</li>
+      <li class="p-list__item">
+        Color may be used for emphasis when it has a clear purpose, meets accessibility requirements, and is not the only cue.
+      </li>
+    </ul>
+  {% endset %}
+
+  <div class="p-section p-type-card-examples">
+    {{ vf_basic_section(title={"text": "Use color semantically"},
+      items=[
+        {
+          "type": "description",
+          "item": {"type": "html", "content": semantic_color_description}
+        }
+      ],
+      padding="shallow",
+      is_split_on_medium=true) }}
+    <div class="grid-row">
+      <div class="grid-col-6 grid-col-start-large-3">
+        {{ vf_equal_heights_block(
+          image_aspect_ratio_medium="2-3",
+          items=[
+            {
+              "image_html": contained_image("https://assets.ubuntu.com/v1/1822cc50-opentype_features.png", "The words fwd and back set in monospace, showing default and visited link colors"),
+              "description_html": type_card_description("Link states")
+            },
+            {
+              "image_html": contained_image("https://assets.ubuntu.com/v1/80023397-opentype_features_1.png", "The word muted set in de-emphasized text color"),
+              "description_html": type_card_description("De-emphasized text")
+            },
+            {
+              "image_html": contained_image("https://assets.ubuntu.com/v1/e4292271-opentype_features_2.png", "The word error set in monospace, highlighted as a syntax error"),
+              "description_html": type_card_description("Syntax highlighting")
+            }
+          ]
+        ) }}
+      </div>
+    </div>
+  </div>
+
+  {% call(slot) vf_tiered_list(**tiered_list_layout) -%}
+    {%- if slot == "title" -%}
+      <h2>Use sentence case</h2>
+    {%- endif -%}
+    {%- if slot == "description" -%}
+      <p>
+        Adhere strictly to sentence case. Do not use title case. Sentence case is the natural choice for digital products because it respects how people actually read and build interfaces.
+      </p>
+      {# TODO: replace with the style guide URL; neither the copydoc nor the design provides one #}
+      <p>
+        <a href="#">Read the full style guide (Canonical internal only)</a>
+      </p>
+    {%- endif -%}
+    {%- if slot == "list_item_title_1" -%}
+      <h3 class="p-heading--6">Speeds up reading</h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_1" -%}
+      <p>It mirrors natural reading patterns, making text faster to scan.</p>
+    {%- endif -%}
+    {%- if slot == "list_item_title_2" -%}
+      <h3 class="p-heading--6">Reduces visual noise</h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_2" -%}
+      <p>Eliminating unnecessary capital letters keeps layouts clean and calm.</p>
+    {%- endif -%}
+    {%- if slot == "list_item_title_3" -%}
+      <h3 class="p-heading--6">Highlights proper nouns</h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_3" -%}
+      <p>Restricting capitals to the first word makes brand or feature names stand out instantly.</p>
+    {%- endif -%}
+  {%- endcall %}
+
+  {% call(slot) vf_tiered_list(**tiered_list_layout) -%}
+    {%- if slot == "title" -%}
+      <h2>Emphasise sparingly</h2>
+    {%- endif -%}
+    {%- if slot == "description" -%}
+      <p>
+        In general, prefer emphasis that arises from structure. Word order and white space will often carry the thought without need for ornament.
+      </p>
+      <p>
+        Do not use bold, italic, color, or underline as a substitute for correct heading structure. Overusing emphasis dilutes its effectiveness.
+      </p>
+      <p>When it comes to emphasis, treatments vary slightly by tier:</p>
+    {%- endif -%}
+    {%- if slot == "list_item_title_1" -%}
+      <h3 class="p-heading--6">Sites and apps</h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_1" -%}
+      <p>Use italics for emphasis.</p>
+    {%- endif -%}
+    {%- if slot == "list_item_title_2" -%}
+      <h3 class="p-heading--6">Documentation</h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_2" -%}
+      <p>In documentation, we support two levels of emphasis &ndash; regular (italic) and strong (bold).</p>
+    {%- endif -%}
+  {%- endcall %}
+
+  {% set line_length_description %}
+    <p>
+      Aim for a line length between 45 and 80 characters for running text. Very short annotations may be narrower, provided they wrap no more than once.
+    </p>
+    <p>
+      Lines shorter than 45 characters can wrap too often and interrupt reading rhythm. Lines longer than 80 characters can become harder to follow, especially when moving from the end of one line to the start of the next.
+    </p>
+  {% endset %}
+
+  <div class="p-section">
+    {{ vf_basic_section(title={"text": "Aim for optimal line-length"},
+      items=[
+        {
+          "type": "description",
+          "item": {"type": "html", "content": line_length_description}
+        }
+      ],
+      padding="shallow",
+      is_split_on_medium=true) }}
+    <div class="p-line-length-demo u-hide--small u-hide--medium"
+         aria-hidden="true">
+      <div class="grid-row">
+        {% for _ in range(2) %}
+          <div class="grid-col-4">
+            <p>{{ lorem_long }}</p>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="grid-row">
+        {% for _ in range(4) %}
+          <div class="grid-col-2">
+            <p>{{ lorem_long }}</p>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="grid-row is-narrow">
+        {% for _ in range(8) %}
+          <div class="grid-col-1">
+            <p>{{ lorem_short }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  {% call(slot) vf_tiered_list(**tiered_list_layout) -%}
+    {%- if slot == "title" -%}
+      <h2>Do not track text casually</h2>
+    {%- endif -%}
+    {%- if slot == "description" -%}
+      <p>
+        Lowercase letterforms are engineered with precise optical spacing and negative counter-shapes designed to form recognizable word silhouettes. Adding positive tracking to lowercase copy disrupts this natural visual rhythm, fractures word recognition, and severely degrades readability.
+      </p>
+    {%- endif -%}
+    {%- if slot == "list_item_title_1" -%}
+      <h3 class="p-heading--6">Implementation rules</h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_1" -%}
+      <ul class="p-list--bulleted">
+        <li class="p-list__item">Apply tracking exclusively when setting typography in all-caps or small-caps.</li>
+        <li class="p-list__item">Use exactly 0.05em (5%) tracking for all small-caps headers to ensure optimal legibility.</li>
+        <li class="p-list__item">
+          Do not use negative tracking to force text blocks or paragraph overflows to fit into a tight layout space.
+        </li>
+      </ul>
+    {%- endif -%}
+  {%- endcall %}
+
+  {#- vf_equal_heights always calls caller(), so it needs a call block even without slots -#}
+  {% call(slot) vf_equal_heights(
+    title_text="Match the type to the content",
+    attrs={"class": "p-type-card-examples"},
+    image_aspect_ratio_medium="2-3",
+    items=[
+      {
+        "image_html": contained_image("https://assets.ubuntu.com/v1/df6696c0-opentype_features_tabular_figures.png", "Rows of digits set with tabular figures, each digit taking the same width"),
+        "description_html": type_card_description("Tabular figures", "Use tabular figures for tables, prices, and other aligned numeric data.")
+      },
+      {
+        "image_html": contained_image("https://assets.ubuntu.com/v1/a5c76530-opentype_features_text_figures.png", "Numbers set with text figures inside lowercase text"),
+        "description_html": type_card_description("Text figures", "Use text figures for numbers placed within lowercase prose.")
+      },
+      {
+        "image_html": contained_image("https://assets.ubuntu.com/v1/b9f3b72f-opentype_features_mono.png", "Code set in Ubuntu Sans Mono"),
+        "description_html": type_card_description("Mono", "Use Ubuntu Sans Mono for code.")
+      }
+    ]
+  ) -%}
+  {%- endcall %}
+
+  {% call(slot) vf_tiered_list(**tiered_list_layout) -%}
+    {%- if slot == "title" -%}
+      <h2>Follow accessibility standards</h2>
+    {%- endif -%}
+    {%- if slot == "description" -%}
+      <p>
+        Typography must remain readable when users adapt it to their needs. Do not rely on fixed sizes, fixed containers, or color alone. Design and test typography to meet WCAG AA requirements.
+      </p>
+    {%- endif -%}
+    {%- if slot == "list_item_title_1" -%}
+      <h3 class="p-heading--6">Use relative type sizes</h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_1" -%}
+      <p>
+        Set type with relative units so users can resize text through browser or system settings. Text must scale up to 200% without clipping, overlapping, hidden content, or loss of functionality.
+      </p>
+    {%- endif -%}
+    {%- if slot == "list_item_title_2" -%}
+      <h3 class="p-heading--6">Meet contrast and state requirements</h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_2" -%}
+      <p>
+        Text must meet WCAG AA contrast requirements against its background: 4.5:1 for normal text and 3:1 for large text.
+      </p>
+      <p>
+        Interactive text must also remain distinguishable in each state: default, hover, focus, active, visited, and disabled.
+      </p>
+      <p>
+        When color is the only cue that distinguishes a link from surrounding text, the link color must have at least 3:1 contrast against the adjacent text, not only against the background.
+      </p>
+    {%- endif -%}
+    {%- if slot == "list_item_title_3" -%}
+      <h3 class="p-heading--6">Support text spacing overrides</h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_3" -%}
+      <p>
+        Interfaces must continue to work when users increase line height, paragraph spacing, letter spacing, or word spacing. Check that text remains visible, controls remain usable, and labels do not collide.
+      </p>
+    {%- endif -%}
+  {%- endcall %}
+
+  {% call(slot) vf_tiered_list(**tiered_list_layout) -%}
+    {%- if slot == "title" -%}
+      <h2>The baseline grid</h2>
+    {%- endif -%}
+    {%- if slot == "description" -%}
+      <p>
+        The baseline grid is the backbone of the typography system. It gives type a consistent vertical rhythm and keeps text, components, and spacing from drifting apart as layouts grow more complex.
+      </p>
+      <p>
+        All line heights in the type system are multiples of the baseline unit. This is what lets different text sizes sit in a coherent rhythm instead of each carrying its own private logic.
+      </p>
+      <p>It is there to make the system dependable. When alignment is systematic, the whole interface reads as better made.</p>
+      <p>This matters for three reasons:</p>
+    {%- endif -%}
+    {%- if slot == "list_item_title_1" -%}
+      <h3 class="p-heading--6">Visual consistency</h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_1" -%}
+      <p>
+        All elements adhere to an invisible vertical partitioning of space, rather than floating arbitrarily: headings, body text, lists, tables, and UI text all share the same rhythm.
+      </p>
+    {%- endif -%}
+    {%- if slot == "list_item_title_2" -%}
+      <h3 class="p-heading--6">Scalable precision</h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_2" -%}
+      <p>
+        Everything in our design system, from a simple button to complex components and patterns, aligns to the baseline grid. This alignment is especially visible across columns, reinforcing a sense of precision and rigor.
+      </p>
+    {%- endif -%}
+    {%- if slot == "list_item_title_3" -%}
+      <h3 class="p-heading--6">Accountability</h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_3" -%}
+      <p>
+        Misalignment becomes visible quickly, especially across columns. We provide a baseline grid visualization utility (in both Figma and CSS) to highlight any drift from the grid.
+      </p>
+    {%- endif -%}
+  {%- endcall %}
+
+  {%- set weight_pairing_description -%}
+    <p>
+      Heading pairs share a size and use a minimum weight difference of 200 units, with one exception. In Sites and Apps, H5 and H6 share weight 600, which is 200 above body text. Small caps distinguish H5 from H6.
+    </p>
+    <p>
+      As size increases, weight usually decreases. Larger headings do not need as much weight to hold their place in the hierarchy. Smaller headings often need more. In tiers where emphasis is expressed through weight, use a further 200-unit increase for the emphasized text.
+    </p>
+  {%- endset -%}
+  {#- Set as paragraphs styled like headings, so the samples stay out of the page outline -#}
+  {%- set weight_pairing_specimen -%}
+    <figure class="p-weight-pairing u-no-margin--bottom">
+      <figcaption>
+        Sites type sizes for
+        <span class="u-hide--large">small and medium screens</span>
+        <span class="u-hide--small u-hide--medium">large screens</span>
+        at a 16px root.
+      </figcaption>
+      <p class="p-heading--1">
+        h1:
+        <span class="u-hide--large">32/40px,</span>
+        <span class="u-hide--small u-hide--medium">42/48px,</span>
+        weight 400
+      </p>
+      <p class="p-heading--2">
+        h2:
+        <span class="u-hide--large">32/40px,</span>
+        <span class="u-hide--small u-hide--medium">42/48px,</span>
+        weight 200
+      </p>
+      <hr class="p-rule--muted" />
+      <p class="p-heading--3">h3: 24/32px, weight 500</p>
+      <p class="p-heading--4">h4: 24/32px, weight 300</p>
+      <hr class="p-rule--muted" />
+      <p class="p-heading--5">h5: 16/24px, weight 600, small caps</p>
+      <p class="p-heading--6">h6: 16/24px, weight 600</p>
+      <p>p: 16/24px, weight 400</p>
+    </figure>
+  {%- endset -%}
+
+  {{ vf_basic_section(title={"text": "Weight pairing"},
+    items=[
+      {
+        "type": "description",
+        "item": {"type": "html", "content": weight_pairing_description}
+      },
+      {
+        "type": "description",
+        "item": {"type": "html", "content": weight_pairing_specimen}
+      }
+    ],
+    is_split_on_medium=true) }}
+
+  {%- set line_height_description -%}
+    <p>
+      Line-height ratios in our system follow a traditional pattern: most generous at body text size, then progressively tighter as heading sizes increase. We start at or around 1.5 for body text, depending on tier &ndash; a ratio that provides optimal readability for sustained reading while maintaining reasonable space efficiency.
+    </p>
+    <h3 class="p-heading--6">Snapping line-heights to the baseline grid</h3>
+    <p>
+      Since all leading (or line-heights) need to conform to the baseline grid, we select a multiple of the baseline grid unit that results in a ratio matching the level of the heading in the overall heading hierarchy. The table shows the Sites values in pixels at a 16px root.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Level</th>
+          <th>Size</th>
+          <th>Line height</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for level, size, line_height in [
+          ("H1", 42, 48),
+          ("H2", 42, 48),
+          ("H3", 24, 32),
+          ("H4", 24, 32),
+          ("H5", 16, 24),
+          ("H6", 16, 24),
+          ("p", 16, 24)
+        ] %}
+          <tr>
+            <td>{{ level }}</td>
+            {%- if level in ["H1", "H2"] %}
+              <td>
+                <span class="u-hide--large">32</span>
+                <span class="u-hide--small u-hide--medium">{{ size }}</span>
+              </td>
+              <td>
+                <span class="u-hide--large">40</span>
+                <span class="u-hide--small u-hide--medium">{{ line_height }}</span>
+              </td>
+            {%- else %}
+              <td>{{ size }}</td>
+              <td>{{ line_height }}</td>
+            {%- endif %}
+          </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+
+  {%- endset -%}
+  {{ vf_basic_section(title={"text": "Type size to line-height relationship"},
+    items=[
+      {
+        "type": "description",
+        "item": {"type": "html", "content": line_height_description}
+      }
+    ],
+    is_split_on_medium=true) }}
+
+  {% call(slot) vf_tiered_list(**tiered_list_layout) -%}
+    {%- if slot == "title" -%}
+      <h2>Responsive behavior</h2>
+    {%- endif -%}
+    {%- if slot == "description" -%}
+      <p>
+        All tiers include an optional root em scaling feature that effectively &ldquo;zooms in&rdquo; the entire UI by proportionally scaling all em- and rem-based measurements by a factor of 1.125 (current default) for larger screens (currently screens larger than 1680px).
+      </p>
+    {%- endif -%}
+    {%- if slot == "list_item_title_1" -%}
+      <h3 class="p-heading--6">Sites</h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_1" -%}
+      <p>Root em scaling is on by default.</p>
+    {%- endif -%}
+    {%- if slot == "list_item_title_2" -%}
+      <h3 class="p-heading--6">Docs and apps</h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_2" -%}
+      <p>Root em scaling is off by default.</p>
+    {%- endif -%}
+  {%- endcall %}
+
+  {% call(slot) vf_tiered_list(**tiered_list_layout) -%}
+    {%- if slot == "title" -%}
+      <h2>More on typography</h2>
+    {%- endif -%}
+    {%- if slot == "description" -%}
+      <p>We follow a strict set of rules to maintain coherence across everything we publish.</p>
+      <p>
+        The following pages offer a quick set of dos/don&rsquo;ts followed by a deeper dive into the rationale behind our typographic system.
+      </p>
+    {%- endif -%}
+    {%- if slot == "list_item_title_1" -%}
+      <h3 class="p-heading--6">
+        <a href="/brand/typography/type-scale">Type scale</a>
+      </h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_1" -%}
+      <p>Learn more about the type scale, and the 3 tier system we use across all our sites and products.</p>
+    {%- endif -%}
+    {%- if slot == "list_item_title_2" -%}
+      <h3 class="p-heading--6">
+        <a href="/brand/typography/typeface">Typeface</a>
+      </h3>
+    {%- endif -%}
+    {%- if slot == "list_item_description_2" -%}
+      <p>Learn more about Ubuntu Sans, the typeface we use exclusively in our design system.</p>
+    {%- endif -%}
+  {%- endcall %}
+
+{% endblock content %}
