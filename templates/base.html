@@ -106,7 +106,7 @@
               href="{{ url_for('static', filename='css/styles.css') }}" />
 
       </head>
-      <body class=" 
+      <body class="
         {% block body_class %}{% endblock %} l-site">
 
         <!-- Google Tag Manager (noscript) -->
@@ -121,7 +121,16 @@
 
         {% include '_layouts/_navigation.html' %}
 
-        <div class="wrapper">
+        {% if sidenav_section %}
+          <div class="l-docs">
+            <div class="l-docs__sidebar">
+              <div class="l-docs__sticky-container">
+                {% include '_layouts/_sidenav.html' %}
+              </div>
+            </div>
+        {% endif %}
+
+        <div class="wrapper{% if sidenav_section %} l-docs__main{% endif %}">
           <div id="main-content">
 
             {% block content %}{% endblock %}
@@ -129,7 +138,15 @@
           </div>
         </div>
 
+        {% if sidenav_section %}
+          </div>
+        {% endif %}
+
         {% include '_layouts/_footer.html' %}
+
+        {% if sidenav_section %}
+          <script src="{{ versioned_static('js/side-navigation.js') }}" defer></script>
+        {% endif %}
 
       </body>
     </html>

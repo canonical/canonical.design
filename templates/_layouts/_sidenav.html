@@ -1,0 +1,75 @@
+{#
+  Shared side navigation for documentation-layout pages.
+
+  A page opts in by setting `sidenav_section` before extending base.html:
+
+    {% set sidenav_section = "brand" %}
+
+  The navigation tree is hardcoded site navigation (not scraped from page
+  headings). `aria-current="page"` is computed from the global `path` variable
+  provided by app.py, so pages never declare their own position.
+#}
+
+{% set sidenav_trees = {
+  "brand": {
+    "label": "Brand",
+    "items": [
+      {"text": "Brand", "href": "/brand"},
+      {"text": "Logos", "href": "#"},
+      {"text": "Color", "href": "#"},
+      {
+        "text": "Typography",
+        "children": [
+          {"text": "Typeface", "href": "/brand/ubuntu-sans"},
+          {"text": "Type scale", "href": "#"},
+          {"text": "Setting type", "href": "#"}
+        ]
+      },
+      {"text": "Resources", "href": "/brand/resources"},
+      {"text": "Resources (internal)", "href": "#"}
+    ]
+  }
+} %}
+
+{% set sidenav_tree = sidenav_trees.get(sidenav_section) %}
+
+{% if sidenav_tree %}
+  <div class="p-side-navigation" id="drawer">
+    <button class="p-side-navigation__toggle js-drawer-toggle"
+            aria-controls="drawer"
+            aria-expanded="false">Toggle side navigation</button>
+    <div class="p-side-navigation__overlay js-drawer-toggle"
+         aria-controls="drawer"></div>
+    <nav class="p-side-navigation__drawer" aria-label="{{ sidenav_tree.label }}">
+      <div class="p-side-navigation__drawer-header">
+        <button class="p-side-navigation__toggle--in-drawer js-drawer-toggle"
+                aria-controls="drawer"
+                aria-expanded="false">Toggle side navigation</button>
+      </div>
+      <ul class="p-side-navigation__list">
+        {% for item in sidenav_tree["items"] %}
+          {% if item.children %}
+            <li class="p-side-navigation__item--title">
+              <a class="p-side-navigation__link" href="{{ item.children[0].href }}">{{ item.text }}</a>
+              <ul class="p-side-navigation__list">
+                {% for child in item.children %}
+                  <li class="p-side-navigation__item">
+                    <a class="p-side-navigation__link"
+                       href="{{ child.href }}"
+                       {% if path == child.href %}aria-current="page"{% endif %}>{{ child.text }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </li>
+          {% else %}
+            <li class="p-side-navigation__item">
+              <a class="p-side-navigation__link"
+                 href="{{ item.href }}"
+                 {% if path == item.href %}aria-current="page"{% endif %}>{{ item.text }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </nav>
+  </div>
+{% endif %}

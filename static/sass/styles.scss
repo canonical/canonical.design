@@ -101,3 +101,10 @@
 .is-ubuntu-mono {
   font-family: "Ubuntu Mono variable", monospace;
 }
+
+// Documentation-layout sidebar: Figma uses the alt background. Vanilla has no
+// utility class for it, so this applies Vanilla's own token (#ebebeb on paper).
+.l-docs__sidebar,
+.l-docs__sidebar .p-side-navigation__drawer {
+  background-color: var(--vf-color-background-alt);
+}
